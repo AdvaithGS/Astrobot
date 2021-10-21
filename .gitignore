@@ -132,3 +132,4 @@ dmypy.json
 info.txt
 poetry.lock
 pyproject.toml
+core
