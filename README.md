@@ -49,7 +49,7 @@ Remove a channel from the APOD subscription.
 
 ## Creator
 
-This bot has been created with blood, sweat and tears by Advaith GS, a 16 year old with an identity crisis.
+This bot has been created with blood, sweat and tears by Advaith GS, a class 11 student :/.
 
 Find me on: https://advaithgs.repl.co <br>
 Discord: `AdvaithGS#6700` <br>
