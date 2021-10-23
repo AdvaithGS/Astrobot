@@ -1,11 +1,14 @@
 import discord
 import os
 import time
+import reverse_geocoder
+from country_code import find_country
+from discord.colour import Color
 from time import strftime
 import requests
 client = discord.Client()
 from keep_alive import keep_alive
-import ast
+from ast import literal_eval
 from replit import db
 import json
 import random
@@ -35,7 +38,7 @@ async def on_message(message):
     except:
       parameters = {}
     try:
-      req = ast.literal_eval(requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)
+      req = literal_eval(requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)
       title = req['title']
       desc = f'''{req['date']}\nDiscover the cosmos!\n\n{req['explanation']}'''
     except:
@@ -104,9 +107,9 @@ async def on_message(message):
   elif message.content.startswith('.info'):
     try:
       q = str(message.content)[6:]
-      req3 = ast.literal_eval(requests.get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
+      req3 = literal_eval(requests.get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
       parameters = {'page': str(random.randrange(1,int(req3)+1))}
-      req2 = ast.literal_eval(requests.get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
+      req2 = literal_eval(requests.get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
       choice = random.choice(dict(req2['collection'])['items'])
       desc = str(choice['data'][0]['description'])
       embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.blue())
@@ -174,6 +177,25 @@ async def on_message(message):
     except:
       await ctx.send('You have not specified a query or your query is wrong, use `.info <query>`')
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
+  elif message.content.startswith('.whereiss'):
+    req = literal_eval(requests.get('https://api.wheretheiss.at/v1/satellites/25544').text)
+    result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
+    location = ''
+    if result['name']:
+      location += result['name'] + ', '
+    if result['admin1']:
+      location += result['admin1'] + ', '
+    if result['admin2']:
+      location += result['admin2'] + ', '
+    if result['cc']:
+      location += find_country(result['cc'])
+    visiblity = req['visibility']
+    embed = discord.Embed(title = 'International Space Station',desc = f'The International Space Station is situated at- `{location}`. The ISS is in {visiblity}' , color = discord.Color.blue())
+    velocity = round(req['velocity'],2)
+    embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
+    altitude = round(req['altitude'],2)
+    embed.add_field(name = 'Velocity' , value = f'{altitude} km')
+  
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
       db['apod'] = strftime('%Y-%m-%d')
@@ -185,6 +207,7 @@ async def on_message(message):
           pass
   else:
     pass
+  
       
 
 
