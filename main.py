@@ -2,8 +2,7 @@ import discord
 import os
 import time
 import reverse_geocoder
-from country_code import find_country
-from discord.colour import Color
+from assets.country_code import find_country
 from time import strftime
 import requests
 client = discord.Client()
@@ -58,7 +57,7 @@ async def on_message(message):
     except:
       pass
   elif message.content.startswith('.help'):
-    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only four commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture.**PRO TIP** - use a specific date in YYYY-MM-DD format to get an image from that date!(Example - `.daily 2005-06-08`, this was for 8th June, 2005)`\n\n.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \nHave fun:.''', color=discord.Color.blue())
+    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture.**PRO TIP** - use a specific date in YYYY-MM-DD format to get an image from that date!(Example - `.daily 2005-06-08`, this was for 8th June, 2005)`\n\n.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n**NEW**`.whereiss` - Find the live location of the international space station with respect to the Earth.\nHave fun:.''', color=discord.Color.blue())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness.")
     await ctx.send(embed=embed)
   elif message.content.startswith('.channel'):
@@ -97,7 +96,7 @@ async def on_message(message):
   #returns the user id
   elif message.content.startswith('.id'):
     await ctx.send(message.author.id)
-  #this info command first checks te total number of pagse by going to 
+  #this info command first checks the total number of pagse by going to 
   #the 100th page (since no queries are 100 pages long, the image and 
   #video api just mentions the last possible page number in response) and 
   #takes the last page number from there, ses the random library to pick 
@@ -190,11 +189,12 @@ async def on_message(message):
     if result['cc']:
       location += find_country(result['cc'])
     visiblity = req['visibility']
-    embed = discord.Embed(title = 'International Space Station',desc = f'The International Space Station is situated at- `{location}`. The ISS is in {visiblity}' , color = discord.Color.blue())
+    embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently above `{location}`.\n The ISS is in {visiblity}' , color = discord.Color.blue())
     velocity = round(req['velocity'],2)
     embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
     altitude = round(req['altitude'],2)
-    embed.add_field(name = 'Velocity' , value = f'{altitude} km')
+    embed.add_field(name = 'Altitude' , value = f'{altitude} km')
+    await ctx.send(embed=embed)
   
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  

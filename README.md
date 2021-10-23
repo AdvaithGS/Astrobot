@@ -16,12 +16,14 @@ https://discord.com/oauth2/authorize?client_id=792458754208956466&permissions=17
 
 
 ## Commands
-As of now, there are 5 commands:
+As of now, there are the following commands:
 * .daily
 * .daily YYYY-MM-DD
-* .info query
+* .info < query >
+* whereiss 
 * channel
 * remove
+
 
 
 
@@ -38,11 +40,16 @@ Ask about ANYTHING related to astronomy and astronomical bodies. It gives data a
 
 This uses Solar system Open Api and NASA's video and Image library in a discord embed.
 
+#### `.remove`
+Find the live location of the international space station with respect to the Earth.
+
 #### `.channel`
 Subscribe to the daily APOD service and get the daily picture as soon as it is released on the channel in which this command is posted.
 
 #### `.remove`
 Remove a channel from the APOD subscription.
+
+
  
 
 
