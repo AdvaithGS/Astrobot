@@ -11,7 +11,7 @@ from replit import db
 import json
 import random
 api_key = os.environ['api_key']
-
+api_key2 = os.environ['api_key2']
 @client.event
 async def on_ready():
 	print('We have logged in as {0.user}'.format(client))
@@ -188,11 +188,15 @@ async def on_message(message):
     if result['cc']:
       location += find_country(result['cc'])
     visiblity = req['visibility']
+    place = location.replace(' ', '+')
+    url = f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=map&locations={place}&key={api_key2}'
     embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently above `{location}`.\n The ISS is in {visiblity}' , color = discord.Color.blue())
+    embed.set_image(url=url)
     velocity = round(req['velocity'],2)
     embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
     altitude = round(req['altitude'],2)
     embed.add_field(name = 'Altitude' , value = f'{altitude} km')
+    embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
     await ctx.send(embed=embed)
   
   parameters = {'date':strftime('%Y-%m-%d')}
