@@ -20,9 +20,9 @@ As of now, there are the following commands:
 * .daily
 * .daily YYYY-MM-DD
 * .info < query >
-* whereiss 
-* channel
-* remove
+* .iss 
+* .channel
+* .remove
 
 
 
@@ -40,9 +40,9 @@ Ask about ANYTHING related to astronomy and astronomical bodies. It gives data a
 
 This uses Solar system Open Api and NASA's video and Image library in a discord embed.
 
-#### `.whereiss`
+#### `.iss`
 Find the live location of the international space station with respect to the Earth.
-This uses the reverse_geocoder python library and the wheretheiss at API.
+This uses the reverse_geocoder python library and the WhereTheIssAt API.
 #### `.channel`
 Subscribe to the daily APOD service and get the daily picture as soon as it is released on the channel in which this command is posted.
 

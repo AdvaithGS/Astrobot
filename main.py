@@ -56,7 +56,7 @@ async def on_message(message):
     except:
       pass
   elif message.content.startswith('.help'):
-    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture.**PRO TIP** - use a specific date in YYYY-MM-DD format to get an image from that date!(Example - `.daily 2005-06-08`, this was for 8th June, 2005)`\n\n.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n**NEW**`.whereiss` - Find the live location of the international space station with respect to the Earth.\nHave fun:.''', color=discord.Color.blue())
+    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture.**PRO TIP** - use a specific date in YYYY-MM-DD format to get an image from that date!(Example - `.daily 2005-06-08`, this was for 8th June, 2005)`\n\n.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n**NEW**`.iss` - Find the live location of the international space station with respect to the Earth.\nHave fun:.''', color=discord.Color.blue())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness.")
     await ctx.send(embed=embed)
   elif message.content.startswith('.channel'):
@@ -175,27 +175,30 @@ async def on_message(message):
     except:
       await ctx.send('You have not specified a query or your query is wrong, use `.info <query>`')
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
-  elif message.content.startswith('.whereiss'):
+  elif message.content.startswith('.whereiss') or message.content.startswith('.iss'):
     req = literal_eval(requests.get('https://api.wheretheiss.at/v1/satellites/25544').text)
     result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
     location = ''
+    place = ''
     if result['name']:
       location += result['name'] + ', '
     if result['admin1']:
       location += result['admin1'] + ', '
     if result['admin2']:
       location += result['admin2'] + ', '
+      place += result['admin2'].replace(' ', '+')
     if result['cc']:
       location += find_country(result['cc'])
-    visiblity = req['visibility']
-    place = location.replace(' ', '+')
+      place += '+' + find_country(result['cc']).replace(' ', '+')
     url = f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=map&locations={place}&key={api_key2}'
-    embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently above `{location}`.\n The ISS is in {visiblity} visibility' , color = discord.Color.blue())
+    print(url)
+    embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently above `{location}`.' , color = discord.Color.blue())
     embed.set_image(url=url)
     velocity = round(req['velocity'],2)
     embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
     altitude = round(req['altitude'],2)
     embed.add_field(name = 'Altitude' , value = f'{altitude} km')
+    embed.add_field(name ='Visibility',value = req['visibility'].title())
     embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
     await ctx.send(embed=embed)
   
