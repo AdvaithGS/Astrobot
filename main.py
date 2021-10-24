@@ -1,9 +1,8 @@
 import discord
 import os
-import time
 import reverse_geocoder
 from assets.country_code import find_country
-from time import strftime
+from time import strftime, sleep
 import requests
 client = discord.Client()
 from keep_alive import keep_alive
@@ -63,7 +62,7 @@ async def on_message(message):
   elif message.content.startswith('.channel'):
     db[message.guild.id] = ctx.id
     mes = await ctx.send('Registered.')
-    time.sleep(2)
+    sleep(2)
     await mes.delete()
     await message.delete()
   #just something i added to trigger the daily photo if somehow the bot doesnt do it 
@@ -90,7 +89,7 @@ async def on_message(message):
   elif message.content.startswith('.remove'):
     del db[str(message.guild.id)]
     mes = await ctx.send('Removed from daily APOD feed.')
-    time.sleep(2)
+    sleep(2)
     await message.delete()
     await mes.delete()
   #returns the user id

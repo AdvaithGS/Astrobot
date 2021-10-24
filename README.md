@@ -11,7 +11,7 @@ This is a Astronomy discord bot with various functionalities and uses; created w
 
 Use the below discord invitation link to bring AstroBot to your server/guild:
 
-https://discord.com/oauth2/authorize?client_id=792458754208956466&permissions=17179928576&scope=bot
+https://discord.com/oauth2/authorize?client_id=792458754208956466&permissions=60416&scope=bot
 
 
 
@@ -40,9 +40,9 @@ Ask about ANYTHING related to astronomy and astronomical bodies. It gives data a
 
 This uses Solar system Open Api and NASA's video and Image library in a discord embed.
 
-#### `.remove`
+#### `.whereiss`
 Find the live location of the international space station with respect to the Earth.
-
+This uses the reverse_geocoder python library and the wheretheiss at API.
 #### `.channel`
 Subscribe to the daily APOD service and get the daily picture as soon as it is released on the channel in which this command is posted.
 
