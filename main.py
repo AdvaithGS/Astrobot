@@ -190,7 +190,7 @@ async def on_message(message):
     visiblity = req['visibility']
     place = location.replace(' ', '+')
     url = f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=map&locations={place}&key={api_key2}'
-    embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently above `{location}`.\n The ISS is in {visiblity}' , color = discord.Color.blue())
+    embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently above `{location}`.\n The ISS is in {visiblity} visibility' , color = discord.Color.blue())
     embed.set_image(url=url)
     velocity = round(req['velocity'],2)
     embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
