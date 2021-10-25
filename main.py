@@ -39,25 +39,31 @@ async def on_message(message):
       req = literal_eval(requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)
       title = req['title']
       desc = f'''{req['date']}\nDiscover the cosmos!\n\n{req['explanation']}'''
+      try:
+        url = req['hdurl']
+      except:
+        url = req['url']
+        name = url
+      embed = discord.Embed(title=title, url=url, description=desc,color=discord.Color.blue())
+      embed.set_footer(text="Each day a different image or  photograph of our fascinating universe is featured, along  with a brief explanation written by a professional astronomer, If your image is not loading try to use the title, which is a hyperlink to the original photo.")
+      embed.set_image(url=url)
+      await ctx.send(embed=embed)
+      
+      try:
+        if name:
+          name = f'https://youtube.com/watch?v={name[30:41]}'
+          embed = discord.Embed(title=title, url=url, description=desc,color=discord.Color.blue(),video =  {'url':url})
+          await ctx.send(name)
+      except:
+        pass
     except:
       await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-    try:
-      url = req['hdurl']
-    except:
-      url = req['url']
-      name = url
-    embed = discord.Embed(title=title, url=url,description=desc,color=discord.Color.blue())
-    embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer, If your image is not loading try to use the title, which is a hyperlink to the original photo.")
-    embed.set_image(url=url)
-    await ctx.send(embed=embed)
-    try:
-      if name:
-        await ctx.send(f'https://youtube.com/watch?v={name[30:41]}')
-    except:
-      pass
+    
+    
   elif message.content.startswith('.help'):
-    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture.**PRO TIP** - use a specific date in YYYY-MM-DD format to get an image from that date!(Example - `.daily 2005-06-08`, this was for 8th June, 2005)`\n\n.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n**NEW**`.iss` - Find the live location of the international space station with respect to the Earth.\nHave fun:.''', color=discord.Color.blue())
+    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture.**PRO TIP** - use a specific date in YYYY-MM-DD format to get an image from that date!(Example - `.daily 2005-06-08`, this was for 8th June, 2005)`\n\n.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\nHave fun!''', color=discord.Color.blue())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness.")
+    embed.set_author(name = 'This is the author')
     await ctx.send(embed=embed)
   elif message.content.startswith('.channel'):
     db[message.guild.id] = ctx.id
@@ -95,10 +101,10 @@ async def on_message(message):
   #returns the user id
   elif message.content.startswith('.id'):
     await ctx.send(message.author.id)
-  #this info command first checks the total number of pagse by going to 
+  #this info command first checks the total number of pages by going to 
   #the 100th page (since no queries are 100 pages long, the image and 
-  #video api just mentions the last possible page number in response) and 
-  #takes the last page number from there, ses the random library to pick 
+  #video api just mentions the last valid page number) and 
+  #takes the last page number from there, uses the random library to pick 
   #any page from the total pages, takes the description and image and 
   #then uses the solar system open data api to pick numerical data 
   #regarding the query, if it is an astronomical body. oof.
@@ -109,7 +115,7 @@ async def on_message(message):
       parameters = {'page': str(random.randrange(1,int(req3)+1))}
       req2 = literal_eval(requests.get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
       choice = random.choice(dict(req2['collection'])['items'])
-      desc = str(choice['data'][0]['description'])
+      desc = str(choice['data'][0]['description']).capitalize()
       embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.blue())
       url = (choice['links'][0]['href']).replace(' ','%20') 
       try:
@@ -170,7 +176,8 @@ async def on_message(message):
       except:
         pass
       embed.set_image(url = url)
-      embed.set_footer(text = 'Built using the Solar system OpenData Api and the NASA   video and image library.')
+      text = 'Built using the Solar system OpenData Api and the NASA video and image library.'
+      embed.set_footer(text = text)
       await ctx.send(embed = embed)
     except:
       await ctx.send('You have not specified a query or your query is wrong, use `.info <query>`')
