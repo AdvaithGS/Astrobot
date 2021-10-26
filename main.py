@@ -18,7 +18,7 @@ async def on_ready():
 
 @client.event
 async def on_guild_join(guild):
-  embed = discord.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `.help` to begin.', color = discord.Colour.blue())
+  embed = discord.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `.help` to begin.', color = discord.Colour.orange())
   channel = guild.channels[0]
   for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
@@ -44,7 +44,7 @@ async def on_message(message):
       except:
         url = req['url']
         name = url
-      embed = discord.Embed(title=title, url=url, description=desc,color=discord.Color.blue())
+      embed = discord.Embed(title=title, url=url, description=desc,color=discord.Color.orange())
       embed.set_footer(text="Each day a different image or  photograph of our fascinating universe is featured, along  with a brief explanation written by a professional astronomer, If your image is not loading try to use the title, which is a hyperlink to the original photo.")
       embed.set_image(url=url)
       await ctx.send(embed=embed)
@@ -52,7 +52,7 @@ async def on_message(message):
       try:
         if name:
           name = f'https://youtube.com/watch?v={name[30:41]}'
-          embed = discord.Embed(title=title, url=url, description=desc,color=discord.Color.blue(),video =  {'url':url})
+          embed = discord.Embed(title=title, url=url, description=desc,color=discord.Color.orange(),video =  {'url':url})
           await ctx.send(name)
       except:
         pass
@@ -61,9 +61,8 @@ async def on_message(message):
     
     
   elif message.content.startswith('.help'):
-    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture.**PRO TIP** - use a specific date in YYYY-MM-DD format to get an image from that date!(Example - `.daily 2005-06-08`, this was for 8th June, 2005)`\n\n.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\nHave fun!''', color=discord.Color.blue())
+    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. **PRO TIP** - use a specific date in YYYY-MM-DD format to get an image from that date!(Example - `.daily 2005-06-08`, this was for 8th June, 2005)`\n\n.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\nHave fun!''', color=discord.Color.orange())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness.")
-    embed.set_author(name = 'This is the author')
     await ctx.send(embed=embed)
   elif message.content.startswith('.channel'):
     db[message.guild.id] = ctx.id
@@ -116,7 +115,7 @@ async def on_message(message):
       req2 = literal_eval(requests.get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
       choice = random.choice(dict(req2['collection'])['items'])
       desc = str(choice['data'][0]['description']).capitalize()
-      embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.blue())
+      embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.orange())
       url = (choice['links'][0]['href']).replace(' ','%20') 
       try:
         req = json.loads(requests.get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
@@ -198,7 +197,7 @@ async def on_message(message):
       location += find_country(result['cc'])
       place += '+' + find_country(result['cc']).replace(' ', '+')
     url = f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=map&locations={place}&key={api_key2}'
-    embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently above `{location}`.' , color = discord.Color.blue())
+    embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently above `{location}`.' , color = discord.Color.orange())
     embed.set_image(url=url)
     velocity = round(req['velocity'],2)
     embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
