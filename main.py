@@ -185,19 +185,19 @@ async def on_message(message):
     req = literal_eval(requests.get('https://api.wheretheiss.at/v1/satellites/25544').text)
     result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
     location = ''
-    place = ''
     if result['name']:
       location += result['name'] + ', '
     if result['admin1']:
       location += result['admin1'] + ', '
     if result['admin2']:
       location += result['admin2'] + ', '
-      place += result['admin2'].replace(' ', '+')
     if result['cc']:
       location += find_country(result['cc'])
-      place += '+' + find_country(result['cc']).replace(' ', '+')
+    location.replace('`', '')
+    lat,long = round(req['latitude'],3),round(req['longitude'],3)
+    place = f'{lat},{long}'
     url = f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=map&locations={place}&key={api_key2}'
-    embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently above `{location}`.' , color = discord.Color.orange())
+    embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = discord.Color.orange())
     embed.set_image(url=url)
     velocity = round(req['velocity'],2)
     embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
