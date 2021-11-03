@@ -29,8 +29,16 @@ async def on_guild_join(guild):
 @client.event
 async def on_message(message):
   ctx = message.channel
-  
-  if message.content.startswith('.daily'):
+  if message.content == '.daily random':
+    year = random.randrange(1995,2022)
+    month = random.randrange(1,13)
+    if month in [1,3,5,7,8,10,12]:
+      date = random.randrange(1,32)
+    else:
+      date = random.randrange(1,31)
+    message = f'.daily {year}-{month}-{date}'
+    await ctx.send(message)
+  elif message.content.startswith('.daily'):
     try:
       parameters = {'date': message.content.split(' ')[1]}
     except:
