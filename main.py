@@ -29,44 +29,45 @@ async def on_guild_join(guild):
 @client.event
 async def on_message(message):
   ctx = message.channel
-  if message.content == '.daily random':
-    year = random.randrange(1995,2022)
-    month = random.randrange(1,13)
-    if month in [1,3,5,7,8,10,12]:
-      date = random.randrange(1,32)
-    else:
-      date = random.randrange(1,31)
-    message = f'.daily {year}-{month}-{date}'
-    await ctx.send(message)
-  elif message.content.startswith('.daily'):
+  if message.content.startswith('.daily'):
     try:
       parameters = {'date': message.content.split(' ')[1]}
     except:
       parameters = {}
-    try:
-      req = literal_eval(requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)
-      title = req['title']
-      desc = f'''{req['date']}\nDiscover the cosmos!\n\n{req['explanation']}'''
+    if message.content.startswith('.daily random'):
+      year = random.randrange(1995,2022)
+      month = random.randrange(1,13)
+      if month in [1,3,5,7,8,10,12]:
+        date = random.randrange(1,32)
+      else:
+        date = random.randrange(1,31)
+      message = f'.daily {year}-{month}-{date}'
+      await ctx.send(message)
+    else:
       try:
-        url = req['hdurl']
+        req = literal_eval(requests.get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+        title = req['title']
+        desc = f'''{req['date']}\nDiscover the cosmos!\n\n{req  ['explanation']}'''
+        try:
+          url = req['hdurl']
+        except:
+          url = req['url']
+          name = url
+        embed = discord.Embed(title=title, url=url, description=desc, color=discord.Color.orange())
+        embed.set_footer(text="Each day a different image or    photograph of our fascinating universe is featured, along   with a brief explanation written by a professional astronomer,   If your image is not loading try to use the title, which is a   hyperlink to the original photo.")
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+        try:
+          if name:
+            name = f'https://youtube.com/watch?v={name[30:41]}'
+            embed = discord.Embed(title=title, url=url,   description=desc,color=discord.Color.orange(),video =   {'url':url})
+            await ctx.send(name)
+        except:
+          pass
       except:
-        url = req['url']
-        name = url
-      embed = discord.Embed(title=title, url=url, description=desc,color=discord.Color.orange())
-      embed.set_footer(text="Each day a different image or  photograph of our fascinating universe is featured, along  with a brief explanation written by a professional astronomer, If your image is not loading try to use the title, which is a hyperlink to the original photo.")
-      embed.set_image(url=url)
-      await ctx.send(embed=embed)
-      
-      try:
-        if name:
-          name = f'https://youtube.com/watch?v={name[30:41]}'
-          embed = discord.Embed(title=title, url=url, description=desc,color=discord.Color.orange(),video =  {'url':url})
-          await ctx.send(name)
-      except:
-        pass
-    except:
-      await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-    
+        await ctx.send('Either your date is invalid or you\'ve chosen   a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the   first day an APOD picture was posted')
+
     
   elif message.content.startswith('.help'):
     embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\nHave fun!''', color=discord.Color.orange())
@@ -91,7 +92,7 @@ async def on_message(message):
       except:
         await ctx.send('Never mind.')
       else:
-        await ctx.send('Understood.')
+        await ctx.send('Yes my lord.')
         for guild in db.keys():
           try:
             channel = client.get_channel(db[guild])

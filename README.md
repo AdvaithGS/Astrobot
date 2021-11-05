@@ -19,6 +19,7 @@ https://discord.com/oauth2/authorize?client_id=792458754208956466&permissions=60
 As of now, there are the following commands:
 * .daily
 * .daily YYYY-MM-DD
+* .daily random
 * .info < query >
 * .iss 
 * .channel
@@ -34,6 +35,9 @@ Made using the discord embeds and the APOD api.
 
 #### `.daily <YYYY-MM-DD>`
 Gives the NASA picture for a specific date given by a user. Any valid date after 1995-6-16 is accepted.
+
+#### `.daily random`
+Gives a random NASA APOD picture from archives. Including all pictures from 1996.
 
 #### `.info <query>`
 Ask about ANYTHING related to astronomy and astronomical bodies. It gives data and pictures related to the given query.
