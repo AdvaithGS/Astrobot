@@ -54,7 +54,7 @@ async def on_message(message):
           url = req['url']
           name = url
         embed = discord.Embed(title=title, url=url, description=desc, color=discord.Color.orange())
-        embed.set_footer(text="Each day a different image or    photograph of our fascinating universe is featured, along   with a brief explanation written by a professional astronomer,   If your image is not loading try to use the title, which is a   hyperlink to the original photo.")
+        embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
         embed.set_image(url=url)
         await ctx.send(embed=embed)
 
@@ -177,9 +177,13 @@ async def on_message(message):
           embed.add_field(name='Discovery Date' , value = 'Unknown')
         else:
           embed.add_field(name='Discovery Date' , value = req['discoveryDate'])
-          embed.add_field()
 
-        embed.add_field(name = 'Moons', value = len(req['moons']))
+        if not req['moons']:
+          aroundPlanet = req['aroundPlanet']['planet'].title()
+          embed.add_field(name = 'Around Planet',value = aroundPlanet)
+        else:
+          numMoons = len(req['moons'])
+          embed.add_field(name = 'Moons',value = numMoons)
         
       except:
         pass
