@@ -24,6 +24,7 @@ As of now, there are the following commands:
 * .iss 
 * .channel
 * .remove
+* .fact
 
 
 
@@ -52,6 +53,9 @@ Subscribe to the daily APOD service and get the daily picture as soon as it is r
 
 #### `.remove`
 Remove a channel from the APOD subscription.
+
+#### `.fact`
+Get a random astronomy fact from the fact library.
 
 
  
