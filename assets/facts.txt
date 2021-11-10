@@ -2,7 +2,7 @@ Uranus was originally named 'George';The planet Uranus was discovered by William
 Uranus' moons are named after characters in Shakespear's plays;To give due respect to British contributions to science (and also because they chose to rename 'George' to Uranus) , scientists named Uranus' moons after characters in William Shakespear's plays  - Miranda, Titania, Oberon, Ariel, Umbriel, Cordelia, Bianca the list is pretty long.
 The constellations in the Southern Hemisphere were identified during the industrial revolution; The constellations in the Northern Hemisphere were identified by ancient greeks and babylonians and were inspired by mythological characters - Orion,  Aries, Taurus, Cancer, etc. while the european explorers who had come to the southern hemisphere were inspired by instruments used during the industrial revolution- Telescopium, Microscopium, Horologium (The Clock), Antlia (Air Pump), Pyxis (The Compass) and many more.
 The moon,earth and sun have names;They're Luna,Terra, and Sol.
-The universe is weird;According to the laws of nature, bodies travelling at the speed of light dont sense the passage of light, so for photons, the beginning and the end of the universe occured at the same time - there is no before, no after.
+The universe is weird;According to the laws of nature, bodies travelling at the speed of light don't sense the passage of light, so for photons, the beginning and the end of the universe occurred at the same time - there is no before, no after.
 Neutrinos;There are about 100,000,000,000 neutrinos passing through your 1cm cube of your body, every second. They are almost undetectable and they simply pass through matter.
 The universe is heavy;All regular matter and dark matter in the observable universe weighs around 2 x 10^53 kg. 
 The universe is large;There are around 2 trillion galaxies in the observable universe.
@@ -11,7 +11,7 @@ Black holes;A black hole with the mass of the sun would have a minium radius of 
 If the sun were to be removed;If the sun were to be removed, you wouldn't notice it for 8 and a half minutes. The earth would keep revolving around where the sun was for 8 and a half minutes since gravity travels at the speed of light.
 If the Earth becomes a black hole;If the Earth were to become a black hole, All of its mass would have to be concentrated in a sphere of radius ~9 mm.
 Distance between the Earth and Moon;The distance between the sun and the moon is about 400 thousand kilometers, so you can actually fit EVERY planet in the solar system (with room to spare!). 
-Jupiter's moon Europa;Europa has a layer of ice, but underneath liesa vast underground ocean about 150 km deep.
+Jupiter's moon Europa;Europa has a layer of ice, but underneath lies a vast underground ocean about 150 km deep.
 Ganymede, one of Jupiter's moons;Out of the **79** known moons of Jupiter, Ganymede is the largest, larger than mercury.
 Exoplanet HD 189733 b; The exoplanet HD 189733 b has a silicate outer atmosphere , which means that it rains glass there and also, the winds reach mach 7. 
 Io;Jupiter's moon Io is one of the few bodies in the solar system with active volcanoes. 
@@ -19,13 +19,13 @@ Venus;The atmospheric pressure on venus is 92 times that of sea level on Earth.
 Venus;The average temperature on venus is 465 degrees Celsius - it can melt lead.
 Mega water reservoir;There is a massive water reservoir simply floating around a quasar 12 billion light years away. It has 150 trillion times the amount of water in Earth's oceans.
 Quantum Mechanics - its never simple.;According to quantum mechanics' uncertainty principle, if one was to know everything about the universe and all particles in it, it would immediately change into something different and since we're talking about quantum mechanics, its going to be something even weirder.
-The inventor of the Telescope;Do you know who invented the telescope? It was Hans Lippershey, a Dutch spectacle maker. He invented the referactor telescope in 1608.
-The first ever rocket;Even though the chinese were the firt to come up with the idea ofa rocket, german rocket scientist Wernher Von Braun was the inventor of the modern day rocket the first one being V2, a long ranged tactical missile, he built rockets for the Nazis and later NASA.
+The inventor of the Telescope;Do you know who invented the telescope? It was Hans Lippershey, a Dutch spectacle maker. He invented the refracting telescope in 1608.
+The first ever rocket;Even though the chinese were the first to come up with the idea ofa rocket, german rocket scientist Wernher Von Braun was the inventor of the modern day rocket the first one being V2, a long ranged tactical missile, he built rockets for the Nazis and later NASA.
 Tycho Brahe;The famous astronomer, Tycho Brahe, known for helping revolutionize astronomy in the 1500s, lost a chunk of his nose in a sword duel with a fellow student over the legitimacy of a math formula, causing him to live the rest of his life with a metal insert over the missing chunk.
-Telescopes better than hubblle;In 2012, the National Reconnaissance Office gave NASA two leftover space telescopes of greater quality than the Hubble space telescope at no cost. Those telescopes were designed as spy telescopes but could be useful for astronomy if NASA ever launches them.
-The Olbers'paradox;Edgar Allen Poe provided an answer to the Olbers' paradox in astronomy before scientists could.
+Telescopes better than hubble;In 2012, the National Reconnaissance Office gave NASA two leftover space telescopes of greater quality than the Hubble space telescope at no cost. Those telescopes were designed as spy telescopes but could be useful for astronomy if NASA ever launches them.
+The Olbers' paradox;Edgar Allen Poe provided an answer to the Olbers' paradox in astronomy before scientists could.
 When does a day begin?;Before 1925, in the field of astronomy, a date officially began at Noon instead of Midnight.
-Number of observations madewith hubble;Astronomers have made more than 1.4 million observations using the Hubble Space Telescope.
+Number of observations made with hubble;Astronomers have made more than 1.4 million observations using the Hubble Space Telescope.
 Voyager 1;Voyager 1, the farthest human-made object from Earth, is about 22.8 billion km away.
 Venus;Venus has around 1,600 volcanoes.
 Photographed black hole;The first-ever photographed black hole is three million times the size of Earth.
