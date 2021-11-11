@@ -225,7 +225,7 @@ async def on_message(message):
           embed = discord.Embed(title = title , description = desc, color = discord.Color.orange())
           await ctx.send(embed = embed)
   parameters = {'date':strftime('%Y-%m-%d')}
-  if db['apod'] != strftime('%Y-%m-%d') and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
+  if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
       db['apod'] = strftime('%Y-%m-%d')
       for guild in db.keys():
         try:

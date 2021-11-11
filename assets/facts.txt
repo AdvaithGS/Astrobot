@@ -20,13 +20,13 @@ Venus;The average temperature on venus is 465 degrees Celsius - it can melt lead
 Mega water reservoir;There is a massive water reservoir simply floating around a quasar 12 billion light years away. It has 150 trillion times the amount of water in Earth's oceans.
 Quantum Mechanics - its never simple.;According to quantum mechanics' uncertainty principle, if one was to know everything about the universe and all particles in it, it would immediately change into something different and since we're talking about quantum mechanics, its going to be something even weirder.
 The inventor of the Telescope;Do you know who invented the telescope? It was Hans Lippershey, a Dutch spectacle maker. He invented the refracting telescope in 1608.
-The first ever rocket;Even though the chinese were the first to come up with the idea ofa rocket, german rocket scientist Wernher Von Braun was the inventor of the modern day rocket the first one being V2, a long ranged tactical missile, he built rockets for the Nazis and later NASA.
-Tycho Brahe;The famous astronomer, Tycho Brahe, known for helping revolutionize astronomy in the 1500s, lost a chunk of his nose in a sword duel with a fellow student over the legitimacy of a math formula, causing him to live the rest of his life with a metal insert over the missing chunk.
+The first ever rocket to be ever built;Even though the chinese were the first to come up with the idea ofa rocket, german rocket scientist Wernher Von Braun was the inventor of the modern day rocket the first one being V2, a long ranged tactical missile, he built rockets for the Nazis and later NASA.
+Tycho Brahe's deadly fight with a student;The famous astronomer, Tycho Brahe, known for helping revolutionize astronomy in the 1500s, lost a chunk of his nose in a sword duel with a fellow student over the legitimacy of a math formula, causing him to live the rest of his life with a metal insert over the missing chunk.
 Telescopes better than hubble;In 2012, the National Reconnaissance Office gave NASA two leftover space telescopes of greater quality than the Hubble space telescope at no cost. Those telescopes were designed as spy telescopes but could be useful for astronomy if NASA ever launches them.
-The Olbers' paradox;Edgar Allen Poe provided an answer to the Olbers' paradox in astronomy before scientists could.
+Edgar Allen Poe solved the The Olbers' paradox;Famous poet Edgar Allen Poe provided an answer to the Olbers' paradox in astronomy before scientists could. https://en.wikipedia.org/wiki/Olbers'_paradox
 When does a day begin?;Before 1925, in the field of astronomy, a date officially began at Noon instead of Midnight.
 Number of observations made with hubble;Astronomers have made more than 1.4 million observations using the Hubble Space Telescope.
-Voyager 1;Voyager 1, the farthest human-made object from Earth, is about 22.8 billion km away.
+How far is Voyager 1?;Voyager 1, the farthest human-made object from Earth, is about 22.8 billion km away.
 Venus;Venus has around 1,600 volcanoes.
 Photographed black hole;The first-ever photographed black hole is three million times the size of Earth.
 'The Genesis Planet';A planet nicknamed “The Genesis Planet” has been found to be 12.7 billion years old making it the oldest planet found.
