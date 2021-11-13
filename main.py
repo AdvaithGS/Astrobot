@@ -221,9 +221,15 @@ async def on_message(message):
     embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
     await ctx.send(embed=embed)
   elif message.content.startswith('.fact'):
-          title,desc = random_fact()
-          embed = discord.Embed(title = title , description = desc, color = discord.Color.orange())
-          await ctx.send(embed = embed)
+    line = random_fact()
+    title,desc = line[0],line[1]
+    embed = discord.Embed(title = title , description = desc, color = discord.Color.orange())
+    try:
+      embed.set_image(url=line[2])
+      embed.set_footer(text=line[3])
+    except:
+      pass
+    await ctx.send(embed = embed)
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
       db['apod'] = strftime('%Y-%m-%d')
@@ -233,8 +239,7 @@ async def on_message(message):
           await channel.send('.daily')
         except:
           pass
-  else:
-    pass
+  
   
       
 
