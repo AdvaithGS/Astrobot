@@ -25,7 +25,7 @@ As of now, there are the following commands:
 * .channel
 * .remove
 * .fact
-
+* .weather < location >
 
 
 
@@ -57,6 +57,8 @@ Remove a channel from the APOD subscription.
 #### `.fact`
 Get a random astronomy fact from the fact library.
 
+#### `.weather < location >`
+Get the real-time weather at any location
 
  
 

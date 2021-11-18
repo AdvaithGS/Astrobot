@@ -13,6 +13,7 @@ import json
 import random
 api_key = os.environ['api_key']
 api_key2 = os.environ['api_key2']
+api_key3 = os.environ['api_key3']
 @client.event
 async def on_ready():
 	print('We have logged in as {0.user}'.format(client))
@@ -71,7 +72,7 @@ async def on_message(message):
 
     
   elif message.content.startswith('.help'):
-    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\nHave fun!''', color=discord.Color.orange())
+    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\nHave fun!''', color=discord.Color.orange())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness.")
     await ctx.send(embed=embed)
   elif message.content.startswith('.channel'):
@@ -84,7 +85,7 @@ async def on_message(message):
   #by itself. Dont blame me if you understood the reference. eheheeheh
   elif message.content.lower().startswith('execute order 66'):
     if message.author.id == 756496844867108937:
-      await ctx.send('Are you sure, senator Palpatine?')      
+      await ctx.send('Are you sure, Lord Palpatine?')      
       def check(msg):
         if msg.content.lower().startswith('yes'):
           return True
@@ -230,6 +231,43 @@ async def on_message(message):
     except:
       pass
     await ctx.send(embed = embed)
+  #using the open weather service API to get weather details
+  elif message.content.startswith('.weather'):
+    try:  
+      location = message.content.split(' ',1)[1]
+      req = json.loads(requests.get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
+      location = location + ', ' + find_country(req['sys']['country'])
+      embed = discord.Embed(title = location , color = discord.Color.orange())
+      embed.set_footer(text = 'Built using the OpenWeatherMap API')
+
+      lat = round(req['coord']['lat'],2)
+      embed.add_field(name = 'Latitude' , value = lat)
+
+      lon = round(req['coord']['lon'],2)
+      embed.add_field(name = 'Longitude', value = lon)
+
+      temp = str(req['main']['temp']) + ' °C'
+      embed.add_field(name = 'Temperature', value = temp)
+
+      sky = req['weather'][0]['description'].title()
+      embed.add_field(name = 'Skies', value = sky)
+
+      visibility = str(req['visibility']/1000) + ' km'
+      embed.add_field(name = 'Visibility', value = visibility)
+
+      wind = str(req['wind']['speed']) + ' m/s' 
+      embed.add_field(name = 'Wind Speed' , value = wind)
+      
+      clouds = str(req['clouds']['all']) + ' %'
+      embed.add_field(name = 'Cloudiness' , value = clouds)
+      icon = req['weather'][0]['icon']
+      embed.set_thumbnail(url=f"http://openweathermap.org/img/w/{icon}.png")
+      await message.channel.send(embed = embed)
+      
+    except:
+      embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
+      await message.channel.send(embed = embed)
+
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
       db['apod'] = strftime('%Y-%m-%d')
@@ -239,8 +277,17 @@ async def on_message(message):
           await channel.send('.daily')
         except:
           pass
+  else:
+    pass
   
-  
+  if int(strftime('%H')) >= db['hour'] + 4:
+    db['hour'] = int(strftime('%H'))
+    choice = random.choice([0,2,3,4,6,7])
+    # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
+    lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With A Bunch of Magnetars','','Your .iss requests','How The Universe Works']
+    choice = choice%4
+    activity = lst[choice]
+    await client.change_presence(status=discord.Status.idle, activity=discord.Activity(name = activity,type = choice)) 
       
 
 
