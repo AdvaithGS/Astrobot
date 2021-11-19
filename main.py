@@ -10,13 +10,25 @@ from keep_alive import keep_alive
 from ast import literal_eval
 from replit import db
 import json
+from geopy import Nominatim
+geolocator = Nominatim(user_agent = 'AstroBot')
 import random
 api_key = os.environ['api_key']
 api_key2 = os.environ['api_key2']
 api_key3 = os.environ['api_key3']
+
+def get_activity():
+  choice = random.choice([0,2,3,4,6,7])
+  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Magnetars','','Your .iss requests','How The Universe  Works']
+  activity = lst[choice]
+  choice = choice%6
+  return activity , choice
+
 @client.event
 async def on_ready():
-	print('We have logged in as {0.user}'.format(client))
+  print('We have logged in as {0.user}'.format(client))
+  activity , choice = get_activity()
+  await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
 
 @client.event
 async def on_guild_join(guild):
@@ -26,7 +38,7 @@ async def on_guild_join(guild):
         if channel.permissions_for(guild.me).send_messages:
             await channel.send(embed=embed)
         break
-
+  
 
 @client.event
 async def on_message(message):
@@ -234,9 +246,14 @@ async def on_message(message):
   #using the open weather service API to get weather details
   elif message.content.startswith('.weather'):
     try:  
-      location = message.content.split(' ',1)[1]
+      location = message.content.split(' ',1)[1].title()
       req = json.loads(requests.get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
       location = location + ', ' + find_country(req['sys']['country'])
+      
+      result = geolocator.geocode(location)
+      coords,location = result[1],result[0]
+      link = f'http://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png'
+
       embed = discord.Embed(title = location , color = discord.Color.orange())
       embed.set_footer(text = 'Built using the OpenWeatherMap API')
 
@@ -262,11 +279,17 @@ async def on_message(message):
       embed.add_field(name = 'Cloudiness' , value = clouds)
       icon = req['weather'][0]['icon']
       embed.set_thumbnail(url=f"http://openweathermap.org/img/w/{icon}.png")
-      await message.channel.send(embed = embed)
       
-    except:
-      embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
+      embed.set_image(url = link)
+
       await message.channel.send(embed = embed)
+    except:
+      if message.content == '.weather':
+        embed = discord.Embed(title = 'Error' , description = 'Mention the name of the place for example , `.weather Jaipur`  ',color = discord.Color.orange())
+        await message.channel.send(embed = embed)
+      else:
+        embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
+        await message.channel.send(embed = embed)
 
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
@@ -276,19 +299,13 @@ async def on_message(message):
           channel = client.get_channel(db[guild])
           await channel.send('.daily')
         except:
-          pass
-  else:
-    pass
+          pass  
   
-  if int(strftime('%H')) >= db['hour'] + 4:
+  if int(strftime('%H')) >= db['hour'] + 4 or int(strftime('%H')) < db['hour']:
     db['hour'] = int(strftime('%H'))
-    choice = random.choice([0,2,3,4,6,7])
     # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
-    lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With A Bunch of Magnetars','','Your .iss requests','How The Universe Works']
-    choice = choice%4
-    activity = lst[choice]
-    await client.change_presence(status=discord.Status.idle, activity=discord.Activity(name = activity,type = choice)) 
-      
+    activity,choice = get_activity()
+    await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
 
 
 
