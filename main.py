@@ -16,7 +16,6 @@ import random
 api_key = os.environ['api_key']
 api_key2 = os.environ['api_key2']
 api_key3 = os.environ['api_key3']
-
 def get_activity():
   choice = random.choice([0,2,3,4,6,7])
   lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Magnetars','','Your .iss requests','How The Universe  Works']
@@ -39,7 +38,7 @@ async def on_guild_join(guild):
             await channel.send(embed=embed)
         break
   
-
+  
 @client.event
 async def on_message(message):
   ctx = message.channel
@@ -211,6 +210,7 @@ async def on_message(message):
   elif message.content.startswith('.whereiss') or message.content.startswith('.iss'):
     req = literal_eval(requests.get('https://api.wheretheiss.at/v1/satellites/25544').text)
     result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
+    
     location = ''
     if result['name']:
       location += result['name'] + ', '
@@ -255,7 +255,7 @@ async def on_message(message):
       link = f'http://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png'
 
       embed = discord.Embed(title = location , color = discord.Color.orange())
-      embed.set_footer(text = 'Built using the OpenWeatherMap API')
+      embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
 
       lat = round(req['coord']['lat'],2)
       embed.add_field(name = 'Latitude' , value = lat)
