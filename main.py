@@ -1,3 +1,5 @@
+#need to bring in .image and differenciate from .info
+
 import discord
 import os
 import reverse_geocoder
@@ -18,7 +20,7 @@ api_key2 = os.environ['api_key2']
 api_key3 = os.environ['api_key3']
 def get_activity():
   choice = random.choice([0,2,3,4,6,7])
-  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Magnetars','','Your .iss requests','How The Universe  Works']
+  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe  Works']
   activity = lst[choice]
   choice = choice%6
   return activity , choice
