@@ -5,13 +5,14 @@ import os
 import reverse_geocoder
 from assets.country_code import find_country
 from assets.facts import random_fact
+from datetime import datetime 
 from time import strftime, sleep
 import requests
 client = discord.Client()
 from keep_alive import keep_alive
 from ast import literal_eval
 from replit import db
-import json
+from json import loads
 from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
 import random
@@ -19,10 +20,11 @@ api_key = os.environ['api_key']
 api_key2 = os.environ['api_key2']
 api_key3 = os.environ['api_key3']
 def get_activity():
-  choice = random.choice([0,2,3,4,6,7])
-  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe  Works']
+  choice = random.choice([0,2,3,4,6,7,8,10,11])
+  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe  Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide']
+  # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
   activity = lst[choice]
-  choice = choice%6
+  choice = choice%4
   return activity , choice
 
 @client.event
@@ -142,7 +144,7 @@ async def on_message(message):
       embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.orange())
       url = (choice['links'][0]['href']).replace(' ','%20') 
       try:
-        req = json.loads(requests.get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
+        req = loads(requests.get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
 
         if req['mass']:
           a = str(req['mass']['massValue'])
@@ -245,18 +247,18 @@ async def on_message(message):
     except:
       pass
     await ctx.send(embed = embed)
+
   #using the open weather service API to get weather details
   elif message.content.startswith('.weather'):
     try:  
       location = message.content.split(' ',1)[1].title()
-      req = json.loads(requests.get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
+      req = loads(requests.get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
       location = location + ', ' + find_country(req['sys']['country'])
       
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
       link = f'http://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png'
-
-      embed = discord.Embed(title = location , color = discord.Color.orange())
+      embed = discord.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = discord.Color.orange())
       embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
 
       lat = round(req['coord']['lat'],2)
@@ -268,7 +270,7 @@ async def on_message(message):
       temp = str(req['main']['temp']) + ' °C'
       embed.add_field(name = 'Temperature', value = temp)
 
-      sky = req['weather'][0]['description'].title()
+      sky = req['weather'][0]['main'].title()
       embed.add_field(name = 'Skies', value = sky)
 
       visibility = str(req['visibility']/1000) + ' km'
@@ -279,8 +281,21 @@ async def on_message(message):
       
       clouds = str(req['clouds']['all']) + ' %'
       embed.add_field(name = 'Cloudiness' , value = clouds)
+
+      for i in ['sunrise','sunset']:
+        hours = int(req['timezone']/3600//1  + int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%H')))
+        minutes = int(req['timezone']/3600%1*60 + int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%M')))
+        if minutes >= 60:
+          hours += 1
+          minutes= minutes%60
+        if hours >= 24:
+          hours = hours%24
+        #seconds  = int(datetime.utcfromtimestamp(req['sys'][i])  .strftime('%S'))
+        final_time = f'{hours}.{minutes}'
+        embed.add_field(name = f'Local {i}' , value = final_time)
+
       icon = req['weather'][0]['icon']
-      embed.set_thumbnail(url=f"http://openweathermap.org/img/w/{icon}.png")
+      embed.set_thumbnail(url=f"http://openweathermap.org/img/wn/{icon}@2x.png")
       
       embed.set_image(url = link)
 
@@ -305,7 +320,7 @@ async def on_message(message):
   
   if int(strftime('%H')) >= db['hour'] + 4 or int(strftime('%H')) < db['hour']:
     db['hour'] = int(strftime('%H'))
-    # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
+    
     activity,choice = get_activity()
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
 
