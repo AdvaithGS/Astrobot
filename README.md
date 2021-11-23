@@ -17,15 +17,15 @@ https://discord.com/oauth2/authorize?client_id=792458754208956466&permissions=60
 
 ## Commands
 As of now, there are the following commands:
-* [.daily](https://github.com/AdvaithGS/Astrobot#daily)
-* [.daily `YYYY-MM-DD`](https://github.com/AdvaithGS/Astrobot#daily-yyyy-mm-dd)
-* [.daily random](https://github.com/AdvaithGS/Astrobot#daily-random)
-* [.info `<query>`](https://github.com/AdvaithGS/Astrobot#info-query)
-* [.iss ](https://github.com/AdvaithGS/Astrobot#iss)
-* [.channel](https://github.com/AdvaithGS/Astrobot#channel)
-* [.remove](https://github.com/AdvaithGS/Astrobot#remove)
-* [.fact](https://github.com/AdvaithGS/Astrobot#fact)
-* [.weather `<location>`](https://github.com/AdvaithGS/Astrobot#weather-location)
+* [.daily](#daily)
+* [.daily `YYYY-MM-DD`](#daily-yyyy-mm-dd)
+* [.daily random](#daily-random)
+* [.info `<query>`](#info-query)
+* [.iss ](#iss)
+* [.channel](#channel)
+* [.remove](#remove)
+* [.fact](#fact)
+* [.weather `<location>`](#weather-location)
 
 
 
@@ -57,7 +57,7 @@ Remove a channel from the APOD subscription.
 #### `.fact`
 Get a random astronomy fact from the fact library.
 
-#### `.weather < location >`
+#### `.weather <location>`
 Get the real-time weather at any location
 
  
