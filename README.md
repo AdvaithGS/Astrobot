@@ -17,15 +17,15 @@ https://discord.com/oauth2/authorize?client_id=792458754208956466&permissions=60
 
 ## Commands
 As of now, there are the following commands:
-* .daily
-* .daily YYYY-MM-DD
-* .daily random
-* .info < query >
-* .iss 
-* .channel
-* .remove
-* .fact
-* .weather < location >
+* [.daily](https://github.com/AdvaithGS/Astrobot#daily)
+* [.daily `YYYY-MM-DD`](https://github.com/AdvaithGS/Astrobot#daily-yyyy-mm-dd)
+* [.daily random](https://github.com/AdvaithGS/Astrobot#daily-random)
+* [.info `<query>`](https://github.com/AdvaithGS/Astrobot#info-query)
+* [.iss ](https://github.com/AdvaithGS/Astrobot#iss)
+* [.channel](https://github.com/AdvaithGS/Astrobot#channel)
+* [.remove](https://github.com/AdvaithGS/Astrobot#remove)
+* [.fact](https://github.com/AdvaithGS/Astrobot#fact)
+* [.weather `<location>`](https://github.com/AdvaithGS/Astrobot#weather-location)
 
 
 
