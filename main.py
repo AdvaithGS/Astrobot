@@ -1,21 +1,37 @@
+#need to bring in .image and differenciate from .info
+
 import discord
 import os
 import reverse_geocoder
 from assets.country_code import find_country
 from assets.facts import random_fact
+from datetime import datetime 
 from time import strftime, sleep
 import requests
 client = discord.Client()
 from keep_alive import keep_alive
 from ast import literal_eval
 from replit import db
-import json
+from json import loads
+from geopy import Nominatim
+geolocator = Nominatim(user_agent = 'AstroBot')
 import random
 api_key = os.environ['api_key']
 api_key2 = os.environ['api_key2']
+api_key3 = os.environ['api_key3']
+def get_activity():
+  choice = random.choice([0,2,3,4,6,7,8,10,11])
+  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe  Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide']
+  # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
+  activity = lst[choice]
+  choice = choice%4
+  return activity , choice
+
 @client.event
 async def on_ready():
-	print('We have logged in as {0.user}'.format(client))
+  print('We have logged in as {0.user}'.format(client))
+  activity , choice = get_activity()
+  await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
 
 @client.event
 async def on_guild_join(guild):
@@ -25,8 +41,7 @@ async def on_guild_join(guild):
         if channel.permissions_for(guild.me).send_messages:
             await channel.send(embed=embed)
         break
-
-
+  
 @client.event
 async def on_message(message):
   ctx = message.channel
@@ -71,7 +86,7 @@ async def on_message(message):
 
     
   elif message.content.startswith('.help'):
-    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\nHave fun!''', color=discord.Color.orange())
+    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\nHave fun!''', color=discord.Color.orange())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness.")
     await ctx.send(embed=embed)
   elif message.content.startswith('.channel'):
@@ -84,7 +99,7 @@ async def on_message(message):
   #by itself. Dont blame me if you understood the reference. eheheeheh
   elif message.content.lower().startswith('execute order 66'):
     if message.author.id == 756496844867108937:
-      await ctx.send('Are you sure, senator Palpatine?')      
+      await ctx.send('Are you sure, Lord Palpatine?')      
       def check(msg):
         if msg.content.lower().startswith('yes'):
           return True
@@ -128,7 +143,7 @@ async def on_message(message):
       embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.orange())
       url = (choice['links'][0]['href']).replace(' ','%20') 
       try:
-        req = json.loads(requests.get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
+        req = loads(requests.get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
 
         if req['mass']:
           a = str(req['mass']['massValue'])
@@ -198,6 +213,7 @@ async def on_message(message):
   elif message.content.startswith('.whereiss') or message.content.startswith('.iss'):
     req = literal_eval(requests.get('https://api.wheretheiss.at/v1/satellites/25544').text)
     result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
+    
     location = ''
     if result['name']:
       location += result['name'] + ', '
@@ -210,7 +226,7 @@ async def on_message(message):
     location.replace('`', '')
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'
-    url = f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=map&locations={place}&key={api_key2}'
+    url = f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}'
     embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = discord.Color.orange())
     embed.set_image(url=url)
     velocity = round(req['velocity'],2)
@@ -221,22 +237,91 @@ async def on_message(message):
     embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
     await ctx.send(embed=embed)
   elif message.content.startswith('.fact'):
-          title,desc = random_fact()
-          embed = discord.Embed(title = title , description = desc, color = discord.Color.orange())
-          await ctx.send(embed = embed)
+    line = random_fact()
+    title,desc = line[0],line[1]
+    embed = discord.Embed(title = title , description = desc, color = discord.Color.orange())
+    try:
+      embed.set_image(url=line[2])
+      embed.set_footer(text=line[3])
+    except:
+      pass
+    await ctx.send(embed = embed)
+
+  #using the open weather service API to get weather details
+  elif message.content.startswith('.weather'):
+    try:  
+      location = message.content.split(' ',1)[1].title()
+      req = loads(requests.get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
+      location = location + ', ' + find_country(req['sys']['country'])
+      
+      result = geolocator.geocode(location)
+      coords,location = result[1],result[0]
+      link = f'http://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png'
+      embed = discord.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = discord.Color.orange())
+      embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
+
+      lat = round(req['coord']['lat'],2)
+      embed.add_field(name = 'Latitude' , value = lat)
+
+      lon = round(req['coord']['lon'],2)
+      embed.add_field(name = 'Longitude', value = lon)
+
+      temp = str(req['main']['temp']) + ' °C'
+      embed.add_field(name = 'Temperature', value = temp)
+
+      sky = req['weather'][0]['main'].title()
+      embed.add_field(name = 'Skies', value = sky)
+
+      visibility = str(req['visibility']/1000) + ' km'
+      embed.add_field(name = 'Visibility', value = visibility)
+
+      wind = str(req['wind']['speed']) + ' m/s' 
+      embed.add_field(name = 'Wind Speed' , value = wind)
+      
+      clouds = str(req['clouds']['all']) + ' %'
+      embed.add_field(name = 'Cloudiness' , value = clouds)
+
+      for i in ['sunrise','sunset']:
+        hours = int(req['timezone']/3600//1  + int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%H')))
+        minutes = int(req['timezone']/3600%1*60 + int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%M')))
+        if minutes >= 60:
+          hours += 1
+          minutes= minutes%60
+        if hours >= 24:
+          hours = hours%24
+        #seconds  = int(datetime.utcfromtimestamp(req['sys'][i])  .strftime('%S'))
+        final_time = f'{hours}.{minutes}'
+        embed.add_field(name = f'Local {i}' , value = final_time)
+
+      icon = req['weather'][0]['icon']
+      embed.set_thumbnail(url=f"http://openweathermap.org/img/wn/{icon}@2x.png")
+      
+      embed.set_image(url = link)
+
+      await message.channel.send(embed = embed)
+    except:
+      if message.content == '.weather':
+        embed = discord.Embed(title = 'Error' , description = 'Mention the name of the place for example , `.weather Jaipur`  ',color = discord.Color.orange())
+        await message.channel.send(embed = embed)
+      else:
+        embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
+        await message.channel.send(embed = embed)
+
   parameters = {'date':strftime('%Y-%m-%d')}
-  if db['apod'] != strftime('%Y-%m-%d') and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
+  if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
       db['apod'] = strftime('%Y-%m-%d')
       for guild in db.keys():
         try:
           channel = client.get_channel(db[guild])
           await channel.send('.daily')
         except:
-          pass
-  else:
-    pass
+          pass  
   
-      
+  if int(strftime('%H')) >= db['hour'] + 4 or int(strftime('%H')) < db['hour']:
+    db['hour'] = int(strftime('%H'))
+    
+    activity,choice = get_activity()
+    await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
 
 
 

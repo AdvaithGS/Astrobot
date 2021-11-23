@@ -17,15 +17,15 @@ https://discord.com/oauth2/authorize?client_id=792458754208956466&permissions=60
 
 ## Commands
 As of now, there are the following commands:
-* .daily
-* .daily YYYY-MM-DD
-* .daily random
-* .info < query >
-* .iss 
-* .channel
-* .remove
-* .fact
-
+* [.daily](#daily)
+* [.daily `YYYY-MM-DD`](#daily-yyyy-mm-dd)
+* [.daily random](#daily-random)
+* [.info `<query>`](#info-query)
+* [.iss ](#iss)
+* [.channel](#channel)
+* [.remove](#remove)
+* [.fact](#fact)
+* [.weather `<location>`](#weather-location)
 
 
 
@@ -57,6 +57,8 @@ Remove a channel from the APOD subscription.
 #### `.fact`
 Get a random astronomy fact from the fact library.
 
+#### `.weather <location>`
+Get the real-time weather at any location
 
  
 
