@@ -1,5 +1,4 @@
 #need to bring in .image and differenciate from .info
-
 import discord
 import os
 import reverse_geocoder
@@ -31,6 +30,7 @@ def get_activity():
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
   activity , choice = get_activity()
+  print('changed it')
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
 
 @client.event
@@ -260,23 +260,23 @@ async def on_message(message):
       embed = discord.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = discord.Color.orange())
       embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
 
+      temp = str(req['main']['temp']) + ' °C'
+      embed.add_field(name = 'Temperature', value = temp)
+
       lat = round(req['coord']['lat'],2)
       embed.add_field(name = 'Latitude' , value = lat)
 
       lon = round(req['coord']['lon'],2)
       embed.add_field(name = 'Longitude', value = lon)
 
-      temp = str(req['main']['temp']) + ' °C'
-      embed.add_field(name = 'Temperature', value = temp)
+      wind = str(req['wind']['speed']) + ' m/s' 
+      embed.add_field(name = 'Wind Speed' , value = wind)
 
       sky = req['weather'][0]['main'].title()
       embed.add_field(name = 'Skies', value = sky)
 
       visibility = str(req['visibility']/1000) + ' km'
       embed.add_field(name = 'Visibility', value = visibility)
-
-      wind = str(req['wind']['speed']) + ' m/s' 
-      embed.add_field(name = 'Wind Speed' , value = wind)
       
       clouds = str(req['clouds']['all']) + ' %'
       embed.add_field(name = 'Cloudiness' , value = clouds)
@@ -306,6 +306,7 @@ async def on_message(message):
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
         await message.channel.send(embed = embed)
+  #elif message.content.startswith()
 
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
@@ -317,11 +318,16 @@ async def on_message(message):
         except:
           pass  
   
-  if int(strftime('%H')) >= db['hour'] + 4 or int(strftime('%H')) < db['hour']:
+  if int(strftime('%H')) >= db['hour'] + 6 or int(strftime('%H')) < db['hour']:
+    print(db['hour'])
+    if int(strftime('%H')) >= db['hour'] + 6:
+      print(1)
+    if int(strftime('%H')) < db['hour']:
+      print(2)
     db['hour'] = int(strftime('%H'))
-    
     activity,choice = get_activity()
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
+    print(activity,int(strftime('%H')))
 
 
 
