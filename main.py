@@ -29,8 +29,9 @@ def get_activity():
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
+  #all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
+  s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity()
-  print('changed it')
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
 
 @client.event
@@ -319,15 +320,9 @@ async def on_message(message):
           pass  
   
   if int(strftime('%H')) >= db['hour'] + 6 or int(strftime('%H')) < db['hour']:
-    print(db['hour'])
-    if int(strftime('%H')) >= db['hour'] + 6:
-      print(1)
-    if int(strftime('%H')) < db['hour']:
-      print(2)
     db['hour'] = int(strftime('%H'))
     activity,choice = get_activity()
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
-    print(activity,int(strftime('%H')))
 
 
 
