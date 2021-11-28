@@ -7,6 +7,7 @@ from assets.facts import random_fact
 from datetime import datetime 
 from time import strftime, sleep
 import requests
+from requests.auth import HTTPBasicAuth
 client = discord.Client()
 from keep_alive import keep_alive
 from ast import literal_eval
@@ -18,6 +19,8 @@ import random
 api_key = os.environ['api_key']
 api_key2 = os.environ['api_key2']
 api_key3 = os.environ['api_key3']
+secret = os.environ['api_key4']
+appid = '6aaa6bf5-ecd9-44c6-9a30-8252e2269103'
 def get_activity():
   choice = random.choice([0,2,3,4,6,7,8,10,11])
   lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe  Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide']
@@ -307,7 +310,32 @@ async def on_message(message):
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
         await message.channel.send(embed = embed)
-  #elif message.content.startswith()
+  elif message.content.startswith('.phase'):
+    location = message.content.split(' ',1)[1].title()
+    result = geolocator.geocode(location)
+    coords,location = result[1],result[0]
+    parameters = {
+    "format": "png",
+    "style": {
+        "moonStyle": "default",
+        "backgroundStyle": "stars",
+        "backgroundColor": "black",
+        "headingColor": "white",
+        "textColor": "white"
+    },
+    "observer": {
+        "latitude": coords[0],
+        "longitude": coords[1],
+        "date": strftime('%Y-%m-%d')
+    },
+    "view": {
+        "type": "landscape-simple",
+        "orientation": "south-up"
+    }}
+    req = requests.post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret), json = parameters ).json()
+    embed = discord.Embed(title = f'Moon phase at {location}')
+    embed.set_image(url = req['data']['imageUrl'])
+    await message.channel.send(embed = embed)
 
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
