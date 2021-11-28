@@ -333,8 +333,11 @@ async def on_message(message):
         "orientation": "south-up"
     }}
     req = requests.post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret), json = parameters ).json()
-    embed = discord.Embed(title = f'Moon phase at {location}')
+    embed = discord.Embed(title = f'Moon phase at {location}', color = discord.Color.orange())
+    embed.add_field(name = 'Latitude',value = coords[0])
+    embed.add_field(name = 'Longitude', value= coords[1])
     embed.set_image(url = req['data']['imageUrl'])
+    embed.set_footer(text = 'Generated using AstronomyAPI')
     await message.channel.send(embed = embed)
 
   parameters = {'date':strftime('%Y-%m-%d')}
