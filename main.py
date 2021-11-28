@@ -36,10 +36,17 @@ async def on_ready():
   s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity()
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
+  #embed = discord.Embed(title = 'New Update',#description = 'AstroBot now has .phase #`<location>` ; use it to find the phase of #the moon at any specified location',color = #discord.Color.orange())
+  #for guild in db.keys():
+  #      try:
+  #        channel = client.get_channel(db[guild])
+  #        await channel.send(embed = embed)
+  #      except:
+  #        pass
 
 @client.event
 async def on_guild_join(guild):
-  embed = discord.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `.help` to begin.', color = discord.Colour.orange())
+  embed = discord.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `.help` to begin.', color = discord.Color.orange())
   channel = guild.channels[0]
   for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
@@ -90,7 +97,7 @@ async def on_message(message):
 
     
   elif message.content.startswith('.help'):
-    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\nHave fun!''', color=discord.Color.orange())
+    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\n`.phase <location>` - To find the phase of the moon at the specified location\n\n`Have fun!''', color=discord.Color.orange())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness.")
     await ctx.send(embed=embed)
   elif message.content.startswith('.channel'):
@@ -310,35 +317,44 @@ async def on_message(message):
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
         await message.channel.send(embed = embed)
+
+
   elif message.content.startswith('.phase'):
-    location = message.content.split(' ',1)[1].title()
-    result = geolocator.geocode(location)
-    coords,location = result[1],result[0]
-    parameters = {
-    "format": "png",
-    "style": {
-        "moonStyle": "default",
-        "backgroundStyle": "stars",
-        "backgroundColor": "black",
-        "headingColor": "white",
-        "textColor": "white"
-    },
-    "observer": {
-        "latitude": coords[0],
-        "longitude": coords[1],
-        "date": strftime('%Y-%m-%d')
-    },
-    "view": {
-        "type": "landscape-simple",
-        "orientation": "south-up"
-    }}
-    req = requests.post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret), json = parameters ).json()
-    embed = discord.Embed(title = f'Moon phase at {location}', color = discord.Color.orange())
-    embed.add_field(name = 'Latitude',value = coords[0])
-    embed.add_field(name = 'Longitude', value= coords[1])
-    embed.set_image(url = req['data']['imageUrl'])
-    embed.set_footer(text = 'Generated using AstronomyAPI')
-    await message.channel.send(embed = embed)
+      location = message.content.split(' ',1)[1].title()
+      result = geolocator.geocode(location)
+      coords,location = result[1],result[0]
+      if int(coords[0]) > 0:
+        orientation = "north-up"
+      else:
+        orientation = "south-up" 
+      req = requests.post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret), 
+      json = {
+          "format": "png",
+          "style": {
+              "moonStyle": "default",
+              "backgroundStyle": "stars",
+              "backgroundColor": "red",
+              "headingColor": "white",
+              "textColor": "white"
+          },
+          "observer": {
+              "latitude": coords[0],
+              "longitude": coords[1],
+              "date": strftime('%Y-%m-%d')
+          },
+          "view": {
+              "type": "landscape-simple",
+              'orientation': orientation
+          }
+      })
+      req = req.json()
+      embed = discord.Embed(title = f'Moon phase at {location}', color =  discord.Color.orange())
+      embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
+      embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
+      embed.add_field(name = 'Hemisphere',value = orientation.split('-')[0].capitalize())
+      embed.set_image(url = req['data'] ['imageUrl'])
+      embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
+      await message.channel.send(embed = embed)
 
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
