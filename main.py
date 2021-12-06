@@ -1,4 +1,4 @@
-#need to bring in .image and differenciate from .info
+#need to bring in .image and differenciate from .info,link github pages and top.gg page
 import discord
 import os
 import reverse_geocoder
