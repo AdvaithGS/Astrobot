@@ -70,6 +70,8 @@ You can vote for the bot so as to get more exposure at -
 
 https://top.gg/bot/792458754208956466/vote
 
+https://discordbotlist.com/bots/astrobot-2515/upvote
+
 ## Creator
 
 This bot has been created with blood, sweat and tears by Advaith GS, a class 11 student :/.
