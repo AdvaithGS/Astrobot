@@ -36,13 +36,13 @@ async def on_ready():
   s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity()
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
-  embed = discord.Embed(title = 'New Update',description = 'AstroBot now has .sky `<location>` ; use it to get the sky map of any specified location',color = discord.Color.orange())
+  '''embed = discord.Embed(title = 'New Update',description = 'AstroBot now has .sky `<location>` ; use it to get the sky map of any specified location',color = discord.Color.orange())
   for guild in db.keys():
         try:
           channel = client.get_channel(db[guild])
           await channel.send(embed = embed)
         except:
-          pass
+          pass'''
 
 @client.event
 async def on_guild_join(guild):
@@ -319,6 +319,7 @@ async def on_message(message):
         await message.channel.send(embed = embed)
 
   elif message.content.startswith('.sky'):
+    await message.channel.send('Generating....this will take some time.')
     location = message.content.split(' ',1)[1].title()
     result = geolocator.geocode(location)
     coords,location = result[1],result[0]
@@ -358,6 +359,7 @@ async def on_message(message):
     await message.channel.send(embed = embed) 
 
   elif message.content.startswith('.phase'):
+      await message.channel.send('Generating....this will take some time.')
       location = message.content.split(' ',1)[1].title()
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
