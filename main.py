@@ -322,8 +322,13 @@ async def on_message(message):
     location = message.content.split(' ',1)[1].title()
     result = geolocator.geocode(location)
     coords,location = result[1],result[0]
+    if int(coords[0]) > 0:
+        orientation = "north-up"
+    else:
+        orientation = "south-up"
     req = requests.post("https://api.astronomyapi.com/api/v2/studio/star-chart", auth=HTTPBasicAuth(appid, secret), 
       json = {
+        "style":"default",
         "observer": {
         "latitude": coords[0],
         "longitude": coords[1],
@@ -334,14 +339,23 @@ async def on_message(message):
           "parameters": {
               "position": {
                   "equatorial": {
-                    "rightAscension": 14.83,
-                    "declination": -15.23
+                    "rightAscension": 1,
+                    "declination": coords[0]
                   }
-              }
+              },
+            "zoom": 2 
             }
           }
         }
       )
+    req = req.json()
+    embed = discord.Embed(title = f'Moon phase at {location}', color =  discord.Color.orange())
+    embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
+    embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
+    embed.add_field(name = 'Hemisphere',value = orientation.split('-')[0].capitalize())
+    embed.set_image(url = req['data'] ['imageUrl'])
+    embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
+    await message.channel.send(embed = embed) 
 
   elif message.content.startswith('.phase'):
       location = message.content.split(' ',1)[1].title()
