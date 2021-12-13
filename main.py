@@ -36,13 +36,13 @@ async def on_ready():
   s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity()
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
-  #embed = discord.Embed(title = 'New Update',#description = 'AstroBot now has .phase #`<location>` ; use it to find the phase of #the moon at any specified location',color = #discord.Color.orange())
-  #for guild in db.keys():
-  #      try:
-  #        channel = client.get_channel(db[guild])
-  #        await channel.send(embed = embed)
-  #      except:
-  #        pass
+  embed = discord.Embed(title = 'New Update',description = 'AstroBot now has .sky `<location>` ; use it to get the sky map of any specified location',color = discord.Color.orange())
+  for guild in db.keys():
+        try:
+          channel = client.get_channel(db[guild])
+          await channel.send(embed = embed)
+        except:
+          pass
 
 @client.event
 async def on_guild_join(guild):
@@ -97,7 +97,7 @@ async def on_message(message):
 
     
   elif message.content.startswith('.help'):
-    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\n`.phase <location>` - To find the phase of the moon at the specified location\n\nHave fun!''', color=discord.Color.orange())
+    embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\n`.phase <location>` - To find the phase of the moon at the specified location\n\n`.sky <location>` - To get the sky map at any specified location\n\nHave fun!''', color=discord.Color.orange())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness.")
     await ctx.send(embed=embed)
   elif message.content.startswith('.channel'):
@@ -349,7 +349,7 @@ async def on_message(message):
         }
       )
     req = req.json()
-    embed = discord.Embed(title = f'Moon phase at {location}', color =  discord.Color.orange())
+    embed = discord.Embed(title = f'Sky Map at {location}', color =  discord.Color.orange())
     embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
     embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
     embed.add_field(name = 'Hemisphere',value = orientation.split('-')[0].capitalize())
