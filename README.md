@@ -62,7 +62,11 @@ Get a random astronomy fact from the fact library.
 #### `.weather <location>`
 Get the real-time weather at any location
 
- 
+#### `.phase <location>`
+Get the phase of the moon at a user specified location
+
+#### `.sky <location>`
+Get a map of the sky at a user specified location
 
 ## Vote
 
