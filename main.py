@@ -1,4 +1,4 @@
-#need to bring in .image and differenciate from .info,link github pages and top.gg page
+#need to bring in .image and differenciate from .info,link github pages and top.gg page, cache daily image
 import discord
 import os
 import reverse_geocoder
@@ -318,6 +318,30 @@ async def on_message(message):
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
         await message.channel.send(embed = embed)
 
+  elif message.content.startswith('.sky'):
+    location = message.content.split(' ',1)[1].title()
+    result = geolocator.geocode(location)
+    coords,location = result[1],result[0]
+    req = requests.post("https://api.astronomyapi.com/api/v2/studio/star-chart", auth=HTTPBasicAuth(appid, secret), 
+      json = {
+        "observer": {
+        "latitude": coords[0],
+        "longitude": coords[1],
+        "date": strftime('%Y-%m-%d')
+            },
+        "view": {
+          "type": "area",
+          "parameters": {
+              "position": {
+                  "equatorial": {
+                    "rightAscension": 14.83,
+                    "declination": -15.23
+                  }
+              }
+            }
+          }
+        }
+      )
 
   elif message.content.startswith('.phase'):
       location = message.content.split(' ',1)[1].title()
