@@ -1,4 +1,4 @@
-#need to bring in .image and differenciate from .info,link github pages and top.gg page, cache daily image
+#need to bring in .image and differenciate from .info,link github pages and top.gg page, cache daily image,use mooncalc and suncalc
 import discord
 import os
 import reverse_geocoder
@@ -267,7 +267,7 @@ async def on_message(message):
       
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
-      link = f'http://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png'
+      
       embed = discord.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = discord.Color.orange())
       embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
 
@@ -300,23 +300,23 @@ async def on_message(message):
           minutes= minutes%60
         if hours >= 24:
           hours = hours%24
-        #seconds  = int(datetime.utcfromtimestamp(req['sys'][i])  .strftime('%S'))
+        #seconds  = int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%S'))
         final_time = f'{hours}.{minutes}'
         embed.add_field(name = f'Local {i}' , value = final_time)
 
       icon = req['weather'][0]['icon']
       embed.set_thumbnail(url=f"http://openweathermap.org/img/wn/{icon}@2x.png")
-      
-      embed.set_image(url = link)
 
-      await message.channel.send(embed = embed)
+      link = str(f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
+      embed.set_image(url = link)
+      print(link)
+
     except:
       if message.content == '.weather':
-        embed = discord.Embed(title = 'Error' , description = 'Mention the name of the place for example , `.weather Jaipur`  ',color = discord.Color.orange())
-        await message.channel.send(embed = embed)
+        embed = discord.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `.weather Jaipur`  ',color = discord.Color.orange())
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
-        await message.channel.send(embed = embed)
+    await message.channel.send(embed = embed)
 
   elif message.content.startswith('.sky'):
     await message.channel.send('Generating....this will take some time.')
@@ -365,8 +365,10 @@ async def on_message(message):
       coords,location = result[1],result[0]
       if int(coords[0]) > 0:
         orientation = "north-up"
+        ori2 = "south-up"
       else:
         orientation = "south-up" 
+        ori2 = "north-up"
       req = requests.post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret), 
       json = {
           "format": "png",
@@ -384,14 +386,14 @@ async def on_message(message):
           },
           "view": {
               "type": "landscape-simple",
-              'orientation': orientation
+              'orientation': ori2
           }
       })
       req = req.json()
       embed = discord.Embed(title = f'Moon phase at {location}', color =  discord.Color.orange())
       embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
       embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
-      embed.add_field(name = 'Hemisphere',value = orientation.split('-')[0].capitalize())
+      embed.add_field(name = 'Hemisphere',value = orientation)
       embed.set_image(url = req['data'] ['imageUrl'])
       embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
       await message.channel.send(embed = embed)
