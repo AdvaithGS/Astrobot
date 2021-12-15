@@ -268,7 +268,7 @@ async def on_message(message):
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
       
-      embed = discord.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = discord.Color.orange())
+      embed = discord.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = discord.Color.orange(),image = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
       embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
 
       temp = str(req['main']['temp']) + ' °C'
@@ -307,9 +307,7 @@ async def on_message(message):
       icon = req['weather'][0]['icon']
       embed.set_thumbnail(url=f"http://openweathermap.org/img/wn/{icon}@2x.png")
 
-      link = str(f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
-      embed.set_image(url = link)
-      print(link)
+      embed.set_image(url = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
 
     except:
       if message.content == '.weather':
@@ -319,48 +317,56 @@ async def on_message(message):
     await message.channel.send(embed = embed)
 
   elif message.content.startswith('.sky'):
-    await message.channel.send('Generating....this will take some time.')
-    location = message.content.split(' ',1)[1].title()
-    result = geolocator.geocode(location)
-    coords,location = result[1],result[0]
-    if int(coords[0]) > 0:
-        orientation = "north-up"
-    else:
-        orientation = "south-up"
-    req = requests.post("https://api.astronomyapi.com/api/v2/studio/star-chart", auth=HTTPBasicAuth(appid, secret), 
-      json = {
-        "style":"default",
-        "observer": {
-        "latitude": coords[0],
-        "longitude": coords[1],
-        "date": strftime('%Y-%m-%d')
-            },
-        "view": {
-          "type": "area",
-          "parameters": {
-              "position": {
-                  "equatorial": {
-                    "rightAscension": 1,
-                    "declination": coords[0]
-                  }
+    try:
+      location = message.content.split(' ',1)[1].title()
+      await message.channel.send('Generating....this will take some time.')
+      result = geolocator.geocode(location)
+      coords,location = result[1],result[0]
+      if int(coords[0]) > 0:
+          orientation = "north-up"
+      else:
+          orientation = "south-up"
+      req = requests.post("https://api.astronomyapi.com/api/v2/studio/star-chart",  auth=HTTPBasicAuth(appid, secret), 
+        json = {
+          "style":"default",
+          "observer": {
+          "latitude": coords[0],
+          "longitude": coords[1],
+          "date": strftime('%Y-%m-%d')
               },
-            "zoom": 2 
+          "view": {
+            "type": "area",
+            "parameters": {
+                "position": {
+                    "equatorial": {
+                      "rightAscension": 1,
+                      "declination": coords[0]
+                    }
+                },
+              "zoom": 2 
+              }
             }
           }
-        }
-      )
-    req = req.json()
-    embed = discord.Embed(title = f'Sky Map at {location}', color =  discord.Color.orange())
-    embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
-    embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
-    embed.add_field(name = 'Hemisphere',value = orientation.split('-')[0].capitalize())
-    embed.set_image(url = req['data'] ['imageUrl'])
-    embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
-    await message.channel.send(embed = embed) 
+        )
+      req = req.json()
+      embed = discord.Embed(title = f'Sky Map at {location}', color =   discord.Color.orange())
+      embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
+      embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
+      embed.add_field(name = 'Hemisphere',value = orientation.split('-')[0] .capitalize())
+      embed.set_image(url = req['data'] ['imageUrl'])
+      embed.set_footer(text = 'Generated using AstronomyAPI and python geopy  library')
+    except:
+      if message.content == '.sky':
+        embed = discord.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `.sky Jaipur`  ',color = discord.Color.orange())
+      else:
+        embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
+    await ctx.send(embed = embed)
+
 
   elif message.content.startswith('.phase'):
-      await message.channel.send('Generating....this will take some time.')
+    try:
       location = message.content.split(' ',1)[1].title()
+      await message.channel.send('Generating....this will take some time.')
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
       if int(coords[0]) > 0:
@@ -396,7 +402,13 @@ async def on_message(message):
       embed.add_field(name = 'Hemisphere',value = orientation)
       embed.set_image(url = req['data'] ['imageUrl'])
       embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
-      await message.channel.send(embed = embed)
+    except:
+      if message.content == '.phase':
+        embed = discord.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `.phase Jaipur`  ',color = discord.Color.orange())
+      else:
+        embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
+    await ctx.send(embed = embed)
+
 
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
