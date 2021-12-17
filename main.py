@@ -314,12 +314,12 @@ async def on_message(message):
         embed = discord.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `.weather Jaipur`  ',color = discord.Color.orange())
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
-    await message.channel.send(embed = embed)
+    await ctx.send(embed = embed)
 
   elif message.content.startswith('.sky'):
     try:
       location = message.content.split(' ',1)[1].title()
-      await message.channel.send('Generating....this will take some time.')
+      await ctx.send('Generating....this will take some time.')
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
       if int(coords[0]) > 0:
@@ -366,7 +366,7 @@ async def on_message(message):
   elif message.content.startswith('.phase'):
     try:
       location = message.content.split(' ',1)[1].title()
-      await message.channel.send('Generating....this will take some time.')
+      await ctx.send('Generating....this will take some time.')
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
       if int(coords[0]) > 0:
@@ -408,7 +408,6 @@ async def on_message(message):
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
     await ctx.send(embed = embed)
-
 
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
