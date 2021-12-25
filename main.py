@@ -36,7 +36,8 @@ async def on_ready():
   s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity()
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
-  '''embed = discord.Embed(title = 'New Update',description = 'AstroBot now has .sky `<location>` ; use it to get the sky map of any specified location',color = discord.Color.orange())
+  '''embed = discord.Embed(title = 'Happy James Webb Space Telescope Launch Day!',description ="The James Webb Space Telescope—the most powerful space telescope ever made. This mission successfully lifted off at 7:20 a.m. EST (12:20 UTC), Dec. 25, 2021, aboard an Ariane 5 rocket from Europe’s Spaceport in French Guiana.\nWith revolutionary technology, Webb will observe a part of space and time never seen before, providing a wealth of amazing views into an era when the very first stars and galaxies formed–over 13.5 billion years ago.\nIt can explore our own solar system's residents with exquisite new detail and study the atmospheres of distant worlds.\nFrom new forming stars to devouring black holes, Webb will reveal all this and more! It’s the world’s largest and most powerful space telescope ever built, surely marking the start of a new age in humanity's exploration of our cosmos.",color = discord.Color.orange())
+  embed.set_image(url = 'https://cdn.arstechnica.net/wp-content/uploads/2016/03/614445main_013526_white2.jpg')
   for guild in db.keys():
         try:
           channel = client.get_channel(db[guild])
