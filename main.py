@@ -1,6 +1,7 @@
 #need to bring in .image and differenciate from .info,link github pages and top.gg page, cache daily image,use mooncalc and suncalc, and implement where is webb
 import discord
 import os
+import discord_components
 import reverse_geocoder
 from assets.country_code import find_country
 from assets.facts import random_fact
