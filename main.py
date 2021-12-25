@@ -1,7 +1,7 @@
 #need to bring in .image and differenciate from .info,link github pages and top.gg page, cache daily image,use mooncalc and suncalc, and implement where is webb
 import discord
 import os
-import discord_components
+from discord_components import Button
 import reverse_geocoder
 from assets.country_code import find_country
 from assets.facts import random_fact
@@ -100,8 +100,8 @@ async def on_message(message):
     
   elif message.content.startswith('.help'):
     embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\n`.phase <location>` - To find the phase of the moon at the specified location\n\n`.sky <location>` - To get the sky map at any specified location\n\nHave fun!''', color=discord.Color.orange())
-    embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness.")
-    await ctx.send(embed=embed)
+    embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness. Vote for us at these websites")
+    await ctx.send(embed=embed, components=[Button(label="Top.gg", url="https://top.gg/bot/792458754208956466/vote",style = 5),Button(label="Dbl.com", url="https://discordbotlist.com/bots/astrobot-2515/upvote",style = 5)])
   elif message.content.startswith('.channel'):
     db[message.guild.id] = ctx.id
     mes = await ctx.send('Registered.')
@@ -425,8 +425,6 @@ async def on_message(message):
     db['hour'] = int(strftime('%H'))
     activity,choice = get_activity()
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
-
-
 
 
 
