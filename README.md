@@ -1,4 +1,3 @@
-int(# Astrobot
 This is a Astronomy discord bot with various functionalities and uses; created with the python language 3.9 version involving flask and the discord.py module. 
 ## Table of contents
 * [Invite](#Invite)
