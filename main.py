@@ -60,7 +60,6 @@ async def on_guild_join(guild):
 async def on_message(message):
   ctx = message.channel
   if message.content.startswith('.daily'):
-    print(1)
     try:
       parameters = {'date': message.content.split(' ')[1]}
     except:
