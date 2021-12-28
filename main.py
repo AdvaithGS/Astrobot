@@ -26,6 +26,16 @@ api_key2 = os.environ['api_key2']
 api_key3 = os.environ['api_key3']
 secret = os.environ['api_key4']
 appid = '6aaa6bf5-ecd9-44c6-9a30-8252e2269103'
+def send_all(message,type):
+  for guild in db.keys():
+        try:
+          channel = client.get_channel(db[guild])
+          if type == 1:
+            await channel.send(embed = message)
+          elif type == 2:
+            await channel.send(message)
+        except:
+          pass
 def get_activity():
   choice = random.choice([0,2,3,4,6,7,8,10,11])
   lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe  Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide']
@@ -43,12 +53,7 @@ async def on_ready():
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
   '''embed = discord.Embed(title = 'Happy James Webb Space Telescope Launch Day!',description ="The James Webb Space Telescope—the most powerful space telescope ever made. This mission successfully lifted off at 7:20 a.m. EST (12:20 UTC), Dec. 25, 2021, aboard an Ariane 5 rocket from Europe’s Spaceport in French Guiana.\nWith revolutionary technology, Webb will observe a part of space and time never seen before, providing a wealth of amazing views into an era when the very first stars and galaxies formed–over 13.5 billion years ago.\nIt can explore our own solar system's residents with exquisite new detail and study the atmospheres of distant worlds.\nFrom new forming stars to devouring black holes, Webb will reveal all this and more! It’s the world’s largest and most powerful space telescope ever built, surely marking the start of a new age in humanity's exploration of our cosmos.",color = discord.Color.orange())
   embed.set_image(url = 'https://cdn.arstechnica.net/wp-content/uploads/2016/03/614445main_013526_white2.jpg')
-  for guild in db.keys():
-        try:
-          channel = client.get_channel(db[guild])
-          await channel.send(embed = embed)
-        except:
-          pass'''
+  send_all(embed,1)'''
 
 @client.event
 async def on_guild_join(guild):
@@ -58,7 +63,7 @@ async def on_guild_join(guild):
         if channel.permissions_for(guild.me).send_messages:
             await channel.send(embed=embed)
         break
-  
+
 @client.event
 async def on_message(message):
   ctx = message.channel
@@ -114,12 +119,17 @@ async def on_message(message):
     embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\n`.phase <location>` - To find the phase of the moon at the specified location\n\n`.sky <location>` - To get the sky map at any specified location\n\nHave fun!''', color=discord.Color.orange())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness. Vote for us at these websites")
     await ctx.send(embed=embed, components=[Button(label="Top.gg", url="https://top.gg/bot/792458754208956466/vote",style = 5),Button(label="Dbl.com", url="https://discordbotlist.com/bots/astrobot-2515/upvote",style = 5)])
+
   elif message.content.startswith('.channel'):
-    db[message.guild.id] = ctx.id
-    mes = await ctx.send('Registered.')
+    if str(message.guild.id) not in list(db.keys()):
+      db[message.guild.id] = ctx.id
+      mes = await ctx.send('Registered.')
+    else:
+      mes = await ctx.send('This server was already registered.')
     sleep(2)
     await mes.delete()
     await message.delete()
+
   #just something i added to trigger the daily photo if somehow the bot doesnt do it 
   #by itself. Dont blame me if you understood the reference. eheheeheh
   elif message.content.lower().startswith('execute order 66'):
@@ -134,19 +144,17 @@ async def on_message(message):
         await ctx.send('Never mind.')
       else:
         await ctx.send('Yes my lord.')
-        for guild in db.keys():
-          try:
-            channel = client.get_channel(db[guild])
-            await channel.send('.daily')
-          except:
-            pass
+        send_all('.daily',2)
   #removes a given channel from the apod service.
   elif message.content.startswith('.remove'):
-    del db[str(message.guild.id)]
-    mes = await ctx.send('Removed from daily APOD feed.')
-    sleep(2)
-    await message.delete()
-    await mes.delete()
+    try:
+      del db[str(message.guild.id)]
+      mes = await ctx.send('Removed from daily APOD feed.')
+      sleep(2)
+      await message.delete()
+      await mes.delete()
+    except:
+      await ctx.send('This server has not been registered to the APOD feed.')
   #returns the user id
   elif message.content.startswith('.id'):
     await ctx.send(message.author.id)
@@ -426,12 +434,7 @@ async def on_message(message):
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
       db['apod'] = strftime('%Y-%m-%d')
-      for guild in db.keys():
-        try:
-          channel = client.get_channel(db[guild])
-          await channel.send('.daily')
-        except:
-          pass  
+      send_all('.daily',2)
   
   if int(strftime('%H')) >= db['hour'] + 6 or int(strftime('%H')) < db['hour']:
     db['hour'] = int(strftime('%H'))
