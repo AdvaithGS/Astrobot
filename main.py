@@ -74,6 +74,14 @@ async def on_message(message):
         date = random.randrange(1,32)
       else:
         date = random.randrange(1,31)
+      if year == 1995:
+        month = random.randrange(6,13)
+        if month in [7,8,10,12]:
+          date = random.randrange(1,32)
+        elif month == 6:
+          date = random.randrage(6,31)
+        else:
+          date = random.randrange(1,31)
       message = f'.daily {year}-{month}-{date}'
       await ctx.send(message)
     else:
