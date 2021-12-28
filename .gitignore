@@ -133,3 +133,4 @@ pyproject.toml
 core
 .vscode
 settings.json
+db.sqlite

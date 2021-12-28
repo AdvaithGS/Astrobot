@@ -3,6 +3,8 @@ import discord
 import os
 from discord_components import Button
 import reverse_geocoder
+from sqlitedict import SqliteDict
+db = SqliteDict('./db.sqlite', autocommit = True)
 from assets.country_code import find_country
 from assets.facts import random_fact
 from datetime import datetime 
@@ -12,7 +14,6 @@ from requests.auth import HTTPBasicAuth
 client = discord.Client()
 from keep_alive import keep_alive
 from ast import literal_eval
-from replit import db
 from json import loads
 from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
