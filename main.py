@@ -55,6 +55,7 @@ async def on_ready():
   embed.set_image(url = 'https://cdn.arstechnica.net/wp-content/uploads/2016/03/614445main_013526_white2.jpg')
   for guild in db.keys():
         try:
+          channel = client.get_channel(db[guild])
           await channel.send(embed = embed)
         except:
           pass'''
@@ -150,6 +151,7 @@ async def on_message(message):
         await ctx.send('Yes my lord.')
         for guild in db.keys():
           try:
+            channel = client.get_channel(db[guild])
             await channel.send('.daily')
           except:
             pass
@@ -444,6 +446,7 @@ async def on_message(message):
       db['apod'] = strftime('%Y-%m-%d')
       for guild in db.keys():
         try:
+          channel = client.get_channel(db[guild])
           await channel.send('.daily')
         except:
           pass
