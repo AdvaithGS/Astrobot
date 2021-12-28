@@ -11,7 +11,10 @@ from datetime import datetime
 from time import strftime, sleep
 import requests
 from requests.auth import HTTPBasicAuth
-client = discord.Client()
+if __name__ == '__main__':
+  client = discord.Client()
+else:
+  exit()
 from keep_alive import keep_alive
 from ast import literal_eval
 from json import loads
