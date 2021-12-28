@@ -1,4 +1,4 @@
-#need to bring in .image and differenciate from .info,link github pages and top.gg page, cache daily image,use mooncalc and suncalc, and implement where is webb
+#need to bring in .image and differenciate from .info,cache daily image,use mooncalc and suncalc, and implement where is webb
 import discord
 import os
 from discord_components import Button
