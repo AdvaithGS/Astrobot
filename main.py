@@ -7,6 +7,7 @@ from sqlitedict import SqliteDict
 db = SqliteDict('./db.sqlite', autocommit = True)
 from assets.country_code import find_country
 from assets.facts import random_fact
+from assets.jameswebb import get_james_webb
 from datetime import datetime 
 from time import strftime, sleep
 import requests
@@ -440,6 +441,21 @@ async def on_message(message):
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
     await ctx.send(embed = embed)
+  elif message.content.startswith('.webb') or message.content.startswith('.james webb'):
+    elapsedtime,fromEarth,tol2,completion,image = get_james_webb()
+    fromEarth = str(fromEarth) + ' km'
+    fromEarth = str(completion) + '%'
+    fromEarth = str(tol2) + ' km'
+
+    embed = discord.Embed(title = f'The James Webb Space Telescope',desc = image[0] ,color =  discord.Color.orange())
+    embed.add_field(name = 'Elapsed Time',value = elapsedtime)
+    embed.add_field(name = 'Distance From Earth',value = fromEarth)
+    embed.add_field(name = 'Distance left to be covered',value = tol2)
+    embed.add_field(name = 'Completion',value = completion)
+    embed.set_image(url=image[1])
+    await ctx.send(embed = embed)
+
+
 
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
