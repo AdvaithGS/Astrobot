@@ -26,8 +26,9 @@ As of now, there are the following commands:
 * [.remove](#remove)
 * [.fact](#fact)
 * [.weather `<location>`](#weather-location)
-
-
+* [.sky `<location>`](#sky-location)
+* [.phase `<location>`](#phase-location)
+* [.webb](#webb)
 
 #### `.daily`
 Gives the NASA APOD picture for the day. 
@@ -66,6 +67,9 @@ Get the phase of the moon at a user specified location
 
 #### `.sky <location>`
 Get a map of the sky at a user specified location
+
+#### `.webb`
+Get the current state of the James Webb Space Telescope.n
 
 ## Vote
 

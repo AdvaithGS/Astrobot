@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from json import loads
-from image import get_image
+from assets.image import get_image
 from time import strftime,gmtime
 def get_james_webb():
     d = int(strftime('%d',gmtime()))
