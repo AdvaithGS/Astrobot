@@ -69,7 +69,7 @@ Get the phase of the moon at a user specified location
 Get a map of the sky at a user specified location
 
 #### `.webb`
-Get the current state of the James Webb Space Telescope.n
+Get the current state of the James Webb Space Telescope.
 
 ## Vote
 
