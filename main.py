@@ -445,14 +445,15 @@ async def on_message(message):
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
     await ctx.send(embed = embed)
   elif message.content.startswith('.webb') or message.content.startswith('.james webb'):
-    elapsedtime,fromEarth,tol2,completion,image = get_james_webb()
+    elapsedtime,fromEarth,tol2,completion,image,velocity = get_james_webb()
     fromEarth = str(fromEarth) + ' km'
     completion = str(completion) + '%'
     tol2 = str(tol2) + ' km'
     embed = discord.Embed(title = f'The James Webb Space Telescope', description = image[0] ,color =  discord.Color.orange())
     embed.add_field(name = 'Elapsed Time',value = elapsedtime)
     embed.add_field(name ='Distance From Earth',value = fromEarth)
-    embed.add_field(name = 'Distance left to be covered',value = tol2)
+    embed.add_field(name = 'Velocity' , value = velocity)
+    embed.add_field(name = 'Distance to L2 Orbit',value = tol2)
     embed.add_field(name = 'Completion',value = completion)
     embed.set_image(url=image[1])
     await ctx.send(embed = embed)
