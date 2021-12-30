@@ -37,7 +37,7 @@ Made using the discord embeds and the APOD api.
 
 #### `.daily <YYYY-MM-DD>`
 Gives the NASA picture for a specific date given by a user. Any valid date after 1995-6-16 is accepted.
-For eg. `.daily 2005-6-7`
+For eg. .daily `2005-6-7`
 
 #### `.daily random`
 Gives a random NASA APOD picture from archives. Including all pictures from 1996.
@@ -67,7 +67,6 @@ Get the phase of the moon at a user specified location
 
 #### `.sky <location>`
 Get a map of the sky at a user specified location
-
 
 #### `.webb`
 Get the current state of the James Webb Space Telescope.
