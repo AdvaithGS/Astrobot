@@ -458,9 +458,10 @@ async def on_message(message):
       embed.add_field(name = 'Completion',value = completion)
       embed.set_image(url=image[1])
       await ctx.send(embed = embed)
-    except:
+    except Exception as e:
       embed = discord.Embed(title = 'Error',description = 'There seems to  be something wrong on our side. Extremely sorry.',color = discord.Color.orange())
       await ctx.send(embed = embed)
+      print(e)
 
 
 
