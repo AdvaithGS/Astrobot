@@ -10,7 +10,7 @@ from assets.facts import random_fact
 from assets.jameswebb import get_james_webb
 from datetime import datetime 
 from time import strftime, sleep
-import requests
+from requests import get,post
 from requests.auth import HTTPBasicAuth
 if __name__ == '__main__':
   client = discord.Client()
@@ -98,14 +98,21 @@ async def on_message(message):
       await ctx.send(message)
     else:
       try:
-        req = literal_eval(requests.get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
-        title = req['title']
-        desc = f'''{req['date']}\nDiscover the cosmos!\n\n{req  ['explanation']}'''
-        try:
-          url = req['hdurl']
-        except:
-          url = req['url']
-          name = url
+        if parameters == {}:
+          daily = db['daily']
+          url = daily['url']
+          title = daily['title']
+          desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}'''
+          print('hello')
+        else:
+          req = literal_eval(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+          title = req['title']
+          desc = f'''{req['date']}\nDiscover the cosmos!\n\n{req['explanation']}'''
+          try:
+            url = req['hdurl']
+          except:
+            url = req['url']
+            name = url
         embed = discord.Embed(title=title, url=url, description=desc, color=discord.Color.orange())
         embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
         embed.set_image(url=url)
@@ -119,7 +126,7 @@ async def on_message(message):
         except:
           pass
       except:
-        await ctx.send('Either your date is invalid or you\'ve chosen   a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the   first day an APOD picture was posted')
+        await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the   first day an APOD picture was posted')
 
     
   elif message.content.startswith('.help'):
@@ -183,15 +190,15 @@ async def on_message(message):
   elif message.content.startswith('.info'):
     try:
       q = str(message.content)[6:]
-      req3 = literal_eval(requests.get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
+      req3 = literal_eval(get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
       parameters = {'page': str(random.randrange(1,int(req3)+1))}
-      req2 = literal_eval(requests.get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
+      req2 = literal_eval(get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
       choice = random.choice(dict(req2['collection'])['items'])
       desc = str(choice['data'][0]['description']).capitalize()
       embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.orange())
       url = (choice['links'][0]['href']).replace(' ','%20') 
       try:
-        req = loads(requests.get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
+        req = loads(get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
 
         if req['mass']:
           a = str(req['mass']['massValue'])
@@ -259,7 +266,7 @@ async def on_message(message):
       await ctx.send('You have not specified a query or your query is wrong, use `.info <query>`')
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
   elif message.content.startswith('.whereiss') or message.content.startswith('.iss'):
-    req = literal_eval(requests.get('https://api.wheretheiss.at/v1/satellites/25544').text)
+    req = literal_eval(get('https://api.wheretheiss.at/v1/satellites/25544').text)
     result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
     
     location = ''
@@ -274,7 +281,7 @@ async def on_message(message):
     location.replace('`', '')
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'
-    url = requests.get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}')
+    url = get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}')
     with open('test.jpg', 'wb') as handler:
       handler.write(url.content)
     file = discord.File('test.jpg')
@@ -302,7 +309,7 @@ async def on_message(message):
   elif message.content.startswith('.weather'):
     try:  
       location = message.content.split(' ',1)[1].title()
-      req = loads(requests.get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
+      req = loads(get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
       location = location + ', ' + find_country(req['sys']['country'])
       
       result = geolocator.geocode(location)
@@ -366,7 +373,7 @@ async def on_message(message):
           orientation = "north-up"
       else:
           orientation = "south-up"
-      req = requests.post("https://api.astronomyapi.com/api/v2/studio/star-chart",  auth=HTTPBasicAuth(appid, secret), 
+      req = post("https://api.astronomyapi.com/api/v2/studio/star-chart",  auth=HTTPBasicAuth(appid, secret), 
         json = {
           "style":"default",
           "observer": {
@@ -414,7 +421,7 @@ async def on_message(message):
       else:
         orientation = "south-up" 
         ori2 = "north-up"
-      req = requests.post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret), 
+      req = post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret), 
       json = {
           "format": "png",
           "style": {
@@ -460,6 +467,7 @@ async def on_message(message):
       embed.add_field(name = 'Distance to L2 Orbit',value = tol2)
       embed.add_field(name = 'Completion',value = completion)
       embed.set_image(url=image[1])
+      embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
       await ctx.send(embed = embed)
     except Exception as e:
       embed = discord.Embed(title = 'Error',description = 'There seems to  be something wrong on our side. Extremely sorry.',color = discord.Color.orange())
@@ -469,8 +477,10 @@ async def on_message(message):
 
 
   parameters = {'date':strftime('%Y-%m-%d')}
-  if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
+  if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
       db['apod'] = strftime('%Y-%m-%d')
+      req = literal_eval(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
+      db['daily'] = req
       for guild in db.keys():
         try:
           channel = client.get_channel(db[guild])
