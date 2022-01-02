@@ -47,7 +47,8 @@ def get_activity():
           pass'''
 @client.event
 async def on_ready():
-  print('We have logged in as {0.user}'.format(client))
+  s = len(client.guilds)
+  print('We have logged in as {0.user} in {1} guilds'.format(client,s))
   #all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity()
@@ -398,7 +399,6 @@ async def on_message(message):
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
     await ctx.send(embed = embed)
 
-
   elif message.content.startswith('.phase'):
     try:
       location = message.content.split(' ',1)[1].title()
@@ -445,18 +445,22 @@ async def on_message(message):
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
     await ctx.send(embed = embed)
   elif message.content.startswith('.webb') or message.content.startswith('.james webb'):
-    elapsedtime,fromEarth,tol2,completion,image,velocity = get_james_webb()
-    fromEarth = str(fromEarth) + ' km'
-    completion = str(completion) + '%'
-    tol2 = str(tol2) + ' km'
-    embed = discord.Embed(title = f'The James Webb Space Telescope', description = image[0] ,color =  discord.Color.orange())
-    embed.add_field(name = 'Elapsed Time',value = elapsedtime)
-    embed.add_field(name ='Distance From Earth',value = fromEarth)
-    embed.add_field(name = 'Velocity' , value = velocity)
-    embed.add_field(name = 'Distance to L2 Orbit',value = tol2)
-    embed.add_field(name = 'Completion',value = completion)
-    embed.set_image(url=image[1])
-    await ctx.send(embed = embed)
+    try:
+      elapsedtime,fromEarth,tol2,completion,image,velocity = get_james_webb()
+      fromEarth = str(fromEarth) + ' km'
+      completion = str(completion) + '%'
+      tol2 = str(tol2) + ' km'
+      embed = discord.Embed(title = f'The James Webb Space Telescope', description = image[0] ,color =  discord.Color.orange())
+      embed.add_field(name = 'Elapsed Time',value = elapsedtime)
+      embed.add_field(name ='Distance From Earth',value = fromEarth)
+      embed.add_field(name = 'Velocity' , value = velocity)
+      embed.add_field(name = 'Distance to L2 Orbit',value = tol2)
+      embed.add_field(name = 'Completion',value = completion)
+      embed.set_image(url=image[1])
+      await ctx.send(embed = embed)
+    except:
+      embed = discord.Embed(title = 'Error',description = 'There seems to  be something wrong on our side. Extremely sorry.',color = discord.Color.orange())
+      await ctx.send(embed = embed)
 
 
 
@@ -469,7 +473,12 @@ async def on_message(message):
           await channel.send('.daily')
         except:
           pass
-  
+  '''elif message.content.startswith('.test'):
+    embed = discord.Embed(title = 'Test!',description = 'This is a test',colour = discord.Color.orange())
+    file = discord.File('test.jpg')
+    embed.set_image(url = 'attachment://test.jpg')
+    embed.set_footer(text = 'Im just trying to see how images can be added to embeds in a different way.')
+    await ctx.send(embed=embed, file=file)'''
   if int(strftime('%H')) >= db['hour'] + 6 or int(strftime('%H')) < db['hour']:
     db['hour'] = int(strftime('%H'))
     activity,choice = get_activity()

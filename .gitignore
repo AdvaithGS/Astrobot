@@ -126,7 +126,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#other
+#personalised
 info.txt
 poetry.lock
 pyproject.toml
@@ -134,3 +134,4 @@ core
 .vscode
 settings.json
 db.sqlite
+*.jpg
