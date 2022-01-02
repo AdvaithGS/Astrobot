@@ -274,9 +274,12 @@ async def on_message(message):
     location.replace('`', '')
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'
-    url = f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}'
+    url = requests.get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}')
+    with open('test.jpg' 'wb') as handler:
+      handler.write(url.content)
+    file = discord.File('test.jpg')
     embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = discord.Color.orange())
-    embed.set_image(url=url)
+    embed.set_image(url = 'attachment://test.jpg')
     velocity = round(req['velocity'],2)
     embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
     altitude = round(req['altitude'],2)
