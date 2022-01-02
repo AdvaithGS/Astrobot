@@ -1,4 +1,4 @@
-#need to bring in .image and differenciate from .info,cache daily image,use mooncalc and suncalc, and implement where is webb
+#need to bring in .image and differenciate from .info,use mooncalc and suncalc
 import discord
 import os
 from discord_components import Button
@@ -28,9 +28,10 @@ api_key3 = os.environ['api_key3']
 secret = os.environ['api_key4']
 appid = '6aaa6bf5-ecd9-44c6-9a30-8252e2269103'
 
+#generates a random activity that the bot can set as its status
 def get_activity():
-  choice = random.choice([0,2,3,4,6,7,8,10,11])
-  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe  Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide']
+  choice = random.choice([0,2,3,4,6,7,8,10,11,14])
+  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','The James Webb Space Telescope']
   # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
   activity = lst[choice]
   choice = choice%4
@@ -49,7 +50,7 @@ def get_activity():
 async def on_ready():
   s = len(client.guilds)
   print('We have logged in as {0.user} in {1} guilds'.format(client,s))
-  #all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
+  # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity()
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
@@ -74,6 +75,9 @@ async def on_guild_join(guild):
 @client.event
 async def on_message(message):
   ctx = message.channel
+  '''gets the image from nasa's api, if its just '.daily' - it gets it from the database else if its the '.daily random' 
+     command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from
+     the api and shares it'''    
   if message.content.startswith('.daily'):
     try:
       parameters = {'date': message.content.split(' ')[1]}
@@ -103,7 +107,6 @@ async def on_message(message):
           url = daily['url']
           title = daily['title']
           desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}'''
-          print('hello')
         else:
           req = literal_eval(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
           title = req['title']
@@ -128,7 +131,7 @@ async def on_message(message):
       except:
         await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the   first day an APOD picture was posted')
 
-    
+  # ask for help and commands
   elif message.content.startswith('.help'):
     embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\n`.phase <location>` - To find the phase of the moon at the specified location\n\n`.sky <location>` - To get the sky map at any specified location\n\n`.webb` - To get the current state of the James Webb Space Telescope.\n\nHave fun!''', color=discord.Color.orange())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness. Vote for us at these websites")
@@ -137,6 +140,7 @@ async def on_message(message):
     except:
       await ctx.send(embed=embed)
 
+  # adds that channel to the db so that it will be sent the '.daily' message once the image is released
   elif message.content.startswith('.channel'):
     if str(message.guild.id) not in list(db.keys()):
       db[message.guild.id] = ctx.id
@@ -150,7 +154,7 @@ async def on_message(message):
   #just something i added to trigger the daily photo if somehow the bot doesnt do it 
   #by itself. Dont blame me if you understood the reference. eheheeheh
   elif message.content.lower().startswith('execute order 66'):
-    if message.author.id == 756496844867108937:
+    if message.author.id == 756496844867108937:# my user id
       await ctx.send('Are you sure, Lord Palpatine?')      
       def check(msg):
         if msg.content.lower().startswith('yes'):
@@ -177,9 +181,11 @@ async def on_message(message):
       await mes.delete()
     except:
       await ctx.send('This server has not been registered to the APOD feed.')
+  
   #returns the user id
   elif message.content.startswith('.id'):
     await ctx.send(message.author.id)
+  
   #this info command first checks the total number of pages by going to 
   #the 100th page (since no queries are 100 pages long, the image and 
   #video api just mentions the last valid page number) and 
@@ -264,7 +270,8 @@ async def on_message(message):
       await ctx.send(embed = embed)
     except:
       await ctx.send('You have not specified a query or your query is wrong, use `.info <query>`')
-  #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
+  
+  #takes info about the location of iss from wheretheiss.at and uses mapquest to obtain a map image of that
   elif message.content.startswith('.whereiss') or message.content.startswith('.iss'):
     req = literal_eval(get('https://api.wheretheiss.at/v1/satellites/25544').text)
     result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
@@ -294,6 +301,8 @@ async def on_message(message):
     embed.add_field(name ='Visibility',value = req['visibility'].title())
     embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
     await ctx.send(embed=embed,file = file)
+  
+  #takes a fact using random_fact() method from the facts.py file which in turn obtains it from facts.txt
   elif message.content.startswith('.fact'):
     line = random_fact()
     title,desc = line[0],line[1]
@@ -362,7 +371,8 @@ async def on_message(message):
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
     await ctx.send(embed = embed)
-
+  
+  #Using AstronomyAPI to get .sky 
   elif message.content.startswith('.sky'):
     try:
       location = message.content.split(' ',1)[1].title()
@@ -408,7 +418,8 @@ async def on_message(message):
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
     await ctx.send(embed = embed)
-
+  
+  #Using AstronomyAPI to get .phase
   elif message.content.startswith('.phase'):
     try:
       location = message.content.split(' ',1)[1].title()
@@ -454,6 +465,8 @@ async def on_message(message):
       else:
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
     await ctx.send(embed = embed)
+  
+  #Taking all the data from the NASA 'WhereIsWebb?' website 
   elif message.content.startswith('.webb') or message.content.startswith('.james webb'):
     try:
       elapsedtime,fromEarth,tol2,completion,image,velocity = get_james_webb()
@@ -474,8 +487,7 @@ async def on_message(message):
       await ctx.send(embed = embed)
       print(e)
 
-
-
+  #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
   parameters = {'date':strftime('%Y-%m-%d')}
   if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
       db['apod'] = strftime('%Y-%m-%d')
@@ -493,6 +505,8 @@ async def on_message(message):
     embed.set_image(url = 'attachment://test.jpg')
     embed.set_footer(text = 'Im just trying to see how images can be added to embeds in a different way.')
     await ctx.send(embed=embed, file=file)'''
+
+  #updates the status every 6 hours - seems to not be completely working but it does change the status
   if int(strftime('%H')) >= db['hour'] + 6 or int(strftime('%H')) < db['hour']:
     db['hour'] = int(strftime('%H'))
     activity,choice = get_activity()
