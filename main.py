@@ -275,7 +275,7 @@ async def on_message(message):
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'
     url = requests.get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}')
-    with open('test.jpg' 'wb') as handler:
+    with open('test.jpg', 'wb') as handler:
       handler.write(url.content)
     file = discord.File('test.jpg')
     embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = discord.Color.orange())
@@ -286,7 +286,7 @@ async def on_message(message):
     embed.add_field(name = 'Altitude' , value = f'{altitude} km')
     embed.add_field(name ='Visibility',value = req['visibility'].title())
     embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
-    await ctx.send(embed=embed)
+    await ctx.send(embed=embed,file = file)
   elif message.content.startswith('.fact'):
     line = random_fact()
     title,desc = line[0],line[1]
