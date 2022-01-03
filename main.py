@@ -104,7 +104,11 @@ async def on_message(message):
       try:
         if parameters == {}:
           daily = db['daily']
-          url = daily['url']
+          try:
+            url = daily['hdurl']
+          except:
+            url = daily['url']
+            name = url
           title = daily['title']
           desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}'''
         else:
