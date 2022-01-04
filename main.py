@@ -148,9 +148,9 @@ async def on_message(message):
   elif message.content.startswith('.channel'):
     if str(message.guild.id) not in list(db.keys()):
       db[message.guild.id] = ctx.id
-      mes = await ctx.send('Registered.')
+      mes = await ctx.send('Registered. Deleting Message in 2 seconds.')
     else:
-      mes = await ctx.send('This server was already registered.')
+      mes = await ctx.send('This server was already registered. Deleting Message in 2 seconds.')
     sleep(2)
     await mes.delete()
     await message.delete()
@@ -179,7 +179,7 @@ async def on_message(message):
   elif message.content.startswith('.remove'):
     try:
       del db[str(message.guild.id)]
-      mes = await ctx.send('Removed from daily APOD feed.')
+      mes = await ctx.send('Removed from daily APOD feed. Deleting Message in 2 seconds.')
       sleep(2)
       await message.delete()
       await mes.delete()
