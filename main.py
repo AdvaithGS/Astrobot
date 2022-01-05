@@ -30,7 +30,7 @@ appid = '6aaa6bf5-ecd9-44c6-9a30-8252e2269103'
 
 #generates a random activity that the bot can set as its status
 def get_activity():
-  choice = random.choice([0,2,3,4,6,7,8,10,11,14])
+  choice = random.choice([0,2,3,4,6,7,8,10,11,15])
   lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','','The James Webb Space Telescope']
   # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
   activity = lst[choice]
