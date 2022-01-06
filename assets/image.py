@@ -138,9 +138,13 @@ def get_image():
     d = (datetime(int(strftime('%Y')) , int(strftime('%m')),int(strftime('%d'))) - datetime(2021,12,25)).days
     if d in (3,5,6,10,12,29):
         h = strftime('%H',gmtime())
+        try:
+          h = h.replace('0','')
+        except:
+          pass
         if int(h) > 12:
             return db[str(d)+'.5']
-        return db[h]
+        return db[str(d)]
     elif d == 9:
       return db['8']
     elif d == 14:
