@@ -473,22 +473,36 @@ async def on_message(message):
   #Taking all the data from the NASA 'WhereIsWebb?' website 
   elif message.content.startswith('.webb') or message.content.startswith('.james webb'):
     try:
-      elapsedtime,fromEarth,tol2,completion,image,velocity = get_james_webb()
+      elapsedtime,fromEarth,tol2,completion,image,velocity,deployment_step,temp = get_james_webb()
       fromEarth = str(fromEarth) + ' km'
       completion = str(completion) + '%'
       tol2 = str(tol2) + ' km'
-      embed = discord.Embed(title = f'The James Webb Space Telescope', description = image[0] ,color =  discord.Color.orange())
+      embed = discord.Embed(title = f'The James Webb Space Telescope -Current Deployment step - {deployment_step}', description = image[0] ,color =  discord.Color.orange())
       embed.add_field(name = 'Elapsed Time',value = elapsedtime)
       embed.add_field(name ='Distance From Earth',value = fromEarth)
       embed.add_field(name = 'Velocity' , value = velocity)
       embed.add_field(name = 'Distance to L2 Orbit',value = tol2)
       embed.add_field(name = 'Completion',value = completion)
+      #{"tempWarmSide1C":55,"tempWarmSide2C":12,"tempCoolSide1C":-210,"tempCoolSide2C":-202},"timestamp":"2022-01-24T08:02:02.898Z"}
+      #temperatures
+      embed.add_field(name = 'Temp Warm Side A',value = str(temp["tempWarmSide1C"]) + ' °C')
+      embed.add_field(name = 'Temp Warm Side B',value = str(temp["tempWarmSide2C"]) + ' °C')
+      embed.add_field(name = 'Temp Cool Side A',value = str(temp["tempCoolSide1C"]) + ' °C')
+      embed.add_field(name = 'Temp Cool Side B',value = str(temp["tempCoolSide2C"]) + ' °C')
       embed.set_image(url=image[1])
       embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
       await ctx.send(embed = embed)
+      await ctx.send(image[2])
     except Exception as e:
-      embed = discord.Embed(title = 'Error',description = 'There seems to  be something wrong on our side. Extremely sorry.',color = discord.Color.orange())
+      from assets.image import get_image
+      s = get_image()
+      embed = discord.Embed(title = 'Where is Webb',description = s[0],color = discord.Color.orange())
+      embed.set_image(url = s[1])
       await ctx.send(embed = embed)
+      try:
+        await ctx.send(s[2])
+      except:
+        pass
       print(e)
 
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.

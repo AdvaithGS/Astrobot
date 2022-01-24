@@ -111,6 +111,14 @@ Nominal Event Time: Launch + 15-24 days
 This operation is a multi-day multi-step activity to activate and move each of its 18 primary mirror segments (which are adjustable) out of their launch configuration.
 
 The primary mirror segments and secondary mirror are moved by six actuators that are attached to the back of each mirror piece. The primary mirror segments also have an additional actuator at its center that adjusts its curvature. The telescope's tertiary mirror remains stationary.''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/124.png'],
+'28':['''Mirror Segment Deployments COMPLETED
+Nominal Event Time: Launch + 28 days
+
+This completes the multi-day multi-step activity to activate and move each of the 18 primary mirror segments and the secondary mirror out of their launch configuration.
+
+The primary mirror segments were driven 12.5 millimeters away from the telescope structure. Using six motors that deploy each segment approximately half the length of a paper clip, these actuators clear the mirrors from their launch restraints and give each segment enough space to later be adjusted in other directions to the optical starting position for the upcoming wavefront alignment process. The 18 radius of curvature (ROC) actuators were moved from their launch position as well. The ROC actuators individually shape the curvature of each beryllium mirror segment to set the initial parabolic shape of the primary mirror.
+
+Next up in the wavefront process will be moving mirrors in the micron and nanometer ranges to reach the final optical positions for an aligned telescope. The process of telescope alignment will take approximately three months.''','https://jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/125.png','https://youtu.be/_2zQiWeXTg4'],
 '29':['''L2 Insertion Burn
 Mid Course Correction Burn (MCC2) - Begins L2 Insertion
 
@@ -120,7 +128,7 @@ A series of activites to plan and execute MCC2 - the insertion burn for Webb's L
 
 The James Webb Space Telescope is launched on a direct path to an orbit around the second SunEarth Lagrange Point (L2), but it needs to make its own mid-course thrust correction maneuvers to get there. This is by design, because if Webb gets too much thrust from the Ariane rocket, it can’t turn around to thrust back toward Earth because that would directly expose its telescope optics and structure to the Sun, overheating them and aborting the science mission before it can even begin. Therefore, Webb gets an intentional slight under-burn from the Ariane and uses its own small thrusters and on-board propellant to make up the difference.
 
-There are three mid-course correction (MCC) maneuvers: MCC-1a, MCC-1b, and MCC-2. This final burn, MCC-2, which inserts Webb into its L2 halo orbit.''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/126.png'],
+There are three mid-course correction (MCC) maneuvers: MCC-1a, MCC-1b, and MCC-2. This final burn, MCC-2, which inserts Webb into its L2 halo orbit.''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/126.png','https://youtu.be/_2zQiWeXTg4'],
 '29.5':['''WEBB IS ORBITING L2
 Orbit Insertion Complete.
 Webb is Orbiting L2 in a HALO Orbit.
@@ -129,13 +137,13 @@ Nominal Event Time: Launch + 29.5 days
 
 Webb is now orbiting L2. Telescope deployment is complete. Ongoing cooldown and instrument turn-on continue. The telescope and scientific instruments started to cool rapidly in the shade of the sunshield once it was deployed, but it will take several weeks for them to cool all the way down and reach stable temperatures. This cooldown will be carefully controlled with strategically-placed electric heater strips. The remaining five months of commissioning will be all about aligning the optics and calibrating the scientific instruments.
 
-''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/127.png']
+''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/127.png','https://youtu.be/_2zQiWeXTg4']
 }
 from time import strftime,gmtime
 from datetime import datetime
 def get_image():
     global db
-    d = (datetime(int(strftime('%Y')) , int(strftime('%m')),int(strftime('%d'))) - datetime(2021,12,25)).days
+    d = (datetime(int(strftime('%Y')) , int(strftime('%m')),int(strftime('%d'))) - datetime(2021,12,27)).days
     if d in (3,5,6,10,12,29):
         h = strftime('%H',gmtime())
         try:
@@ -156,12 +164,13 @@ def get_image():
       elif h <= 16:
         return db[str(d) + '.2']
       return db[str(d) + '.3']
-    elif d in range(15,29):
+    elif d in range(15,28):
       return db['15']
     elif d > 29:
       return db['29']
     else:
         return db[str(d)]
+    print(d)
     
 
 
