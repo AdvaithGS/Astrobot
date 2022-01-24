@@ -470,14 +470,14 @@ async def on_message(message):
         embed = discord.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = discord.Color.orange())
     await ctx.send(embed = embed)
   
-  #Taking all the data from the NASA 'WhereIsWebb?' website 
+  #Taking all the data from the NASA 'WhereIsWebb?' website and from the webb tracker api
   elif message.content.startswith('.webb') or message.content.startswith('.james webb'):
     try:
       elapsedtime,fromEarth,tol2,completion,image,velocity,deployment_step,temp = get_james_webb()
       fromEarth = str(fromEarth) + ' km'
       completion = str(completion) + '%'
       tol2 = str(tol2) + ' km'
-      embed = discord.Embed(title = f'The James Webb Space Telescope -Current Deployment step - {deployment_step}', description = image[0] ,color =  discord.Color.orange())
+      embed = discord.Embed(title = f'The James Webb Space Telescope - {deployment_step}', description = image[0] ,color =  discord.Color.orange())
       embed.add_field(name = 'Elapsed Time',value = elapsedtime)
       embed.add_field(name ='Distance From Earth',value = fromEarth)
       embed.add_field(name = 'Velocity' , value = velocity)
@@ -490,7 +490,7 @@ async def on_message(message):
       embed.add_field(name = 'Temp Cool Side A',value = str(temp["tempCoolSide1C"]) + ' °C')
       embed.add_field(name = 'Temp Cool Side B',value = str(temp["tempCoolSide2C"]) + ' °C')
       embed.set_image(url=image[1])
-      embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
+      embed.set_footer(text = 'Built using NASA\'s Where is Webb website and the WebbTracker API')
       await ctx.send(embed = embed)
       await ctx.send(image[2])
     except Exception as e:
