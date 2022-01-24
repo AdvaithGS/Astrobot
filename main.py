@@ -493,7 +493,7 @@ async def on_message(message):
 
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
   parameters = {'date':strftime('%Y-%m-%d')}
-  if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) > 4 and (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
+  if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) in range(4,10) and (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
       db['apod'] = strftime('%Y-%m-%d')
       req = literal_eval(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
       db['daily'] = req
