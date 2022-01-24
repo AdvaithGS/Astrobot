@@ -54,14 +54,13 @@ async def on_ready():
   s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity()
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
-  '''embed = discord.Embed(title = 'New Update',description ="The James Webb Space Telescope tracker is now online - use `.webb` to get its current mission completion and the stage it is currently undergoing.",color = discord.Color.orange())
+  embed = discord.Embed(title = 'New Update',description ="After working on it for some time, the James Webb Space Telescope tracker is now online - use `.webb` to get its current mission completion and the stage it is currently undergoing.",color = discord.Color.orange())
   for guild in db.keys():
         try:
           channel = client.get_channel(db[guild])
           await channel.send(embed = embed)
-          await channel.send('.webb')
         except:
-          pass'''
+          pass
 
 @client.event
 async def on_guild_join(guild):
@@ -75,9 +74,7 @@ async def on_guild_join(guild):
 @client.event
 async def on_message(message):
   ctx = message.channel
-  '''gets the image from nasa's api, if its just '.daily' - it gets it from the database else if its the '.daily random' 
-     command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from
-     the api and shares it'''    
+  '''gets the image from nasa's api, if its just '.daily' - it gets it from the database else if its the '.daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''    
   if message.content.startswith('.daily'):
     try:
       parameters = {'date': message.content.split(' ')[1]}
@@ -483,7 +480,7 @@ async def on_message(message):
       #temperatures
       for i in ['Warm','Cool']:
         for j in ['A1','B2']:
-          embed.add_field(name = f'Temp {i} Side {j[0]}', value = str(temp[f'temp{i}Side{j[1]}C']) + ' °C')
+          embed.add_field(name = f'Temp {i} Side {j[0]}', value = temp[f'temp{i}Side{j[1]}C'])
           
       embed.set_image(url=image[1])
       embed.set_footer(text = 'Built using NASA\'s Where is Webb website and the WebbTracker API')

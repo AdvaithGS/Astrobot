@@ -9,4 +9,6 @@ def get_james_webb():
   l2 = str(req["distanceL2Km"]) + ' km'
   percentage = str(round(req["percentageCompleted"],2)) + ' %'
   speed = str(req["speedKmS"]) + ' km/s'
+  for i in req['tempC']:
+    req['tempC'][i] = str(req['tempC'][i]) + ' °C'
   return elapsedTime,earthkm,l2,percentage,get_image(),speed,req["currentDeploymentStep"],req['tempC']
