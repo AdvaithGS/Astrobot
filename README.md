@@ -3,6 +3,7 @@ This is a Astronomy discord bot with various functionalities and uses; created w
 * [Invite](#Invite)
 * [Commands](#Commands)
 * [Vote](#Vote)
+* [Targets](#Targets)
 * [Creator](#Creator)
 
 
@@ -79,9 +80,14 @@ https://top.gg/bot/792458754208956466/vote
 
 https://discordbotlist.com/bots/astrobot-2515/upvote
 
+## Targets
+1. Improve `.iss` to have the names of people in the ISS - using OpenNotify and https://awesomeopensource.com/project/corquaid/international-space-station-APIs
+2. Integrate tools like SunCalc and MoonCalc
+3. Improve `.info` to give only data and bring in `.image` to give images
+4. Possibly use SpaceFlight News API
 ## Creator
 
-This bot has been created with blood, sweat and tears by Advaith GS, a class 11 student :/.
+This bot has been created with blood, sweat and tears by Advaith GS, a class 11 student.
 
 Find me on: https://advaithgs.repl.co <br>
 Discord: `AdvaithGS#6700` <br>
