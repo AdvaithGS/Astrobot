@@ -522,7 +522,11 @@ async def on_message(message):
     db['hour'] = int(strftime('%H'))
     activity,choice = get_activity()
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
-
+  #keeps the number of times each command has been called overall
+  if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id != 756496844867108937 or message.author != client.user:
+    x =  message.content.split()[0]
+    y = ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb']
+    db['commands'][y[y.index(x)]] += 1
 
 
 keep_alive()
