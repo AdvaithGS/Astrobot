@@ -135,7 +135,9 @@ Webb is Orbiting L2 in a HALO Orbit.
 
 Nominal Event Time: Launch + 29.5 days
 
-Webb is now orbiting L2. Telescope deployment is complete. Ongoing cooldown and instrument turn-on continue. The telescope and scientific instruments started to cool rapidly in the shade of the sunshield once it was deployed, but it will take several weeks for them to cool all the way down and reach stable temperatures. This cooldown will be carefully controlled with strategically-placed electric heater strips. The remaining five months of commissioning will be all about aligning the optics and calibrating the scientific instruments.
+Telescope deployment is complete. Webb is now orbiting L2. Ongoing cooldown and eventual instrument turn-on, testing and calibration occur. Telescope mirror alignment and calibration also begin as temperatures fall within range and instruments are enabled. 
+
+Ongoing cooldown and instrument turn-on continue. The telescope and scientific instruments started to cool rapidly in the shade of the sunshield once it was deployed, but it will take several weeks for them to cool all the way down and reach stable temperatures. This cooldown will be carefully controlled with strategically-placed electric heater strips. The remaining five months of commissioning will be all about aligning the optics and calibrating the scientific instruments.
 
 ''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/127.png','https://youtu.be/_2zQiWeXTg4']
 }
@@ -143,7 +145,7 @@ from time import strftime,gmtime
 from datetime import datetime
 def get_image():
     global db
-    d = (datetime(int(strftime('%Y')) , int(strftime('%m')),int(strftime('%d'))) - datetime(2021,12,27)).days
+    d = (datetime(int(strftime('%Y')) , int(strftime('%m')),int(strftime('%d'))) - datetime(2021,12,25)).days
     if d in (3,5,6,10,12,29):
         h = strftime('%H',gmtime())
         try:
@@ -167,7 +169,7 @@ def get_image():
     elif d in range(15,28):
       return db['15']
     elif d > 29:
-      return db['29']
+      return db['29.5']
     else:
         return db[str(d)]
     print(d)

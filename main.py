@@ -484,8 +484,8 @@ async def on_message(message):
           
       embed.set_image(url=img)
       embed.set_footer(text = 'Built using NASA\'s Where is Webb website and the WebbTracker API')
-      await ctx.send(embed = embed)
       await ctx.send(image[2])
+      await ctx.send(embed = embed)
     except Exception as e:
       from assets.image import get_image
       s = get_image()
@@ -523,10 +523,12 @@ async def on_message(message):
     activity,choice = get_activity()
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
   #keeps the number of times each command has been called overall
-  if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id != 756496844867108937 or message.author != client.user:
-    x =  message.content.split()[0]
-    y = ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb']
-    db['commands'][y[y.index(x)]] += 1
+  try:
+    if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id != 756496844867108937 and message.author != client.user:
+      x =  message.content.split()[0]
+      db[x] += 1
+  except:
+    pass
 
 
 keep_alive()

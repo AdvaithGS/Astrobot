@@ -6,7 +6,7 @@ def get_james_webb():
   req = loads(get('https://api.jwst-hub.com/track').text)
   elapsedTime = str(req["launchElapsedTime"].split(':')[0]) + ' days ' + str(req["launchElapsedTime"].split(':')[1])  +  ' hours' 
   earthkm = str(req["distanceEarthKm"]) + ' km'
-  if req["distanceL2Km"] == 'None':
+  if not req["distanceL2Km"]:
     l2 = '0 km'
   else:
     l2 = str(req["distanceL2Km"]) + ' km'
