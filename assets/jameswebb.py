@@ -1,6 +1,9 @@
 from requests import get
 from json import loads
-from assets.image import get_image
+try:
+  from assets.image import get_image
+except:
+  from image import get_image
 from datetime import datetime,timezone,timedelta
 def get_james_webb():
   offset = timezone(timedelta(hours = 5,minutes = 30))
