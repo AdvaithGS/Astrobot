@@ -1,17 +1,21 @@
 from requests import get
 from json import loads
 from assets.image import get_image
-
+from datetime import datetime
 def get_james_webb():
-  req = loads(get('https://api.jwst-hub.com/track').text)
-  elapsedTime = str(req["launchElapsedTime"].split(':')[0]) + ' days ' + str(req["launchElapsedTime"].split(':')[1])  +  ' hours' 
-  earthkm = str(req["distanceEarthKm"]) + ' km'
-  if not req["distanceL2Km"]:
-    l2 = '0 km'
-  else:
-    l2 = str(req["distanceL2Km"]) + ' km'
-  percentage = str(round(req["percentageCompleted"],2)) + ' %'
-  speed = str(req["speedKmS"]) + ' km/s'
-  for i in req['tempC']:
-    req['tempC'][i] = str(req['tempC'][i]) + ' °C'
-  return elapsedTime,earthkm,l2,percentage,get_image(),speed,req["currentDeploymentStep"],req['tempC'],req['deploymentImgURL']
+  now = datetime.now()
+  then = datetime(2021,12,25,17,30)
+  elapsedTime = f'{(now-then).days} days {(now-then).seconds//3600}  hours'
+  data = loads(get('https://www.jwst.nasa.gov/content/webbLaunch/flightCurrentState2.0.json').text)
+  data = data['currentState']
+  earthkm = '1460529.2 km'
+  l2 = '0 km'
+  percentage = '100 %'
+  speed = '0.2020 km/s'
+  i = 0
+  while i < len(data):
+      if 'temp' not in list(data.keys())[i]:
+          del data[list(data.keys())[i]]
+      else:
+          i += 1
+  return elapsedTime,earthkm,l2,percentage,get_image(),speed,'Webb is Orbiting L2',data
