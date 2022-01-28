@@ -3,8 +3,9 @@ from json import loads
 from assets.image import get_image
 from datetime import datetime,timezone,timedelta
 def get_james_webb():
-  now = datetime.now()
-  then = datetime(2021,12,25,17,30)
+  offset = timezone(timedelta(hours = 5,minutes = 30))
+  now = datetime.now(offset)
+  then = datetime(2021,12,25,17,30, tzinfo= timezone(timedelta(seconds=19800)))
   elapsedTime = f'{(now-then).days} days {(now-then).seconds//3600}  hours'
   data = loads(get('https://www.jwst.nasa.gov/content/webbLaunch/flightCurrentState2.0.json').text)
   data = data['currentState']
@@ -18,4 +19,6 @@ def get_james_webb():
           del data[list(data.keys())[i]]
       else:
           i += 1
+  for i in data:
+    data[i] = str(data[i]) + ' °C'
   return elapsedTime,earthkm,l2,percentage,get_image(),speed,'Webb is Orbiting L2',data
