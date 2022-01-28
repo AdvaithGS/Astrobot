@@ -1,7 +1,7 @@
 from requests import get
 from json import loads
 from assets.image import get_image
-from datetime import datetime
+from datetime import datetime,timezone,timedelta
 def get_james_webb():
   now = datetime.now()
   then = datetime(2021,12,25,17,30)
