@@ -134,8 +134,12 @@ async def on_message(message):
             await ctx.send(name)
         except:
           pass
-      except:
-        await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the   first day an APOD picture was posted')
+      except Exception as e:
+        print(e)
+        if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] == '500':
+          await ctx.send('There\'s seems to be something wrong with the NASA APOD API, try after some time')
+        else:
+          await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the   first day an APOD picture was posted')
 
   # ask for help and commands
   elif message.content.startswith('.help'):
@@ -505,7 +509,7 @@ async def on_message(message):
 
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
   parameters = {'date':strftime('%Y-%m-%d')}
-  if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) in range(4,10) and (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404':  
+  if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) in range(4,10) and (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404' and (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '500':  
       db['apod'] = strftime('%Y-%m-%d')
       req = literal_eval(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
       db['daily'] = req
