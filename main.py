@@ -137,7 +137,7 @@ async def on_message(message):
       except Exception as e:
         print(e)
         if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] == '500':
-          await ctx.send('There\'s seems to be something wrong with the NASA APOD API, try after some time')
+          await ctx.send('There\'s seems to be something wrong with the NASA APOD service, try after some time')
         else:
           await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the   first day an APOD picture was posted')
 
