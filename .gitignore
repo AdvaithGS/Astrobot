@@ -128,10 +128,12 @@ dmypy.json
 
 #personalised
 info.txt
+env.txt
 poetry.lock
 pyproject.toml
 core
 .vscode
 settings.json
 db.sqlite
+*~
 *.jpg
