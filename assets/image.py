@@ -139,7 +139,7 @@ Telescope deployment is complete. Webb is now orbiting L2. Ongoing cooldown and 
 
 Ongoing cooldown and instrument turn-on continue. The telescope and scientific instruments started to cool rapidly in the shade of the sunshield once it was deployed, but it will take several weeks for them to cool all the way down and reach stable temperatures. This cooldown will be carefully controlled with strategically-placed electric heater strips. The remaining five months of commissioning will be all about aligning the optics and calibrating the scientific instruments.
 
-''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/127.png','https://youtu.be/_2zQiWeXTg4']
+''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/127.png','https://www.youtube.com/watch?v=QlwatKpla8s']
 }
 from time import strftime,gmtime
 from datetime import datetime

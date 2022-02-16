@@ -492,7 +492,7 @@ async def on_message(message):
           embed.add_field(name = f'Temp {i} Side {j[0]}', value = temp[f'temp{i}Side{j[1]}C'])
           
       embed.set_image(url=image[1])
-      embed.set_footer(text = 'Built using NASA\'s Where is Webb website and the WebbTracker API')
+      embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
       await ctx.send(image[2])
       await ctx.send(embed = embed)
     except Exception as e:
@@ -508,9 +508,9 @@ async def on_message(message):
       print(e)
 
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
-  parameters = {'date':strftime('%Y-%m-%d')}
-  if db['apod'] != strftime('%Y-%m-%d') and int(strftime('%H')) in range(4,10) and (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '404' and (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] != '500':  
-      db['apod'] = strftime('%Y-%m-%d')
+  x = strftime('%y%m%d')
+  if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200:
+      db['apod'] = x
       req = literal_eval(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
       db['daily'] = req
       for guild in db.keys():
