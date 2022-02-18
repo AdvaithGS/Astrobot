@@ -54,7 +54,7 @@ def get_activity():
 @client.event
 async def on_ready():
   s = len(client.guilds)
-  print('We have logged in as {0.user} in {1} guilds'.format(client,s))
+  print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity()
@@ -508,8 +508,12 @@ async def on_message(message):
       print(e)
 
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
+
   x = strftime('%y%m%d')
   if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200:
+
+    if x != db['apod'] and literal_eval(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']:
+
       db['apod'] = x
       req = literal_eval(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
       db['daily'] = req
@@ -519,6 +523,8 @@ async def on_message(message):
           await channel.send('.daily')
         except:
           pass
+
+
   '''elif message.content.startswith('.test'):
     embed = discord.Embed(title = 'Test!',description = 'This is a test',colour = discord.Color.orange())
     file = discord.File('test.jpg')
@@ -531,14 +537,17 @@ async def on_message(message):
     db['hour'] = int(strftime('%H'))
     activity,choice = get_activity()
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
+  
+  
   #keeps the number of times each command has been called overall
   try:
-    if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id != 756496844867108937 and message.author != client.user:
+    if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id != 756496844867108937 and message.author.id != 792458754208956466:
       x =  message.content.split()[0]
       db[x] += 1
+    else:
+      print(type(message.author.id), message.author.user.name)
   except:
     pass
-
 
 keep_alive()
 client.run(os.environ['TOKEN'])
