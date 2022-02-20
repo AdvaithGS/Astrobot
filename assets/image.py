@@ -151,7 +151,17 @@ Webb team members saw the first photons of starlight that traveled through the e
 
 We are pointing the telescope at a bright, isolated star (HD 84406) to capture a series of images that are then stitched together to form a picture of that part of the sky. We don’t have just one mirror looking at this star; we have 18 mirrors, each of which is initially tilted towards a different part of the sky. As a result, we’ll actually capture 18 slightly shifted copies of the star – each one out of focus and uniquely distorted. We refer to these initial star-copies as 'segment images.'
 
-One by one, we will move the 18 mirror segments to determine which segment creates which segment image. After matching the mirror segments to their respective images, we can tilt the mirrors to bring all the images near a common point for further analysis. We call this arrangement an "image array".''','https://jwst.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/segmentIdPhaseStep1-1000px-trans.png','https://www.youtube.com/watch?v=QlwatKpla8s']
+One by one, we will move the 18 mirror segments to determine which segment creates which segment image. After matching the mirror segments to their respective images, we can tilt the mirrors to bring all the images near a common point for further analysis. We call this arrangement an "image array".''','https://jwst.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/segmentIdPhaseStep1-1000px-trans.png','https://www.youtube.com/watch?v=QlwatKpla8s'],
+'60':['''Segment Alignment
+Step 2
+
+Nominal Event Time: Starts - Launch + ~2 Months
+
+Status: Future
+
+After we have the image array, we can perform Segment Alignment, which corrects most of the large positioning errors of the mirror segments.
+
+We begin by defocusing the segment images by moving the secondary mirror slightly. Mathematical analysis, called Phase Retrieval, is applied to the defocused images to determine the precise positioning errors of the segments. Adjustments of the segments then result in 18 well-corrected “telescopes.” However, the segments still don’t work together as a single mirror.''','https://jwst.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/mirrorAlignStep2-1000px.jpg','https://www.youtube.com/watch?v=QlwatKpla8s']
 }
 from time import strftime,gmtime
 from datetime import datetime
@@ -181,7 +191,7 @@ def get_image():
     elif d in range(15,28):
       return db['15']
     elif d > 29:
-      return db['42']
+      return db['60']
     else:
         return db[str(d)]
     print(d)
