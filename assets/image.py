@@ -139,7 +139,19 @@ Telescope deployment is complete. Webb is now orbiting L2. Ongoing cooldown and 
 
 Ongoing cooldown and instrument turn-on continue. The telescope and scientific instruments started to cool rapidly in the shade of the sunshield once it was deployed, but it will take several weeks for them to cool all the way down and reach stable temperatures. This cooldown will be carefully controlled with strategically-placed electric heater strips. The remaining five months of commissioning will be all about aligning the optics and calibrating the scientific instruments.
 
-''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/127.png','https://www.youtube.com/watch?v=QlwatKpla8s']
+''','https://www.jwst.nasa.gov/content/webbLaunch/assets/images/deployment/1000pxWide/127.png','https://www.youtube.com/watch?v=QlwatKpla8s'],
+'42':['''Segment Image Identification
+Step 1
+
+Nominal Event Time: Starts - Launch + ~6 weeks
+
+Status: Ongoing | Replay Media Telecon | First Photons
+
+Webb team members saw the first photons of starlight that traveled through the entire telescope and were detected by the Near Infrared Camera (NIRCam) instrument. This milestone marks the first of many steps to capture images that are at first unfocused and use them to slowly fine-tune the telescope. This is the very beginning of the process as Segment Image Identification begins.
+
+We are pointing the telescope at a bright, isolated star (HD 84406) to capture a series of images that are then stitched together to form a picture of that part of the sky. We don’t have just one mirror looking at this star; we have 18 mirrors, each of which is initially tilted towards a different part of the sky. As a result, we’ll actually capture 18 slightly shifted copies of the star – each one out of focus and uniquely distorted. We refer to these initial star-copies as 'segment images.'
+
+One by one, we will move the 18 mirror segments to determine which segment creates which segment image. After matching the mirror segments to their respective images, we can tilt the mirrors to bring all the images near a common point for further analysis. We call this arrangement an "image array".''','https://jwst.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/segmentIdPhaseStep1-1000px-trans.png','https://www.youtube.com/watch?v=QlwatKpla8s']
 }
 from time import strftime,gmtime
 from datetime import datetime
@@ -169,7 +181,7 @@ def get_image():
     elif d in range(15,28):
       return db['15']
     elif d > 29:
-      return db['29.5']
+      return db['42']
     else:
         return db[str(d)]
     print(d)

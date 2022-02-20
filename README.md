@@ -85,6 +85,7 @@ https://discordbotlist.com/bots/astrobot-2515/upvote
 2. Integrate tools like SunCalc and MoonCalc
 3. Improve `.info` to give only data and bring in `.image` to give images
 4. Possibly use SpaceFlight News API
+5. Add video demos to README file
 ## Creator
 
 This bot has been created with blood, sweat and tears by Advaith GS, a class 11 student.
