@@ -134,6 +134,7 @@ pyproject.toml
 core
 .vscode
 settings.json
-db.sqlite
+*.sqlite
+*.sql
 *~
 *.jpg
