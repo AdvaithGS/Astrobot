@@ -132,6 +132,7 @@ env.txt
 poetry.lock
 pyproject.toml
 core
+.breakpoints
 .vscode
 settings.json
 *.sqlite

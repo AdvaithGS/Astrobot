@@ -1,5 +1,6 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
 import discord
+from datetime import datetime
 import os
 from discord_components import Button
 import reverse_geocoder
@@ -9,7 +10,7 @@ from assets.country_code import find_country
 from assets.facts import random_fact
 from assets.jameswebb import get_james_webb
 from datetime import datetime 
-from time import strftime, sleep
+from time import strftime, sleep,mktime
 from requests import get,post
 from requests.auth import HTTPBasicAuth
 if __name__ == '__main__':
@@ -508,7 +509,7 @@ async def on_message(message):
       print(e)
 
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
-
+      
   x = strftime('%y%m%d')
   if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and literal_eval(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
 
@@ -531,8 +532,8 @@ async def on_message(message):
     await ctx.send(embed=embed, file=file)'''
 
   #updates the status every 6 hours - seems to not be completely working but it does change the status
-  if int(strftime('%H')) >= db['hour'] + 6 or int(strftime('%H')) < db['hour']:
-    db['hour'] = int(strftime('%H'))
+  if mktime(datetime.now().timetuple()) - db['hour'] >= 21600:
+    db['hour'] = mktime(datetime.now().timetuple())
     activity,choice = get_activity()
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
   
