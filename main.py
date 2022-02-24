@@ -9,7 +9,6 @@ db = SqliteDict('./db.sqlite', autocommit = True)
 from assets.country_code import find_country
 from assets.facts import random_fact
 from assets.jameswebb import get_james_webb
-from datetime import datetime 
 from time import strftime, sleep,mktime
 from requests import get,post
 from requests.auth import HTTPBasicAuth
@@ -35,12 +34,16 @@ secret = os.environ['api_key4']
 appid = '6aaa6bf5-ecd9-44c6-9a30-8252e2269103'
 
 #generates a random activity that the bot can set as its status
-def get_activity():
+def get_activity(caller):
+  
   choice = random.choice([0,2,3,4,6,7,8,10,11,15,16])
   lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe Works','Life of A Star', '', 'to Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','','The James Webb Space Telescope','`.help`']
   # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
   activity = lst[choice]
   choice = choice%4
+  with open('log.txt','a') as f:
+      time = strftime('%d/%m/%Y-%H:%M')
+      f.write(f'\n{time} {caller}: {choice}-{activity}')
   return activity , choice
 '''def send_all(message,type):
     for guild in db.keys():
@@ -58,7 +61,7 @@ async def on_ready():
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
-  activity , choice = get_activity()
+  activity , choice = get_activity('Startup')
   await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
   '''embed = discord.Embed(title = 'New Update',description ="After working on it for some time, the James Webb Space Telescope tracker is now online - use `.webb` to get its current mission completion and the stage it is currently undergoing.",color = discord.Color.orange())
   for guild in db.keys():
@@ -534,7 +537,7 @@ async def on_message(message):
   #updates the status every 6 hours - seems to not be completely working but it does change the status
   if mktime(datetime.now().timetuple()) - db['hour'] >= 21600:
     db['hour'] = mktime(datetime.now().timetuple())
-    activity,choice = get_activity()
+    activity,choice = get_activity('Automatic')
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
   
   

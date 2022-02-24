@@ -127,7 +127,7 @@ dmypy.json
 .pyre/
 
 #personalised
-info.txt
+*.txt
 env.txt
 poetry.lock
 pyproject.toml
