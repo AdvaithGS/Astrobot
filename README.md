@@ -88,7 +88,7 @@ https://discordbotlist.com/bots/astrobot-2515/upvote
 5. Add video demos to README file
 ## Creator
 
-This bot has been created with blood, sweat and tears by Advaith GS, a class 11 student.
+This bot has been created with blood, sweat and tears by Advaith GS.
 
 Find me on: https://advaithgs.repl.co <br>
 Discord: `AdvaithGS#6700` <br>

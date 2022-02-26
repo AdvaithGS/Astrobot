@@ -37,7 +37,7 @@ appid = '6aaa6bf5-ecd9-44c6-9a30-8252e2269103'
 def get_activity(caller):
   
   choice = random.choice([0,2,3,4,6,7,8,10,11,15,16])
-  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','Your .iss requests','How The Universe Works','Life of A Star', '', 'to Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','','The James Webb Space Telescope','`.help`']
+  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','`.help`','How The Universe Works','Life of A Star', '', 'to Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','','The James Webb Space Telescope','Your .iss requests']
   # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
   activity = lst[choice]
   choice = choice%4
@@ -303,9 +303,9 @@ async def on_message(message):
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'
     url = get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}')
-    with open('test.jpg', 'wb') as handler:
+    with open('iss.jpg', 'wb') as handler:
       handler.write(url.content)
-    file = discord.File('test.jpg')
+    file = discord.File('iss.jpg')
     embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = discord.Color.orange())
     embed.set_image(url = 'attachment://test.jpg')
     velocity = round(req['velocity'],2)
