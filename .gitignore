@@ -126,8 +126,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#personalised
-*.txt
+#personal
+info.txt
+log.txt
 env.txt
 poetry.lock
 pyproject.toml
