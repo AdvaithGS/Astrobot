@@ -161,40 +161,21 @@ Status: Future
 
 After we have the image array, we can perform Segment Alignment, which corrects most of the large positioning errors of the mirror segments.
 
-We begin by defocusing the segment images by moving the secondary mirror slightly. Mathematical analysis, called Phase Retrieval, is applied to the defocused images to determine the precise positioning errors of the segments. Adjustments of the segments then result in 18 well-corrected “telescopes.” However, the segments still don’t work together as a single mirror.''','https://jwst.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/mirrorAlignStep2-1000px.jpg','https://www.youtube.com/watch?v=QlwatKpla8s']
+We begin by defocusing the segment images by moving the secondary mirror slightly. Mathematical analysis, called Phase Retrieval, is applied to the defocused images to determine the precise positioning errors of the segments. Adjustments of the segments then result in 18 well-corrected “telescopes.” However, the segments still don’t work together as a single mirror.''','https://jwst.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/mirrorAlignStep2-1000px.jpg','https://www.youtube.com/watch?v=QlwatKpla8s'],
+'latest':['''Coarse Phasing
+Step 4
+
+Nominal Event Time: Starts - Launch + ~3 Months
+
+Status: Ongoing
+
+Although Image Stacking puts all the light in one place on the detector, the segments are still acting as 18 small telescopes rather than one big one. The segments need to be lined up with each other with an accuracy smaller than the wavelength of the light.
+
+Conducted three times during the commissioning process, Coarse Phasing measures and corrects the vertical displacement (piston difference) of the mirror segments. Using a technology known as Dispersed Fringe Sensing, we use NIRCam to capture light spectra from 20 separate pairings of mirror segments. The spectrum will resemble a barber pole pattern with a slope (or angle) determined by the piston difference of the two segments in the pairing.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step4VideoGrab-1000px.jpg','https://www.youtube.com/watch?v=QlwatKpla8s']
 }
-from time import strftime,gmtime
-from datetime import datetime
 def get_image():
     global db
-    d = (datetime(int(strftime('%Y')) , int(strftime('%m')),int(strftime('%d'))) - datetime(2021,12,25)).days
-    if d in (3,5,6,10,12,29):
-        h = strftime('%H',gmtime())
-        try:
-          h = h.replace('0','')
-        except:
-          pass
-        if int(h) > 12:
-            return db[str(d)+'.5']
-        return db[str(d)]
-    elif d == 9:
-      return db['8']
-    elif d == 14:
-      return db['13.3']
-    elif d == 13:
-      h = int(strftime('%H',gmtime()))
-      if h <= 8:
-        return db[str(d)+'.1']
-      elif h <= 16:
-        return db[str(d) + '.2']
-      return db[str(d) + '.3']
-    elif d in range(15,28):
-      return db['15']
-    elif d > 29:
-      return db['60']
-    else:
-        return db[str(d)]
-    print(d)
+    return db['latest']
     
 
 
