@@ -307,7 +307,7 @@ async def on_message(message):
       handler.write(url.content)
     file = discord.File('iss.jpg')
     embed = discord.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = discord.Color.orange())
-    embed.set_image(url = 'attachment://test.jpg')
+    embed.set_image(url = 'attachment://iss.jpg')
     velocity = round(req['velocity'],2)
     embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
     altitude = round(req['altitude'],2)
