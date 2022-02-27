@@ -31,7 +31,7 @@ except:
 api_key2 = os.environ['api_key2']
 api_key3 = os.environ['api_key3']
 secret = os.environ['api_key4']
-appid = '6aaa6bf5-ecd9-44c6-9a30-8252e2269103'
+appid = os.environ['appid']
 
 #generates a random activity that the bot can set as its status
 def get_activity(caller):
@@ -446,7 +446,7 @@ async def on_message(message):
       else:
         orientation = "south-up" 
         ori2 = "north-up"
-      req = post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret), 
+      req = post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret),
       json = {
           "format": "png",
           "style": {
