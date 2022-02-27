@@ -1,7 +1,7 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
 import discord
 from datetime import datetime
-import os
+from os import environ
 from discord_components import Button
 import reverse_geocoder
 from sqlitedict import SqliteDict
@@ -23,15 +23,15 @@ from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
 import random
 try:
-  api_key = os.environ['api_key']
+  api_key = environ['api_key']
 except:
   from dotenv import load_dotenv
   load_dotenv('.env')
-  api_key = os.environ['api_key']
-api_key2 = os.environ['api_key2']
-api_key3 = os.environ['api_key3']
-secret = os.environ['api_key4']
-appid = os.environ['appid']
+  api_key = environ['api_key']
+api_key2 = environ['api_key2']
+api_key3 = environ['api_key3']
+secret = environ['api_key4']
+appid = environ['appid']
 
 #generates a random activity that the bot can set as its status
 def get_activity(caller):
@@ -552,6 +552,6 @@ async def on_message(message):
     pass
 
 keep_alive()
-client.run(os.environ['TOKEN'])
+client.run(environ['TOKEN'])
 
 

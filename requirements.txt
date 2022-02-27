@@ -5,6 +5,8 @@ discord_components
 reverse_geocoder
 sqlitedict
 geopy
-PyQt5
-pygame
-kivy
+json
+ast
+random
+os
+dotenv
