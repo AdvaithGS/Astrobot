@@ -197,13 +197,15 @@ async def on_message(message):
       await mes.delete()
     except:
       await ctx.send('This server has not been registered to the APOD feed.')
+
+  #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
   elif message.content.startswith('.info'):
     query = message.content.split(' ',1)[1]
     text,image,desc = get_wiki(query)
     if text:
       embed = discord.Embed(title = query.title() , description = text,   color=discord.Color.orange())
       get_body(embed, query)
-      embed.set_footer(text = f'{desc} - Obtained from Solar System OpenData API and the Wikipedia API')
+      embed.set_footer(text = f'{desc} \n\nObtained from Solar System OpenData API and the Wikipedia API')
       embed.set_image(url = image)
     else:
       embed = discord.Embed(title = desc , description = 'Try again with a refined search parameter',   color=discord.Color.orange())
