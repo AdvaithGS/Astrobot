@@ -6,10 +6,11 @@ from discord_components import Button
 import reverse_geocoder
 from sqlitedict import SqliteDict
 db = SqliteDict('./db.sqlite', autocommit = True)
-from assets.country_code import find_country
-from assets.wiki import get_wiki
-from assets.facts import random_fact
-from assets.jameswebb import get_james_webb
+from assets.countries.country_code import find_country
+from assets.wiki.solarsystem import get_body
+from assets.wiki.wiki import get_wiki
+from assets.facts.facts import random_fact
+from assets.jameswebb.jameswebb import get_james_webb
 from time import strftime, sleep,mktime
 from requests import get,post
 from requests.auth import HTTPBasicAuth
@@ -197,73 +198,16 @@ async def on_message(message):
     except:
       await ctx.send('This server has not been registered to the APOD feed.')
   elif message.content.startswith('.info'):
-    q = message.content.split(' ',1)[1]
-    text,image,desc = get_wiki(q)
+    query = message.content.split(' ',1)[1]
+    text,image,desc = get_wiki(query)
     if text:
-      try:
-        req = loads(get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
-
-        if req['mass']:
-          a = str(req['mass']['massValue'])
-          b = str(req['mass']['massExponent'])
-          embed.add_field(name = 'Mass' , value = f'{a} x 10^{b} kg')
-        else:
-          embed.add_field(name = 'Mass', value = 'Unknown')
-
-        if not req['density']:
-          embed.add_field(name='Density' , value = 'Unknown')
-        else:
-          embed.add_field(name='Density' , value = str(req['density'])+ ' g/cm³')
-
-        if not req['gravity']:
-          embed.add_field(name='Gravity' , value = 'Unknown')
-        else:
-          embed.add_field(name='Gravity' , value = str(req['gravity']) + ' m/s²')
-
-        if not req['sideralOrbit']:
-          embed.add_field(name = 'Period of Revolution', value = 'Unknown')
-        else:
-          embed.add_field(name = 'Period of Revolution', value = str(req['sideralOrbit']) + '  days')
-
-        if not req['sideralRotation']:
-         embed.add_field(name = 'Period of Rotation', value = 'Unknown')
-        else:
-          embed.add_field(name = 'Period of Rotation', value = str(req['sideralRotation']) + '   hours')
-
-        if req['meanRadius']:
-          a = req['meanRadius']
-          embed.add_field(name = 'Mean Radius' , value = f'{a} km')
-        else:
-          embed.add_field(name = 'Mean Radius' , value = 'Unknown')
-
-        if not req['escape']:
-          embed.add_field(name = 'Escape Velocity', value = 'Unknown')
-        else:
-          a = req['escape']
-          embed.add_field(name = 'Escape Velocity', value = f'{a} m/s') 
-
-        if not req['discoveredBy']:
-          embed.add_field(name='Discovered By' , value = 'Unknown')
-        else:
-          embed.add_field(name='Discovered By' , value = req['discoveredBy'])
-
-        if not req['discoveryDate']:
-          embed.add_field(name='Discovery Date' , value = 'Unknown')
-        else:
-          embed.add_field(name='Discovery Date' , value = req['discoveryDate'])
-
-        if not req['moons']:
-          aroundPlanet = req['aroundPlanet']['planet'].title()
-          embed.add_field(name = 'Around Planet',value = aroundPlanet)
-        else:
-          numMoons = len(req['moons'])
-          embed.add_field(name = 'Moons',value = numMoons)
-        
-      except:
-        pass
       embed = discord.Embed(title = query.title() , description = text,   color=discord.Color.orange())
+      get_body(embed, query)
       embed.set_footer(text = f'{desc} - Obtained from Solar System OpenData API and the Wikipedia API')
-      
+      embed.set_image(url = image)
+    else:
+      embed = discord.Embed(title = desc , description = 'Try again with a refined search parameter',   color=discord.Color.orange())
+    await ctx.send(embed = embed)  
   #returns the user id
   elif message.content.startswith('.id'):
     await ctx.send(message.author.id)
@@ -275,7 +219,8 @@ async def on_message(message):
   #any page from the total pages, takes the description and image and 
   #then uses the solar system open data api to pick numerical data 
   #regarding the query, if it is an astronomical body. oof.
-  #UPDATE - THIS HAS BEEN REPLACED BY THE WIKIPEDIA API - IMAGES TO BE ADDED TO A NEW .image COMMAND  
+
+  #UPDATE - THIS HAS BEEN REPLACED BY THE WIKIPEDIA API - IMAGES TO BE ADDED TO A NEW '.image' COMMAND  
   elif message.content.startswith('.info'):
     try:
       q = str(message.content)[6:]
