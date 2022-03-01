@@ -211,93 +211,6 @@ async def on_message(message):
   #returns the user id
   elif message.content.startswith('.id'):
     await ctx.send(message.author.id)
-    
-  #this info command first checks the total number of pages by going to 
-  #the 100th page (since no queries are 100 pages long, the image and 
-  #video api just mentions the last valid page number) and 
-  #takes the last page number from there, uses the random library to pick 
-  #any page from the total pages, takes the description and image and 
-  #then uses the solar system open data api to pick numerical data 
-  #regarding the query, if it is an astronomical body. oof.
-
-  #UPDATE - THIS HAS BEEN REPLACED BY THE WIKIPEDIA API - IMAGES TO BE ADDED TO A NEW '.image' COMMAND  
-  elif message.content.startswith('.info'):
-    try:
-      q = str(message.content)[6:]
-      req3 = literal_eval(get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
-      parameters = {'page': str(random.randrange(1,int(req3)+1))}
-      req2 = literal_eval(get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
-      choice = random.choice(dict(req2['collection'])['items'])
-      desc = str(choice['data'][0]['description']).capitalize()
-      embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.orange())
-      url = (choice['links'][0]['href']).replace(' ','%20') 
-      try:
-        req = loads(get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
-
-        if req['mass']:
-          a = str(req['mass']['massValue'])
-          b = str(req['mass']['massExponent'])
-          embed.add_field(name = 'Mass' , value = f'{a} x 10^{b} kg')
-        else:
-          embed.add_field(name = 'Mass', value = 'Unknown')
-
-        if not req['density']:
-          embed.add_field(name='Density' , value = 'Unknown')
-        else:
-          embed.add_field(name='Density' , value = str(req['density'])+ ' g/cm³')
-
-        if not req['gravity']:
-          embed.add_field(name='Gravity' , value = 'Unknown')
-        else:
-          embed.add_field(name='Gravity' , value = str(req['gravity']) + ' m/s²')
-
-        if not req['sideralOrbit']:
-          embed.add_field(name = 'Period of Revolution', value = 'Unknown')
-        else:
-          embed.add_field(name = 'Period of Revolution', value = str(req['sideralOrbit']) + '  days')
-
-        if not req['sideralRotation']:
-         embed.add_field(name = 'Period of Rotation', value = 'Unknown')
-        else:
-          embed.add_field(name = 'Period of Rotation', value = str(req['sideralRotation']) + '   hours')
-
-        if req['meanRadius']:
-          a = req['meanRadius']
-          embed.add_field(name = 'Mean Radius' , value = f'{a} km')
-        else:
-          embed.add_field(name = 'Mean Radius' , value = 'Unknown')
-
-        if not req['escape']:
-          embed.add_field(name = 'Escape Velocity', value = 'Unknown')
-        else:
-          a = req['escape']
-          embed.add_field(name = 'Escape Velocity', value = f'{a} m/s') 
-
-        if not req['discoveredBy']:
-          embed.add_field(name='Discovered By' , value = 'Unknown')
-        else:
-          embed.add_field(name='Discovered By' , value = req['discoveredBy'])
-
-        if not req['discoveryDate']:
-          embed.add_field(name='Discovery Date' , value = 'Unknown')
-        else:
-          embed.add_field(name='Discovery Date' , value = req['discoveryDate'])
-
-        if not req['moons']:
-          aroundPlanet = req['aroundPlanet']['planet'].title()
-          embed.add_field(name = 'Around Planet',value = aroundPlanet)
-        else:
-          numMoons = len(req['moons'])
-          embed.add_field(name = 'Moons',value = numMoons)
-        
-      except:
-        pass
-      embed.set_image(url = url)
-      text = 'Built using the Solar system OpenData Api and the NASA video and image library.'
-      embed.set_footer(text = text)
-      await ctx.send(embed = embed)
-    except:
-      await ctx.send('You have not specified a query or your query is wrong, use `.info <query>`')
   
   #takes info about the location of iss from wheretheiss.at and uses mapquest to obtain a map image of that
   elif message.content.startswith('.whereiss') or message.content.startswith('.iss'):
@@ -524,7 +437,94 @@ async def on_message(message):
       except:
         pass
       print(e)
+      
+  #this info command first checks the total number of pages by going to 
+  #the 100th page (since no queries are 100 pages long, the image and 
+  #video api just mentions the last valid page number) and 
+  #takes the last page number from there, uses the random library to pick 
+  #any page from the total pages, takes the description and image and 
+  #then uses the solar system open data api to pick numerical data 
+  #regarding the query, if it is an astronomical body. oof.
 
+  #UPDATE - THIS HAS BEEN REPLACED BY THE WIKIPEDIA API - IMAGES TO BE ADDED TO A NEW '.image' COMMAND  
+  ''' elif message.content.startswith('.info'):
+    try:
+      q = str(message.content)[6:]
+      req3 = literal_eval(get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
+      parameters = {'page': str(random.randrange(1,int(req3)+1))}
+      req2 = literal_eval(get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
+      choice = random.choice(dict(req2['collection'])['items'])
+      desc = str(choice['data'][0]['description']).capitalize()
+      embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.orange())
+      url = (choice['links'][0]['href']).replace(' ','%20') 
+      try:
+        req = loads(get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
+
+        if req['mass']:
+          a = str(req['mass']['massValue'])
+          b = str(req['mass']['massExponent'])
+          embed.add_field(name = 'Mass' , value = f'{a} x 10^{b} kg')
+        else:
+          embed.add_field(name = 'Mass', value = 'Unknown')
+
+        if not req['density']:
+          embed.add_field(name='Density' , value = 'Unknown')
+        else:
+          embed.add_field(name='Density' , value = str(req['density'])+ ' g/cm³')
+
+        if not req['gravity']:
+          embed.add_field(name='Gravity' , value = 'Unknown')
+        else:
+          embed.add_field(name='Gravity' , value = str(req['gravity']) + ' m/s²')
+
+        if not req['sideralOrbit']:
+          embed.add_field(name = 'Period of Revolution', value = 'Unknown')
+        else:
+          embed.add_field(name = 'Period of Revolution', value = str(req['sideralOrbit']) + '  days')
+
+        if not req['sideralRotation']:
+         embed.add_field(name = 'Period of Rotation', value = 'Unknown')
+        else:
+          embed.add_field(name = 'Period of Rotation', value = str(req['sideralRotation']) + '   hours')
+
+        if req['meanRadius']:
+          a = req['meanRadius']
+          embed.add_field(name = 'Mean Radius' , value = f'{a} km')
+        else:
+          embed.add_field(name = 'Mean Radius' , value = 'Unknown')
+
+        if not req['escape']:
+          embed.add_field(name = 'Escape Velocity', value = 'Unknown')
+        else:
+          a = req['escape']
+          embed.add_field(name = 'Escape Velocity', value = f'{a} m/s') 
+
+        if not req['discoveredBy']:
+          embed.add_field(name='Discovered By' , value = 'Unknown')
+        else:
+          embed.add_field(name='Discovered By' , value = req['discoveredBy'])
+
+        if not req['discoveryDate']:
+          embed.add_field(name='Discovery Date' , value = 'Unknown')
+        else:
+          embed.add_field(name='Discovery Date' , value = req['discoveryDate'])
+
+        if not req['moons']:
+          aroundPlanet = req['aroundPlanet']['planet'].title()
+          embed.add_field(name = 'Around Planet',value = aroundPlanet)
+        else:
+          numMoons = len(req['moons'])
+          embed.add_field(name = 'Moons',value = numMoons)
+        
+      except:
+        pass
+      embed.set_image(url = url)
+      text = 'Built using the Solar system OpenData Api and the NASA video and image library.'
+      embed.set_footer(text = text)
+      await ctx.send(embed = embed)
+    except:
+      await ctx.send('You have not specified a query or your query is wrong, use `.info   <query>`')'''
+  
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
       
   x = strftime('%y%m%d')
@@ -540,7 +540,7 @@ async def on_message(message):
         except:
           pass
 
-
+  
   '''elif message.content.startswith('.test'):
     embed = discord.Embed(title = 'Test!',description = 'This is a test',colour = discord.Color.gold())
     file = discord.File('test.jpg')
