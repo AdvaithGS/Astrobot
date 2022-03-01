@@ -11,8 +11,7 @@ def clean(text):
     return text
 def get_wiki(search_query):
   not_space = False
-  try:        
-          language_code = 'en'
+  try:
           number_of_results = 1
           website = 'wikipedia'
           headers = {

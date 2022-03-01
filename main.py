@@ -38,8 +38,8 @@ appid = environ['appid']
 #generates a random activity that the bot can set as its status
 def get_activity(caller):
   
-  choice = random.choice([0,2,3,4,6,7,8,10,11,15,16])
-  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','`.help`','How The Universe Works','Life of A Star', '', 'to Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','','The James Webb Space Telescope','Your .iss requests']
+  choice = random.choice([0,2,3,4,6,7,8,10,11,15,18])
+  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','`.help`','How The Universe Works','Life of A Star', '', 'to Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','','The James Webb Space Telescope','','','Your `.iss` requests']
   # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
   activity = lst[choice]
   choice = choice%4
@@ -561,6 +561,7 @@ async def on_message(message):
   try:
     if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id != 756496844867108937 and message.author.id != 792458754208956466:
       x =  message.content.split()[0]
+      print(message.author.id,type(message.author.id))
       db[x] += 1
     else:
       print(type(message.author.id), message.author.user.name)
