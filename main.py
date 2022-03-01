@@ -527,12 +527,12 @@ async def on_message(message):
           pass
 
 
-  '''elif message.content.startswith('.test'):
-    embed = discord.Embed(title = 'Test!',description = 'This is a test',colour = discord.Color.orange())
+  elif message.content.startswith('.test'):
+    embed = discord.Embed(title = 'Test!',description = 'This is a test',colour = discord.Color.gold())
     file = discord.File('test.jpg')
     embed.set_image(url = 'attachment://test.jpg')
     embed.set_footer(text = 'Im just trying to see how images can be added to embeds in a different way.')
-    await ctx.send(embed=embed, file=file)'''
+    await ctx.send(embed=embed, file=file)
 
   #updates the status every 6 hours - seems to not be completely working but it does change the status
   if mktime(datetime.now().timetuple()) - db['hour'] >= 21600:
