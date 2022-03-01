@@ -1,7 +1,7 @@
 from requests import get
 from json import loads
 try:
-  from assets.image import get_image
+  from assets.jameswebb.image import get_image
 except:
   from image import get_image
 from datetime import datetime,timezone,timedelta
