@@ -12,8 +12,6 @@ def clean(text):
 def get_wiki(search_query):
   not_space = False
   try:
-          number_of_results = 1
-          website = 'wikipedia'
           headers = {
                   'Authorization': environ['api_key5'],
                   'User-Agent': 'Advaith'
@@ -38,7 +36,8 @@ def get_wiki(search_query):
                   not_space = True
                   correct = False
           except:
-              if 'refer' in soup.find_all('p')[0].text or 'refer' in soup.find_all('p')[1].text or  'other' in soup.find_all('p')[0].text or 'other' in soup.find_all('p')[1].text:
+              if ('refer' in soup.find_all('p')[0].text or 'refer' in soup.find_all('p')[1].text or  'other' in soup.find_all('p')[0].text or 'other' in soup.find_all('p')[1].text) and len(soup.find_all('p')[2].text) < 50:
+                  print('other' in soup.find_all('p')[0].text)
                   for i in soup.find_all('a'):
                       if any([z in i.text.lower() for z in l]):
                           search_query = i['href'][1:]
@@ -56,8 +55,8 @@ def get_wiki(search_query):
                   else:
                       correct = False
           if correct:
-              url = f'https://api.wikimedia.org/core/v1/{website}/en/search/page'
-              parameters = {'q': search_query, 'limit': number_of_results}
+              url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page'
+              parameters = {'q': search_query, 'limit': 1}
               response = requests.get(url, headers=headers, params=parameters)
           try:
               image = 'https:' + loads(response.text)['pages'][0]['thumbnail']['url'].replace('/thumb','').rsplit('/',1)[0]

@@ -561,10 +561,7 @@ async def on_message(message):
   try:
     if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id != 756496844867108937 and message.author.id != 792458754208956466:
       x =  message.content.split()[0]
-      print(message.author.id,type(message.author.id))
       db[x] += 1
-    else:
-      print(type(message.author.id), message.author.user.name)
   except:
     pass
 
