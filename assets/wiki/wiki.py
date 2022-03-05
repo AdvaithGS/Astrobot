@@ -10,6 +10,8 @@ def clean(text):
         text = text.replace(text[text.find('['):text.find(']',text.find('['))+1],'')
     return text
 def get_wiki(search_query):
+  if len(search_query.split()) == 1:
+    search_query = search_query.capitalize()
   not_space = False
   try:
           headers = {
