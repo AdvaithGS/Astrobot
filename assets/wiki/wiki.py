@@ -12,7 +12,6 @@ def clean(text):
 def get_wiki(search_query):
   if len(search_query.split()) == 1:
     search_query = search_query.capitalize()
-  print(search_query)
   not_space = False
   try:
           headers = {
@@ -39,7 +38,7 @@ def get_wiki(search_query):
                   not_space = True
                   correct = False
           except:
-              if ('refer' in soup.find_all('p')[0].text or 'refer' in soup.find_all('p')[1].text or  'other' in soup.find_all('p')[0].text or 'other' in soup.find_all('p')[1].text) and len(soup.find_all('p')[2].text) < 50:
+              if ('refer' in soup.find_all('p')[0].text or 'refer' in soup.find_all('p')[1].text or  'other' in soup.find_all('p')[0].text or 'other' in soup.find_all('p')[1].text):# and len(soup.find_all('p')[2].text) < 50:
                   for i in soup.find_all('a'):
                       if any([z in i.text.lower() for z in l]):
                           search_query = i['href'][1:]
