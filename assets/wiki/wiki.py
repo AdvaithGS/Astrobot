@@ -62,7 +62,7 @@ def get_wiki(search_query):
             response = loads(requests.get(url, headers=headers, params=parameters).text)
             image = 'https:' + response['pages'][0]['thumbnail']['url'].replace('/thumb','').rsplit('/',1)[0]
             try:
-              desc = clean(soup.find('div', attrs = {'class':'infobox-caption'}))
+              desc = clean(soup.find('div', attrs = {'class':'infobox-caption'}).text)
             except:
               desc = search_query 
           else:
