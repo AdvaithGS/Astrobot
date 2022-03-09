@@ -200,6 +200,7 @@ async def on_message(message):
 
   #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
   elif message.content.startswith('.info'):
+    await ctx.send('Getting the information might take some time, please wait.')
     query = message.content.split(' ',1)[1]
     text,image,desc = get_wiki(query)
     if text:

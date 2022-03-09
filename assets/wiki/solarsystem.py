@@ -64,11 +64,11 @@ def get_body(embed,q):
             moons = ''
             if numMoons > 5:
               for i in range(5):
-                moons += req['moons'][i]['moon'] + ', '
-              moons += f'and {numMoons - 5} others'
+                moons += req['moons'][i]['moon'] + ', '*(0 if i == 4 else 1)
+              moons += f' and {numMoons - 5} others'
             else:
               for i in range(numMoons):
-                moons += req['moons'][i]['moon'] + ', '*(0 if i == 4 else 1)
+                moons += req['moons'][i]['moon'] + ', '*(0 if i == numMoons-1 else 1)
             embed.add_field(name = 'Name of Moons', value  = moons)
           
         except Exception as e:
