@@ -86,6 +86,7 @@ https://discordbotlist.com/bots/astrobot-2515/upvote
 3. Improve `.info` to give only data and bring in `.image` to give images
 4. Possibly use SpaceFlight News API
 5. Add video demos to README file
+6. Use NASA's PDS Search API
 ## Creator
 
 This bot has been created with blood, sweat and tears by Advaith GS.
