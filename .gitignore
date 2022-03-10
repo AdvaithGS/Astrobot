@@ -138,7 +138,6 @@ core
 .breakpoints
 .vscode
 settings.json
-*.sqlite
 *.sql
 *~
 *.jpg
