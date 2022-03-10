@@ -19,7 +19,6 @@ if __name__ == '__main__':
 else:
   exit()
 from keep_alive import keep_alive
-from ast import literal_eval
 from json import loads
 from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
@@ -120,7 +119,7 @@ async def on_message(message):
           title = daily['title']
           desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}'''
         else:
-          req = literal_eval(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+          req = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
           title = req['title']
           desc = f'''{req['date']}\nDiscover the cosmos!\n\n{req['explanation']}'''
           try:
@@ -217,7 +216,7 @@ async def on_message(message):
   
   #takes info about the location of iss from wheretheiss.at and uses mapquest to obtain a map image of that
   elif message.content.startswith('.whereiss') or message.content.startswith('.iss'):
-    req = literal_eval(get('https://api.wheretheiss.at/v1/satellites/25544').text)
+    req = loads(get('https://api.wheretheiss.at/v1/satellites/25544').text)
     result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
     
     location = ''
@@ -453,9 +452,9 @@ async def on_message(message):
   ''' elif message.content.startswith('.info'):
     try:
       q = str(message.content)[6:]
-      req3 = literal_eval(get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
+      req3 = loads(get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
       parameters = {'page': str(random.randrange(1,int(req3)+1))}
-      req2 = literal_eval(get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
+      req2 = loads(get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
       choice = random.choice(dict(req2['collection'])['items'])
       desc = str(choice['data'][0]['description']).capitalize()
       embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.orange())
@@ -531,10 +530,10 @@ async def on_message(message):
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
       
   x = strftime('%y%m%d')
-  if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and literal_eval(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
+  if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
 
       db['apod'] = x
-      req = literal_eval(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
+      req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
       db['daily'] = req
       for guild in db.keys():
         try:
