@@ -5,7 +5,6 @@ discord_components
 reverse_geocoder
 sqlitedict
 geopy
-ast
 random
 os
 dotenv
