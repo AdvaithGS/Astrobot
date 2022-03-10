@@ -5,6 +5,3 @@ discord_components
 reverse_geocoder
 sqlitedict
 geopy
-random
-os
-dotenv
