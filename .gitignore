@@ -127,6 +127,8 @@ dmypy.json
 .pyre/
 
 #personal
+Scripts
+pyvenv.cfg
 info.txt
 log.txt
 env.txt
