@@ -4,5 +4,6 @@
         "Olbers",
         "Shakespear's",
         "Wernher"
-    ]
+    ],
+    "python.formatting.provider": "yapf"
 }
