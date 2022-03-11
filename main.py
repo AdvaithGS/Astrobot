@@ -426,10 +426,9 @@ async def on_message(message):
           
       embed.set_image(url=image[1])
       embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
-      await ctx.send(image[2])
       await ctx.send(embed = embed)
     except Exception as e:
-      from assets.image import get_image
+      from assets.jameswebb.image import get_image
       s = get_image()
       embed = discord.Embed(title = 'Where is Webb',description = s[0],color = discord.Color.orange())
       embed.set_image(url = s[1])
