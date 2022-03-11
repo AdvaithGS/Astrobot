@@ -46,7 +46,7 @@ Gives a random NASA APOD picture from archives. Including all pictures from 1996
 #### `.info <query>`
 Ask about ANYTHING related to astronomy and astronomical bodies. It gives data and pictures related to the given query.
 
-This uses Solar system Open Api and NASA's video and Image library in a discord embed.
+This uses Solar system Open Api and Wikpedia's API in a discord embed.
 
 #### `.iss`
 Find the live location of the international space station with respect to the Earth.
@@ -83,7 +83,7 @@ https://discordbotlist.com/bots/astrobot-2515/upvote
 ## Targets
 1. Improve `.iss` to have the names of people in the ISS - using OpenNotify and https://awesomeopensource.com/project/corquaid/international-space-station-APIs
 2. Integrate tools like SunCalc and MoonCalc
-3. Improve `.info` to give only data and bring in `.image` to give images
+3. Improve `.info` to give only data and bring in `.image` to give images (50% done)
 4. Possibly use SpaceFlight News API
 5. Add video demos to README file
 6. Use NASA's PDS Search API
