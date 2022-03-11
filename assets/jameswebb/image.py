@@ -171,7 +171,7 @@ Status: Ongoing
 
 Although Image Stacking puts all the light in one place on the detector, the segments are still acting as 18 small telescopes rather than one big one. The segments need to be lined up with each other with an accuracy smaller than the wavelength of the light.
 
-Conducted three times during the commissioning process, Coarse Phasing measures and corrects the vertical displacement (piston difference) of the mirror segments. Using a technology known as Dispersed Fringe Sensing, we use NIRCam to capture light spectra from 20 separate pairings of mirror segments. The spectrum will resemble a barber pole pattern with a slope (or angle) determined by the piston difference of the two segments in the pairing.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step4VideoGrab-1000px.jpg','https://www.youtube.com/watch?v=QlwatKpla8s']
+Conducted three times during the commissioning process, Coarse Phasing measures and corrects the vertical displacement (piston difference) of the mirror segments. Using a technology known as Dispersed Fringe Sensing, we use NIRCam to capture light spectra from 20 separate pairings of mirror segments. The spectrum will resemble a barber pole pattern with a slope (or angle) determined by the piston difference of the two segments in the pairing.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step4VideoGrab-1000px.jpg']
 }
 def get_image():
     global db
