@@ -534,12 +534,12 @@ async def on_message(message):
       db['apod'] = x
       req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
       db['daily'] = req
-      for guild in db.keys():
-        try:
-          channel = client.get_channel(db[guild])
-          await channel.send('.daily')
-        except:
-          pass
+      #for guild in db.keys():
+      #  try:
+      #    channel = client.get_channel(db[guild])
+      #    await channel.send('.daily')
+      #  except:
+      #    pass
 
   
   '''elif message.content.startswith('.test'):
