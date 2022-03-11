@@ -18,8 +18,8 @@ def get_wiki(search_query):
                 'Authorization': environ['api_key5'],
                 'User-Agent': 'Advaith'
                 }
-        url = f'https://en.wikipedia.org/w/rest.php/v1/page/{search_query}/html'
-        req = requests.get(url).text
+        page = f'https://en.wikipedia.org/w/rest.php/v1/page/{search_query}/html'
+        req = requests.get(page).text
         soup = BeautifulSoup(req,'lxml')
         d = {}
         try:
@@ -38,12 +38,12 @@ def get_wiki(search_query):
                 not_space = True
                 correct = False
         except:
-            if ('refer' in soup.find_all('p')[0].text or 'refer' in soup.find_all('p')[1].text or  'other' in soup.find_all('p')[0].text or 'other' in soup.find_all('p')[1].text):# and len(soup.find_all('p')[2].text) < 50:
+            if ('refer' in soup.find_all('p')[0].text or 'refer' in soup.find_all('p')[1].text or  'other' in soup.find_all('p')[0].text or 'other' in soup.find_all('p')[1].text):
                 for i in soup.find_all('a'):
                     if any([z in i.text.lower() for z in l]):
                         search_query = i['href'][1:]
-                        url = 'https://en.wikipedia.org/w/rest.php/v1/page' + i['href'][1:] + '/html'
-                        req = requests.get(url).text
+                        page = 'https://en.wikipedia.org/w/rest.php/v1/page' + i['href'][1:] + '/html'
+                        req = requests.get(page).text
                         soup = BeautifulSoup(req,'lxml')
                         i = 1
                         text = soup.find_all('p')[0].text
@@ -60,11 +60,15 @@ def get_wiki(search_query):
             url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page'
             parameters = {'q': search_query, 'limit': 1}
             response = loads(requests.get(url, headers=headers, params=parameters).text)
-            image = 'https:' + response['pages'][0]['thumbnail']['url'].replace('/thumb','').rsplit('/',1)[0]
+            print(response)
+            image = 'https:' + response['pages'][0]['thumbnail']['url'].replace('200px','500px')
             try:
                 desc = clean(soup.find('div', attrs = {'class':'infobox-caption'}).text)
             except:
-                desc = search_query 
+                try:
+                    desc = clean(soup.find('figcaption').text)
+                except:
+                    desc = search_query
         else:
             image =  None
     except:
