@@ -7,7 +7,7 @@ import reverse_geocoder
 from sqlitedict import SqliteDict
 from assets.database.database import retrieve,update
 db = SqliteDict('./db.sqlite', autocommit = True)
-if type(retrieve()) == dict and len(retrieve) > 10:
+if type(retrieve()) == dict and len(retrieve()) > 10:
   db = retrieve()
 from assets.countries.country_code import find_country
 from assets.wiki.solarsystem import get_body
