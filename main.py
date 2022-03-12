@@ -33,7 +33,7 @@ appid = environ['appid']
 def get_activity(caller):
   
   choice = random.choice([0,2,3,4,6,7,8,10,11,15,18])
-  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','`.help`','How The Universe Works','Life of A Star', '', 'to Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','','The James Webb Space Telescope','','','Your `.iss` requests']
+  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','.help','How The Universe Works','Life of A Star', '', 'to Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','','The James Webb Space Telescope','','','Your .iss requests']
   # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
   activity = lst[choice]
   choice = choice%4
@@ -549,7 +549,7 @@ async def on_message(message):
     db['hour'] = mktime(datetime.now().timetuple())
     activity,choice = get_activity('Automatic')
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
-  
+
   
   #keeps the number of times each command has been called overall
   try:
