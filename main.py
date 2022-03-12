@@ -23,12 +23,7 @@ from json import loads
 from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
 import random
-try:
-  api_key = environ['api_key']
-except:
-  from dotenv import load_dotenv
-  load_dotenv('.env')
-  api_key = environ['api_key']
+api_key = environ['api_key']
 api_key2 = environ['api_key2']
 api_key3 = environ['api_key3']
 secret = environ['api_key4']
