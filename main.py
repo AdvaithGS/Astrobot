@@ -157,7 +157,7 @@ async def on_message(message):
   elif message.content.startswith('.channel'):
     if str(message.guild.id) not in list(db.keys()):
       db[message.guild.id] = ctx.id
-      update(db)
+      update(dict(db))
       mes = await ctx.send('Registered. Deleting Message in 2 seconds.')
     else:
       mes = await ctx.send('This server was already registered. Deleting Message in 2 seconds.')
@@ -189,7 +189,7 @@ async def on_message(message):
   elif message.content.startswith('.remove'):
     try:
       del db[str(message.guild.id)]
-      update(db)
+      update(dict(db))
       mes = await ctx.send('Removed from daily APOD feed. Deleting Message in 2 seconds.')
       sleep(2)
       await message.delete()
@@ -540,7 +540,7 @@ async def on_message(message):
           await channel.send('.daily')
         except:
           pass
-      update(db)
+      update(dict(db))
 
   
   '''elif message.content.startswith('.test'):
@@ -555,7 +555,7 @@ async def on_message(message):
     db['hour'] = mktime(datetime.now().timetuple())
     activity,choice = get_activity('Automatic')
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
-    update(db)
+    update(dict(db))
 
   
   #keeps the number of times each command has been called overall
@@ -563,7 +563,7 @@ async def on_message(message):
     if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id != 756496844867108937 and message.author.id != 792458754208956466:
       x =  message.content.split()[0]
       db[x] += 1
-      update(db)
+      update(dict(db))
   except:
     pass
 
