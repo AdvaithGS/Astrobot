@@ -5,8 +5,10 @@ from os import environ
 from discord_components import Button
 import reverse_geocoder
 from sqlitedict import SqliteDict
-db = SqliteDict('./db.sqlite', autocommit = True)
 from assets.database.database import retrieve,update
+db = SqliteDict('./db.sqlite', autocommit = True)
+if type(retrieve()) == dict and len(retrieve) > 10:
+  db = retrieve()
 from assets.countries.country_code import find_country
 from assets.wiki.solarsystem import get_body
 from assets.wiki.wiki import get_wiki
