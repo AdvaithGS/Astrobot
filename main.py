@@ -153,15 +153,6 @@ async def on_message(message):
     except:
       await ctx.send(embed=embed)
 
-  # adds that channel to the db so that it will be sent the '.daily' message once the image is released
-  elif message.content.startswith('.channel'):
-    if str(message.guild.id) not in list(db.keys()):
-      db[message.guild.id] = ctx.id
-      update(dict(db))
-      await ctx.send('Registered.')
-    else:
-      await ctx.send('This server was already registered.')
-
   #just something i added to trigger the daily photo if somehow the bot doesnt do it 
   #by itself. Dont blame me if you understood the reference. eheheeheh
   elif message.content.lower().startswith('execute order 66'):
@@ -182,13 +173,23 @@ async def on_message(message):
             await channel.send('.daily')
           except:
             pass
+
+  # adds that channel to the db so that it will be sent the '.daily' message whenever an APOD image is released
+  elif message.content.startswith('.channel'):
+    if str(message.guild.id) not in list(db.keys()):
+      db[str(message.guild.id)] = ctx.id
+      update(dict(db))
+      await ctx.send('This channel has been registered for the Astronomy Picture of The Day service.')
+    else:
+      await ctx.send('This server was already registered.')
+
   #removes a given channel from the apod service.
   elif message.content.startswith('.remove'):
-    try:
+    if str(message.guild.id) in db:
       del db[str(message.guild.id)]
       update(dict(db))
       await ctx.send('Removed from daily APOD feed.')
-    except:
+    else:
       await ctx.send('This server has not been registered to the APOD feed.')
 
   #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
