@@ -1,5 +1,5 @@
 # TERMS OF SERVICE
-Please read the Terms of Service ('Terms') carefully before using Astrobot ('bot').
+Please read the Terms of Service ('Terms') carefully before using Astrobot ('bot','AstroBot').
 
 AstroBot is not made by, not controlled by, and not affiliated with Discord Inc., and its platform Discord on which the bot exists.
 
@@ -16,7 +16,7 @@ under the sole discretion of the creator, for any reason whatsoever and without 
 
 ## Third-Party referenced content
 The bot uses several  APIs and services to provide for its users via links, images or other forms of media created by third-parties that are not owned 
-and neither controlled by AstroBot. You acknowledge and agree that AstrokBot shall not be responsible or liable for any damages, breaches, or 
+and neither controlled by AstroBot. You acknowledge and agree that AstroBot shall not be responsible or liable for any damages, breaches, or 
 other unlawful behaviour performed by the third party.
 It is strongly advised that you read the terms and conditions and privacy policies of any third party web sites or services that you visit.
 The creator therefore reserves the right to change or update information and to correct errors, inaccuracies, or omissions at any time without prior notice.
