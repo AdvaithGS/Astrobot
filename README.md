@@ -18,6 +18,7 @@ https://discord.com/oauth2/authorize?client_id=792458754208956466&permissions=60
 
 ## Commands
 As of now, there are the following commands:
+* [.help](#help)
 * [.daily](#daily)
 * [.daily `YYYY-MM-DD`](#daily-yyyy-mm-dd)
 * [.daily random](#daily-random)
@@ -30,6 +31,9 @@ As of now, there are the following commands:
 * [.sky `<location>`](#sky-location)
 * [.phase `<location>`](#phase-location)
 * [.webb](#webb)
+
+#### `.help`
+Returns the same list of commands that are listed below.
 
 #### `.daily`
 Gives the NASA APOD picture for the day. 
