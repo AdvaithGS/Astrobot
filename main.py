@@ -158,12 +158,9 @@ async def on_message(message):
     if str(message.guild.id) not in list(db.keys()):
       db[message.guild.id] = ctx.id
       update(dict(db))
-      mes = await ctx.send('Registered. Deleting Message in 2 seconds.')
+      await ctx.send('Registered.')
     else:
-      mes = await ctx.send('This server was already registered. Deleting Message in 2 seconds.')
-    sleep(2)
-    await mes.delete()
-    await message.delete()
+      await ctx.send('This server was already registered.')
 
   #just something i added to trigger the daily photo if somehow the bot doesnt do it 
   #by itself. Dont blame me if you understood the reference. eheheeheh
@@ -190,10 +187,7 @@ async def on_message(message):
     try:
       del db[str(message.guild.id)]
       update(dict(db))
-      mes = await ctx.send('Removed from daily APOD feed. Deleting Message in 2 seconds.')
-      sleep(2)
-      await message.delete()
-      await mes.delete()
+      await ctx.send('Removed from daily APOD feed.')
     except:
       await ctx.send('This server has not been registered to the APOD feed.')
 
