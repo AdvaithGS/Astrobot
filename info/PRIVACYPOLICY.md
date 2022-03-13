@@ -17,5 +17,7 @@ Uses of the command logs are for various purposes:
 * To monitor usage statistics
 * To detect, prevent and address technical issues
 
+For any queries contact me - AdvaithGS#6700
+
 ##### Updated 13th March 2022
 
