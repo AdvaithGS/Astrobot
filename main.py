@@ -205,10 +205,9 @@ async def on_message(message):
         embed.set_image(url = image)
       else:
         embed = discord.Embed(title = desc , description = 'Try again with a refined search   parameter',   color=discord.Color.orange())
-        await ctx.send(embed = embed)
+      await ctx.send(embed = embed)
 
     except Exception as e:
-      print(e)
       embed = discord.Embed(title = 'Invalid query' , description = 'The command is `.info <query>`. Fill a query and do not leave it blank. For example - `.info Uranus` ,`.info Apollo 11`',   color=discord.Color.orange())
       await ctx.send(embed = embed) 
   
