@@ -194,20 +194,22 @@ async def on_message(message):
 
   #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
   elif message.content.startswith('.info'):
-    await ctx.send('Getting the information might take some time, please wait.')
-    query = message.content.split(' ',1)[1]
-    text,image,desc = get_wiki(query)
-    if text:
-      embed = discord.Embed(title = query.title() , description = text,   color=discord.Color.orange())
-      get_body(embed, query)
-      embed.set_footer(text = f'{desc} \n\nObtained from Solar System OpenData API and the Wikipedia API')
-      embed.set_image(url = image)
-    else:
-      embed = discord.Embed(title = desc , description = 'Try again with a refined search parameter',   color=discord.Color.orange())
-    await ctx.send(embed = embed)  
-  #returns the user id
-  elif message.content.startswith('.id'):
-    await ctx.send(message.author.id)
+    try:
+      query = message.content.split(' ',1)[1]
+      await ctx.send('Getting the information might take some time, please wait.')
+      text,image,desc = get_wiki(query)
+      if text:
+        embed = discord.Embed(title = query.title() , description = text,   color=discord.Color.orange())
+        get_body(embed, query)
+        embed.set_footer(text = f'{desc} \n\nObtained from Solar System OpenData API and the Wikipedia API')
+        embed.set_image(url = image)
+      else:
+        embed = discord.Embed(title = desc , description = 'Try again with a refined search   parameter',   color=discord.Color.orange())
+        await ctx.send(embed = embed)
+
+    except:
+      embed = discord.Embed(title = 'Ivalid query' , description = 'The command is `.info <query>`. Fill a query and do not leave it blank. For example - `.info Uranus` ,`.info Apollo 11`',   color=discord.Color.orange())
+      await ctx.send(embed = embed) 
   
   #takes info about the location of iss from wheretheiss.at and uses mapquest to obtain a map image of that
   elif message.content.startswith('.whereiss') or message.content.startswith('.iss'):

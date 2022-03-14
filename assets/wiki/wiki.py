@@ -60,7 +60,6 @@ def get_wiki(search_query):
             url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page'
             parameters = {'q': search_query, 'limit': 1}
             response = loads(requests.get(url, headers=headers, params=parameters).text)
-            print(response)
             image = 'https:' + response['pages'][0]['thumbnail']['url'].replace('200px','500px')
             try:
                 desc = clean(soup.find('div', attrs = {'class':'infobox-caption'}).text)
