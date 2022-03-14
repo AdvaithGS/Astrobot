@@ -208,7 +208,7 @@ async def on_message(message):
         await ctx.send(embed = embed)
 
     except:
-      embed = discord.Embed(title = 'Ivalid query' , description = 'The command is `.info <query>`. Fill a query and do not leave it blank. For example - `.info Uranus` ,`.info Apollo 11`',   color=discord.Color.orange())
+      embed = discord.Embed(title = 'Invalid query' , description = 'The command is `.info <query>`. Fill a query and do not leave it blank. For example - `.info Uranus` ,`.info Apollo 11`',   color=discord.Color.orange())
       await ctx.send(embed = embed) 
   
   #takes info about the location of iss from wheretheiss.at and uses mapquest to obtain a map image of that
