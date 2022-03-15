@@ -552,7 +552,6 @@ async def on_message(message):
     db['hour'] = mktime(datetime.now().timetuple())
     activity,choice = get_activity('Automatic')
     await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
-    update(dict(db))
 
   
   #keeps the number of times each command has been called overall
