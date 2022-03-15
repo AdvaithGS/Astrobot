@@ -39,7 +39,6 @@ def get_wiki(search_query):
                 not_space = True
                 correct = False
         except:
-            print('e')
             for i in soup.find_all('a'):
                 if any([z in i.text.lower() for z in l]):
                     try:
@@ -75,13 +74,12 @@ def get_wiki(search_query):
         else:
             image =  None
 
-    except Exception as e:
-        print(e)
+    except:
+        pass
 
     try:
         return text,image,desc
     except:
-        print(i)
         if not_space:
             return None,None,'Not space'
         else:
