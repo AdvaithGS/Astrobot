@@ -3,7 +3,6 @@ from json import loads
 from bs4 import BeautifulSoup
 from os import environ
 
-
 l = ['atom','moon','star','space','astro','cluster','galaxy','sky','planet','solar','science','physic','scientist','cosmos']
 def clean(text):
     while '[' in text:
@@ -13,7 +12,9 @@ def get_wiki(search_query):
     if len(search_query.split()) == 1:
         search_query = search_query.capitalize()
     not_space = False
+
     try:
+
         headers = {
                 'Authorization': environ['api_key5'],
                 'User-Agent': 'Advaith'
@@ -23,14 +24,14 @@ def get_wiki(search_query):
         soup = BeautifulSoup(req,'lxml')
         d = {}
         try:
-            if 'refer to' in soup.find_all('p')[1].text:
+            if 'refer' in soup.find_all('p')[1].text:
                 x = d['13']
             text = soup.find_all('p')[0].text
             i = 1
             while len(text) < 100:
                 text = soup.find_all('p')[i].text
                 i += 1
-            
+
             if any([z in text.lower() for z in l]):
                 text = clean(text)
                 correct = True
@@ -38,11 +39,12 @@ def get_wiki(search_query):
                 not_space = True
                 correct = False
         except:
-            if ('refer' in soup.find_all('p')[0].text or 'refer' in soup.find_all('p')[1].text or  'other' in soup.find_all('p')[0].text or 'other' in soup.find_all('p')[1].text):
-                for i in soup.find_all('a'):
-                    if any([z in i.text.lower() for z in l]):
+            print('e')
+            for i in soup.find_all('a'):
+                if any([z in i.text.lower() for z in l]):
+                    try:
                         search_query = i['href'][1:]
-                        page = 'https://en.wikipedia.org/w/rest.php/v1/page' + i['href'][1:] + '/html'
+                        page = 'https://en.wikipedia.org/w/rest.php/v1/page' + i['href']    [1:] + '/html'
                         req = requests.get(page).text
                         soup = BeautifulSoup(req,'lxml')
                         i = 1
@@ -53,9 +55,11 @@ def get_wiki(search_query):
                         text = clean(text) 
                         correct = True
                         break
-                else:
-                    correct = False
-          
+                    except:
+                        continue
+            else:
+                correct = False
+
         if correct:
             url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page'
             parameters = {'q': search_query, 'limit': 1}
@@ -70,15 +74,20 @@ def get_wiki(search_query):
                     desc = search_query
         else:
             image =  None
-    except:
-        pass
+
+    except Exception as e:
+        print(e)
+
     try:
         return text,image,desc
     except:
+        print(i)
         if not_space:
             return None,None,'Not space'
         else:
             return None,None,'Not found'
+            #    return None,None,'Not found'
+            #return get_wiki(search_query + ' (moon)')
 
 
 
