@@ -416,10 +416,14 @@ async def on_message(message):
       embed.add_field(name = 'Velocity' , value = velocity)
       embed.add_field(name = 'Distance to L2 Orbit',value = tol2)
       embed.add_field(name = 'Completion',value = completion)
+
       #temperatures
-      for i in ['Warm','Cool']:
-        for j in ['A1','B2']:
-          embed.add_field(name = f'Temp {i} Side {j[0]}', value = temp[f'temp{i}Side{j[1]}C'])
+      places = ['Warm','Cool']
+      for i in places:
+        for j in ['A1ac','B2bd']:
+          embed.add_field(name = f'{j[ places.index(i) + 2 ]}: Temp {i} Side {j[0]}', value = temp[f'temp{i}Side{j[1]}C'])
+      for i in ['NirCam2','NirSpec3','FgsNiriss4','Miri1','Fsm5']:
+        embed.add_field(name = f'{i[-1]}: i[:-1]',value = temp[f'tempInst{i[:-1]}K'])
           
       embed.set_image(url=image[1])
       embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
