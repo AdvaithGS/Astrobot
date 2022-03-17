@@ -31,7 +31,6 @@ requests==2.27.1
 reverse-geocoder==1.5.1
 scipy==1.8.0
 soupsieve==2.3.1
-sqlitedict==2.0.0
 typing_extensions==4.1.1
 urllib3==1.26.8
 Werkzeug==2.0.3
