@@ -412,10 +412,10 @@ async def on_message(message):
       elapsedtime,fromEarth,tol2,completion,image,velocity,deployment_step,temp = get_james_webb()
       embed = discord.Embed(title = f'The James Webb Space Telescope - {deployment_step}', description = image[0] ,color =  discord.Color.orange())
       embed.add_field(name = 'Elapsed Time',value = elapsedtime)
-      embed.add_field(name ='Distance From Earth',value = fromEarth)
-      embed.add_field(name = 'Velocity' , value = velocity)
-      embed.add_field(name = 'Distance to L2 Orbit',value = tol2)
-      embed.add_field(name = 'Completion',value = completion)
+      #embed.add_field(name ='Distance From Earth',value = fromEarth)
+      #embed.add_field(name = 'Velocity' , value = velocity)
+      #embed.add_field(name = 'Distance to L2 Orbit',value = tol2)
+      #embed.add_field(name = 'Completion',value = completion)
 
       #temperatures
       places = ['Warm','Cool']
