@@ -162,7 +162,7 @@ Status: Future
 After we have the image array, we can perform Segment Alignment, which corrects most of the large positioning errors of the mirror segments.
 
 We begin by defocusing the segment images by moving the secondary mirror slightly. Mathematical analysis, called Phase Retrieval, is applied to the defocused images to determine the precise positioning errors of the segments. Adjustments of the segments then result in 18 well-corrected “telescopes.” However, the segments still don’t work together as a single mirror.''','https://jwst.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/mirrorAlignStep2-1000px.jpg','https://www.youtube.com/watch?v=QlwatKpla8s'],
-'latest':['''Coarse Phasing
+'90':['''Coarse Phasing
 Step 4
 
 Nominal Event Time: Starts - Launch + ~3 Months
@@ -171,7 +171,17 @@ Status: Ongoing
 
 Although Image Stacking puts all the light in one place on the detector, the segments are still acting as 18 small telescopes rather than one big one. The segments need to be lined up with each other with an accuracy smaller than the wavelength of the light.
 
-Conducted three times during the commissioning process, Coarse Phasing measures and corrects the vertical displacement (piston difference) of the mirror segments. Using a technology known as Dispersed Fringe Sensing, we use NIRCam to capture light spectra from 20 separate pairings of mirror segments. The spectrum will resemble a barber pole pattern with a slope (or angle) determined by the piston difference of the two segments in the pairing.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step4VideoGrab-1000px.jpg']
+Conducted three times during the commissioning process, Coarse Phasing measures and corrects the vertical displacement (piston difference) of the mirror segments. Using a technology known as Dispersed Fringe Sensing, we use NIRCam to capture light spectra from 20 separate pairings of mirror segments. The spectrum will resemble a barber pole pattern with a slope (or angle) determined by the piston difference of the two segments in the pairing.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step4VideoGrab-1000px.jpg'],
+'latest':['''Fine Phasing
+Step 5
+
+Nominal Event Time: Starts - Launch + ~2.5 - 3 Months
+
+Status: COMPLETED
+Media Briefing: LIVE - 3/16/22 12:00 PM EDT (4PM GMT) | Media Advisory
+
+
+Fine Phasing is also conducted three times, directly after each round of Coarse Phasing (Step 4), and then routinely throughout Webb’s lifespan. These operations measure and correct the remaining alignment errors using the same defocusing method applied during Segment Alignment (Step 2). However, instead of using the secondary mirror, we use special optical elements inside the science instrument which introduce varying amounts of defocus for each image (-8, -4, +4, and +8 waves of defocus).''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step5VideoGrab-1000px.jpg']
 }
 def get_image():
     global db
