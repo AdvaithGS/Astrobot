@@ -4,11 +4,14 @@ from datetime import datetime
 from os import environ
 from discord_components import Button
 import reverse_geocoder
-from assets.database.database import retrieve,update
-from sqlitedict import SqliteDict
-db = SqliteDict('./db.sqlite', autocommit = True)
-if type(retrieve()) == dict and len(retrieve()) > 10:
-  db = retrieve()
+
+from assets.database.database import *
+db = retrieve()
+
+if len(retrieve('logs')) > 200:
+  with open('log.txt','wb') as f:
+    f.write(retrieve('logs'))
+
 from assets.countries.country_code import find_country
 from assets.wiki.solarsystem import get_body
 from assets.wiki.wiki import get_wiki
@@ -41,8 +44,10 @@ def get_activity(caller):
   activity = lst[choice]
   choice = choice%4
   with open('log.txt','a') as f:
-      time = strftime('%d/%m/%Y-%H:%M')
-      f.write(f'\n{time} {caller}: {choice}-{activity}')
+    time = strftime('%d/%m/%Y-%H:%M')
+    f.write(f'\n{time} {caller}: {choice}-{activity}')
+  with open('log.txt','r') as f:
+    update(f.read(),'logs')
   return activity , choice
 '''def send_all(message,type):
     for guild in db.keys():
