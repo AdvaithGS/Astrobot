@@ -424,7 +424,7 @@ async def on_message(message):
           embed.add_field(name = f'Temp {i} Side {j[0]} ({j[ places.index(i) + 2 ]})', value = temp[f'temp{i}Side{j[1]}C'])
       for i in ['NirCam2','NirSpec3','FgsNiriss4','Miri1','Fsm5']:
         embed.add_field(name = f'{i[:-1]} ({i[-1]})',value = temp[f'tempInst{i[:-1]}K'])
-          
+      embed.set_thumbnail(url="https://webb.nasa.gov/content/webbLaunch/assets/images/extra/webbTempLocationsGradient1.4TweenAll-300px.jpg")
       embed.set_image(url=image[1])
       embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
       await ctx.send(embed = embed)
