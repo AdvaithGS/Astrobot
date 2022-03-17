@@ -178,8 +178,7 @@ Step 5
 Nominal Event Time: Starts - Launch + ~2.5 - 3 Months
 
 Status: COMPLETED
-Media Briefing: LIVE - 3/16/22 12:00 PM EDT (4PM GMT) | Media Advisory
-
+Media Briefing: LIVE - 3/16/22 12:00 PM EDT (4PM GMT)
 
 Fine Phasing is also conducted three times, directly after each round of Coarse Phasing (Step 4), and then routinely throughout Webb’s lifespan. These operations measure and correct the remaining alignment errors using the same defocusing method applied during Segment Alignment (Step 2). However, instead of using the secondary mirror, we use special optical elements inside the science instrument which introduce varying amounts of defocus for each image (-8, -4, +4, and +8 waves of defocus).''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step5VideoGrab-1000px.jpg']
 }
