@@ -23,5 +23,8 @@ def get_james_webb():
       else:
           i += 1
   for i in data:
+    if i.endswith('K'):
+      data[i] = '`'+ str(data[i]) + ' K`'
+      continue
     data[i] = '`'+ str(data[i]) + ' °C`'
   return elapsedTime,earthkm,l2,percentage,get_image(),speed,'Webb is Orbiting L2',data
