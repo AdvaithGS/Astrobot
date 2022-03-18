@@ -114,25 +114,21 @@ async def on_message(message):
       try:
         if parameters == {}:
           daily = db['daily']
-          try:
-            url = daily['hdurl']
-          except:
-            url = daily['url']
-            name = url
-          title = daily['title']
-          desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}'''
         else:
-          req = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
-          title = req['title']
-          desc = f'''{req['date']}\nDiscover the cosmos!\n\n{req['explanation']}'''
-          try:
-            url = req['hdurl']
-          except:
-            url = req['url']
-            name = url
+          daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+        try:
+          url = daily['hdurl']
+        except:
+          url = daily['url']
+          name = url
+
+        title = daily['title']
+        desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\nCredits: {daily['copyright']}'''
+
         embed = discord.Embed(title=title, url=url, description=desc, color=discord.Color.orange())
         embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
         embed.set_image(url=url)
+
         await ctx.send(embed=embed)
 
         try:
@@ -147,7 +143,7 @@ async def on_message(message):
         if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] == '500':
           await ctx.send('There\'s seems to be something wrong with the NASA APOD service, try after some time')
         else:
-          await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the   first day an APOD picture was posted')
+          await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
 
   # ask for help and commands
   elif message.content.startswith('.help'):
