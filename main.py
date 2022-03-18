@@ -9,7 +9,7 @@ from assets.database.database import *
 db = retrieve()
 
 if len(retrieve('logs')) > 200:
-  with open('log.txt','wb') as f:
+  with open('log.txt','w') as f:
     f.write(retrieve('logs'))
 
 from assets.countries.country_code import find_country
