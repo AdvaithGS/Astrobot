@@ -123,7 +123,7 @@ async def on_message(message):
           name = url
 
         title = daily['title']
-        desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\nCredits: {daily['copyright']}'''
+        desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
 
         embed = discord.Embed(title=title, url=url, description=desc, color=discord.Color.orange())
         embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
