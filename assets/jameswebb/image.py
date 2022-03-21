@@ -172,15 +172,16 @@ Status: Ongoing
 Although Image Stacking puts all the light in one place on the detector, the segments are still acting as 18 small telescopes rather than one big one. The segments need to be lined up with each other with an accuracy smaller than the wavelength of the light.
 
 Conducted three times during the commissioning process, Coarse Phasing measures and corrects the vertical displacement (piston difference) of the mirror segments. Using a technology known as Dispersed Fringe Sensing, we use NIRCam to capture light spectra from 20 separate pairings of mirror segments. The spectrum will resemble a barber pole pattern with a slope (or angle) determined by the piston difference of the two segments in the pairing.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step4VideoGrab-1000px.jpg'],
-'latest':['''Fine Phasing
-Step 5
+'latest':['''Telescope Alignment Over All Instrument Fields Of View
+Step 6
 
-Nominal Event Time: Starts - Launch + ~2.5 - 3 Months
+Nominal Event Time: Starts - Launch + ~3 Months
 
-Status: COMPLETED
-Media Briefing: LIVE - 3/16/22 12:00 PM EDT (4PM GMT)
+Status: ONGOING
 
-Fine Phasing is also conducted three times, directly after each round of Coarse Phasing (Step 4), and then routinely throughout Webb’s lifespan. These operations measure and correct the remaining alignment errors using the same defocusing method applied during Segment Alignment (Step 2). However, instead of using the secondary mirror, we use special optical elements inside the science instrument which introduce varying amounts of defocus for each image (-8, -4, +4, and +8 waves of defocus).''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step5VideoGrab-1000px.jpg']
+After Fine Phasing (step 5), the telescope will be well aligned at one place in the NIRCam field of view. Now we need to extend the alignment to the rest of the instruments.
+
+In this phase of the commissioning process, we make measurements at multiple locations, or field points, across each of the science instruments, as shown below. More variation in intensity indicates larger errors at that field point. An algorithm calculates the final corrections needed to achieve a well-aligned telescope across all science instruments.''','https://webb.nasa.gov/content/webbLaunch/assets/video/mirrorAlignment/step6-1k.mp4']
 }
 def get_image():
     global db

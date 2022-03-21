@@ -409,37 +409,23 @@ async def on_message(message):
   
   #Taking all the data from the NASA 'WhereIsWebb?' website and from the webb tracker api
   elif message.content.startswith('.webb') or message.content.startswith('.james webb'):
-    try:
-      elapsedtime,fromEarth,tol2,completion,image,velocity,deployment_step,temp = get_james_webb()
-      embed = discord.Embed(title = f'The James Webb Space Telescope - {deployment_step}', description = image[0] ,color =  discord.Color.orange())
-      embed.add_field(name = 'Elapsed Time',value = elapsedtime)
-      #embed.add_field(name ='Distance From Earth',value = fromEarth)
-      #embed.add_field(name = 'Velocity' , value = velocity)
-      #embed.add_field(name = 'Distance to L2 Orbit',value = tol2)
-      #embed.add_field(name = 'Completion',value = completion)
+    elapsedtime,image,deployment_step,temp = get_james_webb()
+    embed = discord.Embed(title = f'The James Webb Space Telescope - {deployment_step}', description = image[0] ,color =  discord.Color.orange())
 
-      #temperatures
-      places = ['Warm','Cool']
-      for i in places:
-        for j in ['A1AC','B2BD']:
-          embed.add_field(name = f'Temp {i} Side {j[0]} ({j[ places.index(i) + 2 ]})', value = temp[f'temp{i}Side{j[1]}C'])
-      for i in ['NirCam2','NirSpec3','FgsNiriss4','Miri1','Fsm5']:
-        embed.add_field(name = f'{i[:-1]} ({i[-1]})',value = temp[f'tempInst{i[:-1]}K'])
-      embed.set_thumbnail(url="https://webb.nasa.gov/content/webbLaunch/assets/images/extra/webbTempLocationsGradient1.4TweenAll-300px.jpg")
-      embed.set_image(url=image[1])
-      embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
-      await ctx.send(embed = embed)
-    except Exception as e:
-      from assets.jameswebb.image import get_image
-      s = get_image()
-      embed = discord.Embed(title = 'Where is Webb',description = s[0],color = discord.Color.orange())
-      embed.set_image(url = s[1])
-      await ctx.send(embed = embed)
-      try:
-        await ctx.send(s[2])
-      except:
-        pass
-      print(e)
+    embed.add_field(name = 'Elapsed Time',value = elapsedtime)
+    embed.set_thumbnail(url="https://webb.nasa.gov/content/webbLaunch/assets/images/extra/webbTempLocationsGradient1.4TweenAll-300px.jpg")
+    embed.set_image(url=image[1])
+    embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
+
+    #temperatures
+    places = ['Warm','Cool']
+    for i in places:
+      for j in ['A1AC','B2BD']:
+        embed.add_field(name = f'Temp {i} Side {j[0]} ({j[ places.index(i) + 2 ]})', value = temp[f'temp{i}Side{j[1]}C'])
+    for i in ['NirCam2','NirSpec3','FgsNiriss4','Miri1','Fsm5']:
+      embed.add_field(name = f'{i[:-1]} ({i[-1]})',value = temp[f'tempInst{i[:-1]}K'])
+    
+    await ctx.send(embed = embed)
       
   #this info command first checks the total number of pages by going to 
   #the 100th page (since no queries are 100 pages long, the image and 
