@@ -550,13 +550,14 @@ async def on_message(message):
     if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id not in [756496844867108937, 792458754208956466]:
       x =  message.content.split()[0]
       db[x] += 1
-      if 'resetlast' not in db:
-        db['resetlast'] = mktime(datetime.now().timetuple())
+      update(dict(db))
+
       if db['resetlast'] - mktime(datetime.now().timetuple()) >= 2592000:
         db['resetlast'] = mktime(datetime.now().timetuple())
         for i in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb']:
           db[i] = 0
         update(dict(db),'db','Database reset')
+        
       else:
         update(dict(db))
   except:
