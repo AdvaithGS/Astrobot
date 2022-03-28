@@ -5,6 +5,6 @@ def random_fact():
         line = random.choice(f.readlines()).split(';')
         return line
   except:
-    with open ('facts.txt',encoding = 'utf-8') as f:
+    with open ('./facts.txt',encoding = 'utf-8') as f:
         line = random.choice(f.readlines()).split(';')
         return line
