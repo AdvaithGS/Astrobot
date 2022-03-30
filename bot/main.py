@@ -17,7 +17,7 @@ from assets.wiki.solarsystem import get_body
 from assets.wiki.wiki import get_wiki
 from assets.facts.facts import random_fact
 from assets.jameswebb.jameswebb import get_james_webb
-from time import strftime, sleep,mktime
+from time import strftime, mktime
 from requests import get,post
 from requests.auth import HTTPBasicAuth
 if __name__ == '__main__':
