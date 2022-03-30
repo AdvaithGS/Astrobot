@@ -37,8 +37,6 @@ secret = environ['api_key4']
 appid = environ['appid']
 
 
-
-
 #generates a random activity that the bot can set as its status
 async def set_activity(caller):
   if mktime(datetime.now().timetuple()) - db['hour'] >= 21600:
@@ -58,18 +56,19 @@ async def set_activity(caller):
 
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
-  x = strftime('%y%m%d')
-  if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
-    db['apod'] = x
-    req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
-    db['daily'] = req
-    for guild in db.keys():
-      try:
-        channel = client.get_channel(db[guild])
-        await channel.send('.daily')
-      except:
-        pass
-    #update(dict(db))
+  #x = strftime('%y%m%d')
+  #if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.#nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
+  #  db['apod'] = x
+  #  req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
+  #  db['daily'] = req
+  #  for guild in db.keys():
+  #    try:
+  #      channel = client.get_channel(db[guild])
+  #      await channel.send('.daily')
+  #    except:
+  #      pass
+  #  update(dict(db))
+  pass
 
 @client.event
 async def on_ready():
@@ -78,6 +77,8 @@ async def on_ready():
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
   await set_activity('Startup')
+
+
 
 @client.event
 async def on_guild_join(guild):
@@ -90,7 +91,6 @@ async def on_guild_join(guild):
 
 guild_ids = [808201667543433238]
 @client.slash_command(guild_ids = guild_ids)
-@client.slash_command()
 async def daily(
   ctx,
   date : str = ''):
@@ -99,15 +99,69 @@ async def daily(
 
     Parameters
     ----------
-    place: class `str` 
-      The location whose thing you want to see
+    date: class `str` 
+      It can be `random`or any date that you choose, in YYYY-MM-DD format Eg. '2005-06-08'
     amount: class `int` 
       Your favourite number
   '''
+  try:
+    if date == '':
+      daily = db['daily']
+    elif date == 'random':
+      year = random.randrange(1995,2022)
+      month = random.randrange(1,13)
+      if month in [1,3,5,7,8,10,12]:
+        day = random.randrange(1,32)
+      else:
+        date = random.randrange(1,31)
+      if year == 1995:
+        month = random.randrange(6,13)
+        if month in [7,8,10,12]:
+          day= random.randrange(1,32)
+        elif month == 6:
+          day = random.randrage(6,31)
+        else:
+          day = random.randrange(1,31)
+      parameters = {'date': f'{year}-{month}-{day}'}
+      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+    else:
+      parameters = {'date': date}
+      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+    if 'hdurl' in daily:
+      url = daily['hdurl']
+      name = ''
+    else:
+      url = daily['url']
+      name = url
+      
+    title = daily['title']
+    desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
+    
+    embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
+    embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
+    embed.set_image(url=url)
+    
+    try:
+      if name:
+        name = f'https://youtube.com/watch?v={name[30:41]}'
+        embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange(),video =   {'url':url})
+        await ctx.send(name)
+    except:
+      pass
+
+    await ctx.response.send_message(embed=embed)
+  except Exception as e:
+    print(e)
+    if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] == '500':
+      await ctx.response.send_message('There\'s seems to be something wrong with the NASA APOD service, try after some time')
+    else:
+      await ctx.response.send_message('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+    
+
 
 @client.event
 async def on_message(message):
-  if message.content.startswith('<@756496844867108937>'):
+  if message.content.startswith('<@808262803227410465>'):
     ctx = message.channel
     mes = message.content[23:]
     '''gets the image from nasa's api, if its just 'daily' - it gets it from the database else if its the 'daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''    
@@ -170,7 +224,7 @@ async def on_message(message):
 
 
     # ask for help and commands
-    elif mes.startswith('.help'):
+    elif mes.startswith('help'):
       embed = disnake.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`@AstroBot daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `@AstroBot daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `@AstroBot daily random` \n\n`@AstroBot channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `@AstroBot info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`@AstroBot iss` - Find the live location of the international space station with respect to the Earth.\n\n`@AstroBot fact` - gives a random fact from the fact library. \n\n`@AstroBot weather <location>` - gives the real-time weather at the specified location. \n\n`@AstroBot phase <location>` - To find the phase of the moon at the specified location\n\n`@AstroBot sky <location>` - To get the sky map at any specified location\n\n`@AstroBot webb` - To get the current state of the James Webb Space Telescope.\n\nHave fun!''', color=disnake.Color.orange())
       embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700 reach out to me for help or grievances. Vote for us at these websites")
       try:
@@ -454,7 +508,7 @@ async def on_message(message):
   
   #keeps the number of times each command has been called overall
     try:
-      if mes.split()[0] in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb'] and message.author.id not in [756496844867108937, 792458754208956466]:
+      if mes.split()[0] in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb'] and message.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
         x =  mes.split()[0]
         db[x] += 1
         #update(dict(db))
@@ -479,7 +533,7 @@ async def on_message(message):
   #regarding the query, if it is an astronomical body. oof.
 
   #UPDATE - THIS HAS BEEN REPLACED BY THE WIKIPEDIA API - IMAGES TO BE ADDED TO A NEW '.image' COMMAND  
-  ''' elif mes.startswith('.info'):
+  ''' elif mes.startswith('info'):
     try:
       q = str(mes)[6:]
       req3 = loads(get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
@@ -563,6 +617,5 @@ async def on_message(message):
   await set_activity('Automatic')
 
 
-keep_alive()
 client.run(environ['notepadboi'])
 
