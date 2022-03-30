@@ -3,7 +3,7 @@ import disnake
 from disnake.ext import commands
 from datetime import datetime
 from os import environ
-from disnake_components import Button
+from discord_components import Button
 import reverse_geocoder
 
 #from assets.database.database import *
@@ -39,19 +39,20 @@ appid = environ['appid']
 
 #generates a random activity that the bot can set as its status
 async def set_activity(caller):
-  if mktime(datetime.now().timetuple()) - db['hour'] >= 21600:
-    choice = random.choice([0,2,3,4,6,7,8,10,11,15,18])
-    lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','.help','How The  Universe Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','', 'The James Webb Space Telescope','','','Your .iss requests']
-    # 0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
-    activity = lst[choice]
-    choice = choice%4
-    with open('log.txt','a') as f:
-      time = strftime('%d/%m/%Y-%H:%M')
-      f.write(f'\n{time} {caller}: {choice}-{activity}')
-    with open('log.txt','r') as f:
-      #update(f.read(),'logs')
-    db['hour'] = mktime(datetime.now().timetuple())
-    await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity,type = choice))
+  pass
+  #if mktime(datetime.now().timetuple()) - db['hour'] >= 21600:
+  #  choice = random.choice([0,2,3,4,6,7,8,10,11,15,18])
+  #  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','.help','How The  Universe Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','', 'The James Webb Space Telescope','','','Your .iss requests']
+  #   0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
+  #  activity = lst[choice]
+  #  choice = choice%4
+  #  with open('log.txt','a') as f:
+  #    time = strftime('%d/%m/%Y-%H:%M')
+  #    f.write(f'\n{time} {caller}: {choice}-{activity}')
+  #  with open('log.txt','r') as f:
+  #    update(f.read(),'logs')
+  #  db['hour'] = mktime(datetime.now().timetuple())
+  #  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity,type = choice))
 
 
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
@@ -100,32 +101,18 @@ async def daily(
     Parameters
     ----------
     date: class `str` 
-      It can be `random`or any date that you choose, in YYYY-MM-DD format Eg. '2005-06-08'
-    amount: class `int` 
-      Your favourite number
+      It can be "random" or any date that you choose, in YYYY-MM-DD format Eg. "2005-06-08" must be after 1995-06-16.
   '''
   try:
     if date == '':
       daily = db['daily']
     elif date == 'random':
-      year = random.randrange(1995,2022)
-      month = random.randrange(1,13)
-      if month in [1,3,5,7,8,10,12]:
-        day = random.randrange(1,32)
-      else:
-        date = random.randrange(1,31)
-      if year == 1995:
-        month = random.randrange(6,13)
-        if month in [7,8,10,12]:
-          day= random.randrange(1,32)
-        elif month == 6:
-          day = random.randrage(6,31)
-        else:
-          day = random.randrange(1,31)
-      parameters = {'date': f'{year}-{month}-{day}'}
+      delta = mktime(datetime.now().timetuple()) - mktime(datetime(1995,6,16).timetuple())
+      random_date = datetime.utcfromtimestamp(mktime(datetime(1995,6,16).timetuple()) + random.randrange(int(delta)))
+      parameters = {'date': f'{random_date.year}-{random_date.month}-{random_date.day}'}
       daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
     else:
-      parameters = {'date': date}
+      parameters = {'date': date }
       daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
     if 'hdurl' in daily:
       url = daily['hdurl']
@@ -149,7 +136,7 @@ async def daily(
     
   except Exception as e:
     print(e)
-    if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] == '500':
+    if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)[8:11] == '500':
       await ctx.response.send_message('There\'s seems to be something wrong with the NASA APOD service, try after some time')
     else:
       await ctx.response.send_message('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
@@ -516,7 +503,7 @@ async def on_message(message):
             db[i] = 0
           #update(dict(db),'db','Database reset')
 
-        else:
+        #else:
           #update(dict(db))
     except:
       pass
@@ -613,6 +600,6 @@ async def on_message(message):
   #updates the status every 6 hours - seems to not be completely working but it does change the status
   await set_activity('Automatic')
 
-
+#using notepadboi as test 
 client.run(environ['notepadboi'])
 
