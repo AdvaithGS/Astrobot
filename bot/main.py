@@ -133,23 +133,20 @@ async def daily(
     else:
       url = daily['url']
       name = url
-      
+
     title = daily['title']
     desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
     
     embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
     embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
     embed.set_image(url=url)
-    
-    try:
-      if name:
+    await ctx.response.send_message(embed=embed)
+
+    if name:
         name = f'https://youtube.com/watch?v={name[30:41]}'
         embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange(),video =   {'url':url})
-        await ctx.send(name)
-    except:
-      pass
-
-    await ctx.response.send_message(embed=embed)
+        await ctx.channel.send(content = name)
+    
   except Exception as e:
     print(e)
     if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] == '500':
