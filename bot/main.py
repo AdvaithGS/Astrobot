@@ -1,17 +1,16 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
-import disnake as discord
-from disnake.ext import commands
+import discord
 from datetime import datetime
 from os import environ
 from discord_components import Button
 import reverse_geocoder
 
 from assets.database.database import *
-#db = retrieve()
-#
-#if len(retrieve('logs')) > 200:
-#  with open('log.txt','w') as f:
-#    f.write(retrieve('logs'))
+db = retrieve()
+
+if len(retrieve('logs')) > 200:
+  with open('log.txt','w') as f:
+    f.write(retrieve('logs'))
 
 from assets.countries.country_code import find_country
 from assets.wiki.solarsystem import get_body
@@ -22,7 +21,7 @@ from time import strftime, mktime
 from requests import get,post
 from requests.auth import HTTPBasicAuth
 if __name__ == '__main__':
-  bot = commands.Bot("!", sync_commands_debug=True)
+  client = discord.Client()
 else:
   exit()
 from keep_alive import keep_alive
@@ -50,18 +49,33 @@ def get_activity(caller):
   with open('log.txt','r') as f:
     update(f.read(),'logs')
   return activity , choice
-  
-
-@bot.event
+'''def send_all(message,type):
+    for guild in db.keys():
+        try:
+          channel = client.get_channel(db[guild])
+          if type == 1:
+            await channel.send(embed = message)
+          elif type == 2:
+            await channel.send(message)
+        except:
+          pass'''
+@client.event
 async def on_ready():
-  s = len(bot.guilds)
-  print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(bot,s))
+  s = len(client.guilds)
+  print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
   activity , choice = get_activity('Startup')
-  await bot.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
+  await client.change_presence(status = discord.Status.idle, activity = discord.Activity(name = activity , type = choice))
+  '''embed = discord.Embed(title = 'New Update',description ="After working on it for some time, the James Webb Space Telescope tracker is now online - use `.webb` to get its current mission completion and the stage it is currently undergoing.",color = discord.Color.orange())
+  for guild in db.keys():
+        try:
+          channel = client.get_channel(db[guild])
+          await channel.send(embed = embed)
+        except:
+          pass'''
 
-@bot.event
+@client.event
 async def on_guild_join(guild):
   embed = discord.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `.help` to begin.', color = discord.Color.orange())
   channel = guild.channels[0]
@@ -70,7 +84,7 @@ async def on_guild_join(guild):
             await channel.send(embed=embed)
         break
 
-@bot.event
+@client.event
 async def on_message(message):
   ctx = message.channel
   '''gets the image from nasa's api, if its just '.daily' - it gets it from the database else if its the '.daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''    
@@ -149,14 +163,14 @@ async def on_message(message):
         if msg.content.lower().startswith('yes'):
           return True
       try:
-        message = await bot.wait_for('message', timeout=60.0, check=check)
+        message = await client.wait_for('message', timeout=60.0, check=check)
       except:
         await ctx.send('Never mind.')
       else:
         await ctx.send('Yes my lord.')
         for guild in db.keys():
           try:
-            channel = bot.get_channel(db[guild])
+            channel = client.get_channel(db[guild])
             await channel.send('.daily')
           except:
             pass
@@ -412,6 +426,93 @@ async def on_message(message):
       embed.add_field(name = f'{i[:-1]} ({i[-1]})',value = temp[f'tempInst{i[:-1]}K'])
     
     await ctx.send(embed = embed)
+      
+  #this info command first checks the total number of pages by going to 
+  #the 100th page (since no queries are 100 pages long, the image and 
+  #video api just mentions the last valid page number) and 
+  #takes the last page number from there, uses the random library to pick 
+  #any page from the total pages, takes the description and image and 
+  #then uses the solar system open data api to pick numerical data 
+  #regarding the query, if it is an astronomical body. oof.
+
+  #UPDATE - THIS HAS BEEN REPLACED BY THE WIKIPEDIA API - IMAGES TO BE ADDED TO A NEW '.image' COMMAND  
+  ''' elif message.content.startswith('.info'):
+    try:
+      q = str(message.content)[6:]
+      req3 = loads(get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
+      parameters = {'page': str(random.randrange(1,int(req3)+1))}
+      req2 = loads(get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
+      choice = random.choice(dict(req2['collection'])['items'])
+      desc = str(choice['data'][0]['description']).capitalize()
+      embed = discord.Embed(title = q.title() , description = desc.capitalize() ,   color=discord.Color.orange())
+      url = (choice['links'][0]['href']).replace(' ','%20') 
+      try:
+        req = loads(get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
+
+        if req['mass']:
+          a = str(req['mass']['massValue'])
+          b = str(req['mass']['massExponent'])
+          embed.add_field(name = 'Mass' , value = f'{a} x 10^{b} kg')
+        else:
+          embed.add_field(name = 'Mass', value = 'Unknown')
+
+        if not req['density']:
+          embed.add_field(name='Density' , value = 'Unknown')
+        else:
+          embed.add_field(name='Density' , value = str(req['density'])+ ' g/cm³')
+
+        if not req['gravity']:
+          embed.add_field(name='Gravity' , value = 'Unknown')
+        else:
+          embed.add_field(name='Gravity' , value = str(req['gravity']) + ' m/s²')
+
+        if not req['sideralOrbit']:
+          embed.add_field(name = 'Period of Revolution', value = 'Unknown')
+        else:
+          embed.add_field(name = 'Period of Revolution', value = str(req['sideralOrbit']) + '  days')
+
+        if not req['sideralRotation']:
+         embed.add_field(name = 'Period of Rotation', value = 'Unknown')
+        else:
+          embed.add_field(name = 'Period of Rotation', value = str(req['sideralRotation']) + '   hours')
+
+        if req['meanRadius']:
+          a = req['meanRadius']
+          embed.add_field(name = 'Mean Radius' , value = f'{a} km')
+        else:
+          embed.add_field(name = 'Mean Radius' , value = 'Unknown')
+
+        if not req['escape']:
+          embed.add_field(name = 'Escape Velocity', value = 'Unknown')
+        else:
+          a = req['escape']
+          embed.add_field(name = 'Escape Velocity', value = f'{a} m/s') 
+
+        if not req['discoveredBy']:
+          embed.add_field(name='Discovered By' , value = 'Unknown')
+        else:
+          embed.add_field(name='Discovered By' , value = req['discoveredBy'])
+
+        if not req['discoveryDate']:
+          embed.add_field(name='Discovery Date' , value = 'Unknown')
+        else:
+          embed.add_field(name='Discovery Date' , value = req['discoveryDate'])
+
+        if not req['moons']:
+          aroundPlanet = req['aroundPlanet']['planet'].title()
+          embed.add_field(name = 'Around Planet',value = aroundPlanet)
+        else:
+          numMoons = len(req['moons'])
+          embed.add_field(name = 'Moons',value = numMoons)
+        
+      except:
+        pass
+      embed.set_image(url = url)
+      text = 'Built using the Solar system OpenData Api and the NASA video and image library.'
+      embed.set_footer(text = text)
+      await ctx.send(embed = embed)
+    except:
+      await ctx.send('You have not specified a query or your query is wrong, use `.info   <query>`')'''
   
   #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
       
@@ -423,17 +524,25 @@ async def on_message(message):
       db['daily'] = req
       for guild in db.keys():
         try:
-          channel = bot.get_channel(db[guild])
+          channel = client.get_channel(db[guild])
           await channel.send('.daily')
         except:
           pass
       update(dict(db))
 
+  
+  '''elif message.content.startswith('.test'):
+    embed = discord.Embed(title = 'Test!',description = 'This is a test',colour = discord.Color.gold())
+    file = discord.File('test.jpg')
+    embed.set_image(url = 'attachment://test.jpg')
+    embed.set_footer(text = 'Im just trying to see how images can be added to embeds in a different way.')
+    await ctx.send(embed=embed, file=file)'''
+
   #updates the status every 6 hours - seems to not be completely working but it does change the status
   if mktime(datetime.now().timetuple()) - db['hour'] >= 21600:
     db['hour'] = mktime(datetime.now().timetuple())
     activity,choice = get_activity('Automatic')
-    await bot.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
+    await client.change_presence(status = discord.Status.idle,activity = discord.Activity(name = activity,type = choice))
 
   
   #keeps the number of times each command has been called overall
@@ -455,5 +564,5 @@ async def on_message(message):
     pass
 
 keep_alive()
-bot.run(environ['notepadboi'])
+client.run(environ['TOKEN'])
 
