@@ -181,7 +181,7 @@ async def help(
   view = disnake.ui.View()
   topgg = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Top.gg", url="https://top.gg/bot/792458754208956466/vote")
   view.add_item(item=topgg)
-  dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://disnakebotlist.com/bots/astrobot-2515/upvote")
+  dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
   view.add_item(item=dbl)
   await ctx.response.send_message(embed=embed, view=view)
 
@@ -228,7 +228,7 @@ async def info(
   '''
   try:
     message = await ctx.channel.send(content ='Getting the information might take some time, please wait.')
-    await disnake.InteractionResponse.defer(with_message = message)
+    await ctx.response.defer(with_message = True)
     text,image,desc = get_wiki(query)
     if text:
       embed = disnake.Embed(title = query.title() , description = text, color=disnake.Color.orange())
@@ -237,12 +237,11 @@ async def info(
       embed.set_image(url = image)
     else:
       embed = disnake.Embed(title = desc , description = 'Try again with a refined search parameter', color=disnake.Color.orange())
-    print(help(message.edit))
 
-  except Exception as e:
-    print(e,'AAAAAAAAAAALOOOKHERERER')
+  except:
     embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange())
-    #await ctx.response.send_message(embed = embed)
+  await ctx.followup.send(embed = embed)
+  await message.delete()
 
 
 @client.event
