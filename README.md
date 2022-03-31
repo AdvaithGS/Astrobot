@@ -12,7 +12,7 @@ This is an Astronomy discord bot (now verified!) with various functionalities an
 
 Use the below discord invitation link to bring AstroBot to your server/guild:
 
-https://discord.com/oauth2/authorize?client_id=792458754208956466&permissions=2147544064&scope=bot
+https://discord.com/api/oauth2/authorize?client_id=792458754208956466&permissions=2147544064&scope=bot%20applications.commands
 
 
 
