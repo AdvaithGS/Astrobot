@@ -130,9 +130,9 @@ async def daily(
     await ctx.channel.send(embed=embed)
 
     if name:
-        name = f'https://youtube.com/watch?v={name[30:41]}'
-        embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
-        await ctx.channel.send(content = name)
+      name = f'https://youtube.com/watch?v={name[30:41]}'
+      embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
+      await ctx.channel.send(content = name)
     
   except Exception as e:
     print(e)
@@ -243,6 +243,51 @@ async def info(
   await ctx.followup.send(embed = embed)
   await message.delete()
 
+
+@client.slash_command(guild_ids = guild_ids)
+async def iss(ctx):
+  '''Sends the current location of the International Space Station'''
+  req = loads(get('https://api.wheretheiss.at/v1/satellites/25544').text)
+  result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
+  
+  location = ''
+  if result['name']:
+    location += result['name'] + ', '
+  if result['admin1']:
+    location += result['admin1'] + ', '
+  if result['admin2']:
+    location += result['admin2'] + ', '
+  if result['cc']:
+    location += find_country(result['cc'])
+  location.replace('`', '')
+  lat,long = round(req['latitude'],3),round(req['longitude'],3)
+  place = f'{lat},{long}'
+  url = get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}')
+  with open('iss.jpg', 'wb') as handler:
+    handler.write(url.content)
+  file = disnake.File('iss.jpg')
+  embed = disnake.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = disnake.Color.orange())
+  embed.set_image(url = 'attachment://iss.jpg')
+  velocity = round(req['velocity'],2)
+  embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
+  altitude = round(req['altitude'],2)
+  embed.add_field(name = 'Altitude' , value = f'{altitude} km')
+  embed.add_field(name ='Visibility',value = req['visibility'].title())
+  embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
+  await ctx.response.send_message(embed=embed,file = file)
+
+@client.slash_command(guild_ids = guild_ids)
+async def fact(ctx):
+  '''Ask for a fact from the amazing fact repository'''
+  line = random_fact()
+  title,desc = line[0],line[1]
+  embed = disnake.Embed(title = title , description = desc, color = disnake.Color.orange())
+  try:
+    embed.set_image(url=line[2])
+    embed.set_footer(text=line[3])
+  except:
+    pass
+  await ctx.reponse.send_message(embed = embed)
 
 @client.event
 async def on_message(message):
