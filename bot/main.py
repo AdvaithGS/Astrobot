@@ -90,62 +90,102 @@ async def on_guild_join(guild):
             await channel.send(embed=embed)
         break
 
-guild_ids = [808201667543433238]
+guild_ids = [808201667543433238,958310901679804426]
+#@client.slash_command(guild_ids = guild_ids)
+#async def daily(
+#  ctx,
+#  date : str = ''):
+#  '''
+#    Returns the Astronomy Picture Of The Day depending on the paratemers given.
+#
+#    Parameters
+#    ----------
+#    date: class `str` 
+#      It can be "random" or any date that you choose, in YYYY-MM-DD format Eg. "2005-06-08" must be after 1995-06-16.
+#    amount: class `int` 
+#      Your favourite number
+#  '''
+#  try:
+#    if date == '':
+#      daily = db['daily']
+#    elif date == 'random':
+#      delta = mktime(datetime.now().timetuple()) - mktime(datetime(1995,6,16).timetuple())
+#      random_date = datetime.utcfromtimestamp(mktime(datetime(1995,6,16).timetuple()) + random.randrange(int(delta)))
+#      parameters = {'date': f'{random_date.year}-{random_date.month}-{random_date.day}'}
+#      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+#    else:
+#      parameters = {'date': date }
+#      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+#    if 'hdurl' in daily:
+#      url = daily['hdurl']
+#      name = ''
+#    else:
+#      url = daily['url']
+#      name = url
+#
+#    title = daily['title']
+#    desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
+#    
+#    embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
+#    embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
+#    embed.set_image(url=url)
+#    await ctx.send(embed=embed)
+#
+#    if name:
+#        name = f'https://youtube.com/watch?v={name[30:41]}'
+#        embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
+#        await ctx.channel.send(content = name)
+#    
+#  except Exception as e:
+#    print(e)
+#    if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)[8:11] == '500':
+#      await ctx.send('There\'s seems to be something wrong with the NASA APOD service, try after some time')
+#    else:
+#      await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+
 @client.slash_command(guild_ids = guild_ids)
-async def daily(
-  ctx,
-  date : str = ''):
+async def help(
+  ctx
+):
   '''
-    Returns the Astronomy Picture Of The Day depending on the paratemers given.
-
-    Parameters
-    ----------
-    date: class `str` 
-      It can be "random" or any date that you choose, in YYYY-MM-DD format Eg. "2005-06-08" must be after 1995-06-16.
+  Ask for help regarding the bot's functionalities.
   '''
+  embed = disnake.Embed(title='Help has arrived.', 
+  description=
+  '''
+  As of now, there are only the following commands- 
+  
+  @AstroBot daily` or '/daily' -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
+  __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `@AstroBot daily 2005-06-08` or `/daily 2005-06-08`, this was for 8th June, 2005)
+  __Random APOD Photo__ - You can now request a random APOD photo from the archive using `@AstroBot daily random` or `/daily random`
+   
+  `@AstroBot channel` or `/channel` - get daily apod picture automatically to the channel in which you post this message. 
+   
+  `@AstroBot remove` or '/remove'- remove your channel from the daily APOD picture list. 
+   
+  `@AstroBot info <query>` or '/info <query>' - The ultimate source for data, videos and pictures on ANYTHING related to space science.
+  
+  `@AstroBot iss` or  - Find the live location of the international space station with respect to the Earth.
+  
+  `@AstroBot fact` or  - gives a random fact from the fact library.
+  
+  `@AstroBot weather <location>` or  `/weather <location>` - gives the real-time weather at the specified location.
+  
+  `@AstroBot phase <location>` or `/phase <location>` - To find the phase of the moon at the specified location.
+  
+  `@AstroBot sky <location>` or `/sky <location>` - To get the sky map at any specified location.
+  
+  `@AstroBot webb` or `/webb` - To get the current state of the James Webb Space Telescope.
+  
+  Have fun!''', color=disnake.Color.orange())
+  embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700 reach out to me for help or grievances. Vote for us at these websites")
   try:
-    if date == '':
-      daily = db['daily']
-    elif date == 'random':
-      delta = mktime(datetime.now().timetuple()) - mktime(datetime(1995,6,16).timetuple())
-      random_date = datetime.utcfromtimestamp(mktime(datetime(1995,6,16).timetuple()) + random.randrange(int(delta)))
-      parameters = {'date': f'{random_date.year}-{random_date.month}-{random_date.day}'}
-      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
-    else:
-      parameters = {'date': date }
-      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
-    if 'hdurl' in daily:
-      url = daily['hdurl']
-      name = ''
-    else:
-      url = daily['url']
-      name = url
-
-    title = daily['title']
-    desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
-    
-    embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
-    embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
-    embed.set_image(url=url)
+    await ctx.response.send_message(embed=embed, components=[Button(label="Top.gg", url="https://top.gg/bot/792458754208956466/vote",style = 5),Button(label="Dbl.com", url="https://disnakebotlist.com/bots/astrobot-2515/upvote",style = 5)])
+  except:
     await ctx.response.send_message(embed=embed)
-
-    if name:
-        name = f'https://youtube.com/watch?v={name[30:41]}'
-        embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange(),video =   {'url':url})
-        await ctx.channel.send(content = name)
-    
-  except Exception as e:
-    print(e)
-    if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)[8:11] == '500':
-      await ctx.response.send_message('There\'s seems to be something wrong with the NASA APOD service, try after some time')
-    else:
-      await ctx.response.send_message('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-    
-
-
 @client.event
 async def on_message(message):
-  if message.content.startswith('<@808262803227410465>'):
+  if message.content.startswith('<@!808262803227410465>'):
     ctx = message.channel
     mes = message.content[23:]
     '''gets the image from nasa's api, if its just 'daily' - it gets it from the database else if its the 'daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''    
@@ -169,8 +209,8 @@ async def on_message(message):
             date = random.randrage(6,31)
           else:
             date = random.randrange(1,31)
-        message = f'daily {year}-{month}-{date}'
-        await ctx.send(message)
+        message = f'<@!808262803227410465> daily {year}-{month}-{date}'
+        await ctx.send(content = message)
       else:
         try:
           if parameters == {}:
@@ -196,15 +236,15 @@ async def on_message(message):
             if name:
               name = f'https://youtube.com/watch?v={name[30:41]}'
               embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange(),video =   {'url':url})
-              await ctx.send(name)
+              await ctx.send(content = name)
           except:
             pass
         except Exception as e:
           print(e)
           if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] == '500':
-            await ctx.send('There\'s seems to be something wrong with the NASA APOD service, try after some time')
+            await ctx.send(content = 'There\'s seems to be something wrong with the NASA APOD service, try after some time')
           else:
-            await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+            await ctx.send(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
 
 
     # ask for help and commands
@@ -220,16 +260,16 @@ async def on_message(message):
     #by itself. Dont blame me if you understood the reference. eheheeheh
     elif mes.lower().startswith('execute order 66'):
       if message.author.id == 756496844867108937:# my user id
-        await ctx.send('Are you sure, Lord Palpatine?')      
+        await ctx.send(content ='Are you sure, Lord Palpatine?')      
         def check(msg):
           if msg.content.lower().startswith('yes'):
             return True
         try:
           message = await client.wait_for('message', timeout=60.0, check=check)
         except:
-          await ctx.send('Never mind.')
+          await ctx.send(content ='Never mind.')
         else:
-          await ctx.send('Yes my lord.')
+          await ctx.send(content ='Yes my lord.')
           for guild in db.keys():
             try:
               channel = client.get_channel(db[guild])
@@ -242,24 +282,24 @@ async def on_message(message):
       if str(message.guild.id) not in list(db.keys()):
         db[str(message.guild.id)] = ctx.id
         #update(dict(db))
-        await ctx.send('This channel has been registered for the Astronomy Picture of The Day service.')
+        await ctx.send(content ='This channel has been registered for the Astronomy Picture of The Day service.')
       else:
-        await ctx.send('This server was already registered.')
+        await ctx.send(content ='This server was already registered.')
   
     #removes a given channel from the apod service.
     elif mes.startswith('remove'):
       if str(message.guild.id) in db:
         del db[str(message.guild.id)]
         #update(dict(db))
-        await ctx.send('Removed from daily APOD feed.')
+        await ctx.send(content ='Removed from daily APOD feed.')
       else:
-        await ctx.send('This server has not been registered to the APOD feed.')
+        await ctx.send(content ='This server has not been registered to the APOD feed.')
   
     #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
     elif mes.startswith( 'info'):
       try:
         query = mes.split(' ',1)[1]
-        await ctx.send('Getting the information might take some time, please wait.')
+        await ctx.send(content ='Getting the information might take some time, please wait.')
         text,image,desc = get_wiki(query)
         if text:
           embed = disnake.Embed(title = query.title() , description = text,   color=disnake.Color.orange())
@@ -368,9 +408,10 @@ async def on_message(message):
   
         embed.set_image(url = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
   
-      except:
+      except Exception as e:
+        print(e)
         if mes == 'weather':
-          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `.weather Jaipur`  ',color = disnake.Color.orange())
+          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `@Astrobt weather Jaipur`  ',color = disnake.Color.orange())
         else:
           embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
       await ctx.send(embed = embed)
