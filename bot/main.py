@@ -287,6 +287,61 @@ async def fact(ctx):
     pass
   await ctx.response.send_message(embed = embed)
 
+@client.slash_command(guild_ids = guild_ids)
+async def weather(ctx,location):
+  '''
+  Get the live weather for any specified location
+
+  Parameters
+  ----------
+  location: class `str` 
+    The place of which you want to know the weather conditions. 
+  '''
+  await ctx.response.send_message('Preparing...')
+  try:
+    req = loads(get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
+    location = location + ', ' + find_country(req['sys']['country'])
+    
+    result = geolocator.geocode(location)
+    coords,location = result[1],result[0]
+    
+    embed = disnake.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = disnake.Color.orange())
+    embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
+    temp = str(req['main']['temp']) + ' °C'
+    embed.add_field(name = 'Temperature', value = temp)
+    lat = round(req['coord']['lat'],2)
+    embed.add_field(name = 'Latitude' , value = lat)
+    lon = round(req['coord']['lon'],2)
+    embed.add_field(name = 'Longitude', value = lon)
+    wind = str(req['wind']['speed']) + ' m/s' 
+    embed.add_field(name = 'Wind Speed' , value = wind)
+    sky = req['weather'][0]['main'].title()
+    embed.add_field(name = 'Skies', value = sky)
+    visibility = str(req['visibility']/1000) + ' km'
+    embed.add_field(name = 'Visibility', value = visibility)
+    
+    clouds = str(req['clouds']['all']) + ' %'
+    embed.add_field(name = 'Cloudiness' , value = clouds)
+    for i in ['sunrise','sunset']:
+      hours = int(req['timezone']/3600//1  + int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%H')))
+      minutes = int(req['timezone']/3600%1*60 + int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%M')))
+      if minutes >= 60:
+        hours += 1
+        minutes= minutes%60
+      if hours >= 24:
+        hours = hours%24
+      #seconds  = int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%S'))
+      final_time = f'{hours}.{minutes}'
+      embed.add_field(name = f'Local {i}' , value = final_time)
+    icon = req['weather'][0]['icon']
+    embed.set_thumbnail(url=f"http://openweathermap.org/img/wn/{icon}@2x.png")
+    embed.set_image(url = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
+
+  except Exception as e:
+    print(e)
+    embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
+  await ctx.edit_original_message(embed = embed)
+
 @client.event
 async def on_message(message):
   if message.content.startswith('<@!958986707376672838>'): #to be replaced
@@ -497,7 +552,7 @@ async def on_message(message):
         result = geolocator.geocode(location)
         coords,location = result[1],result[0]
         
-        embed = disnake.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = disnake.Color.orange(),image = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
+        embed = disnake.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = disnake.Color.orange())
         embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
   
         temp = str(req['main']['temp']) + ' °C'
