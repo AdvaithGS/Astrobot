@@ -127,19 +127,19 @@ async def daily(
     embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
     embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
     embed.set_image(url=url)
-    await ctx.channel.send(embed=embed)
+    await ctx.response.send_message(embed=embed)
 
     if name:
       name = f'https://youtube.com/watch?v={name[30:41]}'
       embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
-      await ctx.channel.send(content = name)
+      await ctx.response.send_message(content = name)
     
   except Exception as e:
     print(e)
     if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)[8:11] == '500':
-      await ctx.channel.send(content ='There\'s seems to be something wrong with the NASA APOD service, try after some time')
+      await ctx.response.send_message(content ='There\'s seems to be something wrong with the NASA APOD service, try after some time')
     else:
-      await ctx.channel.send(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+      await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
 
 @client.slash_command(guild_ids = guild_ids)
 async def help(
@@ -227,8 +227,7 @@ async def info(
     It can be anything pertaining to astronomy you wish to know about. 
   '''
   try:
-    message = await ctx.channel.send(content ='Getting the information might take some time, please wait.')
-    await ctx.response.defer(with_message = True)
+    await ctx.response.send_message(content ='Getting the information might take some time, please wait.')
     text,image,desc = get_wiki(query)
     if text:
       embed = disnake.Embed(title = query.title() , description = text, color=disnake.Color.orange())
@@ -240,16 +239,15 @@ async def info(
 
   except:
     embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange())
-  await ctx.followup.send(embed = embed)
-  await message.delete()
+  await ctx.edit_original_message(embed = embed)
 
 
 @client.slash_command(guild_ids = guild_ids)
 async def iss(ctx):
   '''Sends the current location of the International Space Station'''
+  await ctx.response.send_message('Preparing...')
   req = loads(get('https://api.wheretheiss.at/v1/satellites/25544').text)
   result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
-  
   location = ''
   if result['name']:
     location += result['name'] + ', '
@@ -274,11 +272,11 @@ async def iss(ctx):
   embed.add_field(name = 'Altitude' , value = f'{altitude} km')
   embed.add_field(name ='Visibility',value = req['visibility'].title())
   embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
-  await ctx.response.send_message(embed=embed,file = file)
+  await ctx.edit_original_message(embed=embed,file = file)
 
 @client.slash_command(guild_ids = guild_ids)
 async def fact(ctx):
-  '''Ask for a fact from the amazing fact repository'''
+  '''Ask for a fact from the awesome fact repository'''
   line = random_fact()
   title,desc = line[0],line[1]
   embed = disnake.Embed(title = title , description = desc, color = disnake.Color.orange())
@@ -287,14 +285,14 @@ async def fact(ctx):
     embed.set_footer(text=line[3])
   except:
     pass
-  await ctx.reponse.send_message(embed = embed)
+  await ctx.response.send_message(embed = embed)
 
 @client.event
 async def on_message(message):
   if message.content.startswith('<@!958986707376672838>'): #to be replaced
     ctx = message.channel
     mes = message.content[23:]
-    '''gets the image from nasa's api, if its just 'daily' - it gets it from the database else if its the 'daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''    
+    '''gets the image from nasa's api, if its just 'daily' - it gets it from the database else if its the 'daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''
     if mes.startswith('daily'):
       try:
         parameters = {'date': mes.split(' ')[1]}
