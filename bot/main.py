@@ -265,7 +265,7 @@ async def on_message(message):
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
       
-      embed = discord.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = discord.Color.orange(),image = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
+      embed = discord.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = discord.Color.orange())
       embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
 
       temp = str(req['main']['temp']) + ' °C'
