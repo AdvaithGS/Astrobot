@@ -85,12 +85,18 @@ https://top.gg/bot/792458754208956466/vote
 https://discordbotlist.com/bots/astrobot-2515/upvote
 
 ## Targets
-1. Improve `.iss` to have the names of people in the ISS - using OpenNotify and https://awesomeopensource.com/project/corquaid/international-space-station-APIs
-2. Integrate tools like SunCalc and MoonCalc
-3. Improve `.info` to give only data and bring in `.image` to give images (50% done)
-4. Possibly use SpaceFlight News API
-5. Add video demos to README file
-6. Use NASA's PDS Search API
+1. [ ] Improve `.iss` to have the names of people in the ISS - using OpenNotify and https://awesomeopensource.com/project/corquaid/international-space-station-APIs
+
+2. [ ] Integrate tools like SunCalc and MoonCalc
+
+3. [ ] Improve `.info` to give only data and bring in `.image` to give images (50% done)
+
+4. [ ] Possibly use SpaceFlight News API
+
+5. [ ] Add video demos to README file
+
+6. [ ] Use NASA's PDS Search API
+
 ## Creator
 
 This bot has been created with blood, sweat and tears by Advaith GS.
