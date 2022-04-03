@@ -397,7 +397,7 @@ async def sky(
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
   await ctx.edit_original_message(embed = embed)
 
-@client.slash_command()
+@client.slash_command(guild_ids = guild_ids)
 async def phase(
   ctx,
   location : str
@@ -410,7 +410,7 @@ async def phase(
   location: class `str` 
     The place of which you want to know the phase of the moon.
   '''
-  await ctx.reponse.send_message('Generating....this will take some time.')
+  await ctx.response.send_message('Generating....this will take some time.')
   try:
     result = geolocator.geocode(location)
     coords,location = result[1],result[0]
@@ -450,6 +450,29 @@ async def phase(
   except:
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
   await ctx.edit_original_message(embed = embed)
+
+@client.slash_command(guild_ids = guild_ids)
+async def webb(ctx):
+  '''
+  Get the current status of the James Webb Space Telescope
+  '''
+  await ctx.response.send_message('Generating....this will take some time.')
+  elapsedtime,image,deployment_step,temp = get_james_webb()
+  embed = disnake.Embed(title = f'The James Webb Space Telescope - {deployment_step}', description = image[0] ,color =  disnake.Color.orange())
+  embed.add_field(name = 'Elapsed Time',value = elapsedtime)
+  embed.set_thumbnail(url="https://webb.nasa.gov/content/webbLaunch/assets/images/extra/webbTempLocationsGradient1.4TweenAll-300px.jpg")
+  embed.set_image(url=image[1])
+  embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
+  #temperatures
+  places = ['Warm','Cool']
+  for i in places:
+    for j in ['A1AC','B2BD']:
+      embed.add_field(name = f'Temp {i} Side {j[0]} ({j[ places.index(i) + 2 ]})', value = temp[f'temp{i}Side{j[1]}C'])
+  for i in ['NirCam2','NirSpec3','FgsNiriss4','Miri1','Fsm5']:
+    embed.add_field(name = f'{i[:-1]} ({i[-1]})',value = temp[f'tempInst{i[:-1]}K'])
+  
+  await ctx.edit_original_message(embed = embed)
+
 @client.event
 async def on_message(message):
   if message.content.startswith('<@!958986707376672838>'): #to be replaced
