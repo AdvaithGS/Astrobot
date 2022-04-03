@@ -343,17 +343,17 @@ async def weather(ctx,location):
   await ctx.edit_original_message(embed = embed)
 
 @client.slash_command(guild_ids = guild_ids)
-async def phase(
+async def sky(
   ctx,
   location : str
   ):
   '''
-  Get the phase of the moon for any specified location
+  Get the sky map for any specified location
 
   Parameters
   ----------
   location: class `str` 
-    The place of which you want to know the phase of the moon. 
+    The place of which you want to know the sky map. 
   '''
   #Using AstronomyAPI to get .sky 
   await ctx.response.send_message('Generating....this will take some time.')
@@ -397,6 +397,59 @@ async def phase(
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
   await ctx.edit_original_message(embed = embed)
 
+@client.slash_command()
+async def phase(
+  ctx,
+  location : str
+):
+  '''
+  Get the phase of the moon for any specified location
+
+  Parameters
+  ----------
+  location: class `str` 
+    The place of which you want to know the phase of the moon.
+  '''
+  await ctx.reponse.send_message('Generating....this will take some time.')
+  try:
+    result = geolocator.geocode(location)
+    coords,location = result[1],result[0]
+    if int(coords[0]) > 0:
+      orientation = "north-up"
+      ori2 = "south-up"
+    else:
+      orientation = "south-up" 
+      ori2 = "north-up"
+    req = post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret),
+    json = {
+        "format": "png",
+        "style": {
+            "moonStyle": "default",
+            "backgroundStyle": "stars",
+            "backgroundColor": "red",
+            "headingColor": "white",
+            "textColor": "white"
+        },
+        "observer": {
+            "latitude": coords[0],
+            "longitude": coords[1],
+            "date": strftime('%Y-%m-%d')
+        },
+        "view": {
+            "type": "landscape-simple",
+            'orientation': ori2
+        }
+    })
+    req = req.json()
+    embed = disnake.Embed(title = f'Moon phase at {location}', color =  disnake.Color.orange())
+    embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
+    embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
+    embed.add_field(name = 'Hemisphere',value = orientation)
+    embed.set_image(url = req['data'] ['imageUrl'])
+    embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
+  except:
+    embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
+  await ctx.edit_original_message(embed = embed)
 @client.event
 async def on_message(message):
   if message.content.startswith('<@!958986707376672838>'): #to be replaced
