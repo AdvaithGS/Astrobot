@@ -560,6 +560,9 @@ async def on_message(message):
         
       else:
         update(dict(db))
+      if random.randrange(1,11) == 4:
+        embed = discord.Embed(title = 'Notice',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, due to Discord\'s new policy changes. Please make note of this change.',colour = discord.Colour.orange())
+        ctx.send(embed = embed)
   except:
     pass
 
