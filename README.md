@@ -1,4 +1,7 @@
-This is an Astronomy discord bot (now verified!) with various functionalities and uses; created with python 3.10.3 version involving the discord.py module. 
+This is an Astronomy discord bot (now verified!) with various functionalities and uses; created with python 3.10.3 version involving the discord.py module.
+
+### Note : The bot will be moving to slash commands hence all users are required to reinvite the bot (no need to kick) so as to give slash command permissions. Use the link below.
+
 ## Table of contents
 * [Invite](#Invite)
 * [Commands](#Commands)
