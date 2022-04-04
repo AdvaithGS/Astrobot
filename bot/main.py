@@ -526,6 +526,9 @@ async def on_message(message):
         try:
           channel = client.get_channel(db[guild])
           await channel.send('.daily')
+          embed = discord.Embed(title = 'Notice',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, due to Discord\'s new policy changes. Please make note of this change.',colour = discord.Colour.orange())
+          await channel.send(embed = embed)
+
         except:
           pass
       update(dict(db))
