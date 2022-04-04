@@ -55,7 +55,6 @@ async def set_activity(caller):
   #  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity,type = choice))
 
 async def log_command(ctx,command):
-  print(command)
   return
   if ctx.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
     db[command] += 1
@@ -170,19 +169,19 @@ async def help(
   '''
   As of now, there are only the following commands- 
   
-  `@AstroBot daily` or '/daily' -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
+  `@AstroBot daily` or `/daily` -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
   __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `@AstroBot daily 2005-06-08` or `/daily 2005-06-08`, this was for 8th June, 2005)
   __Random APOD Photo__ - You can now request a random APOD photo from the archive using `@AstroBot daily random` or `/daily random`
    
   `@AstroBot channel` or `/channel` - get daily apod picture automatically to the channel in which you post this message. 
    
-  `@AstroBot remove` or '/remove'- remove your channel from the daily APOD picture list. 
+  `@AstroBot remove` or `/remove`- remove your channel from the daily APOD picture list. 
    
-  `@AstroBot info <query>` or '/info <query>' - The ultimate source for data, videos and pictures on ANYTHING related to space science.
+  `@AstroBot info <query>` or `/info <query>` - The ultimate source for data, videos and pictures on ANYTHI NG related to space science.
   
-  `@AstroBot iss` or  - Find the live location of the international space station with respect to the Earth.
+  `@AstroBot iss` or `/iss` - Find the live location of the international space station with respect to the Earth.
   
-  `@AstroBot fact` or  - gives a random fact from the fact library.
+  `@AstroBot fact` or `/fact` - gives a random fact from the fact library.
   
   `@AstroBot weather <location>` or  `/weather <location>` - gives the real-time weather at the specified location.
   
@@ -591,19 +590,19 @@ async def on_message(message):
       '''
       As of now, there are only the following commands- 
   
-      `@AstroBot daily` or '/daily' -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
+      `@AstroBot daily` or `/daily` -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
       __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `@AstroBot daily 2005-06-08` or `/daily 2005-06-08`, this was for 8th June, 2005)
       __Random APOD Photo__ - You can now request a random APOD photo from the archive using `@AstroBot daily random` or `/daily random`
 
       `@AstroBot channel` or `/channel` - get daily apod picture automatically to the channel in which you post this message. 
 
-      `@AstroBot remove` or '/remove'- remove your channel from the daily APOD picture list. 
+      `@AstroBot remove` or `/remove`- remove your channel from the daily APOD picture list. 
 
-      `@AstroBot info <query>` or '/info <query>' - The ultimate source for data, videos and pictures on ANYTHING related to space science.
+      `@AstroBot info <query>` or `/info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science.
 
-      `@AstroBot iss` or  - Find the live location of the international space station with respect to the Earth.
+      `@AstroBot iss` or `/iss` - Find the live location of the international space station with respect to the Earth.
 
-      `@AstroBot fact` or  - gives a random fact from the fact library.
+      `@AstroBot fact` or `/fact` - gives a random fact from the fact library.
 
       `@AstroBot weather <location>` or  `/weather <location>` - gives the real-time weather at the specified location.
 
@@ -615,10 +614,12 @@ async def on_message(message):
 
       Have fun!''', color=disnake.Color.orange())
       embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700 reach out to me for help or grievances. Vote for us at these websites")
-      try:
-        await ctx.send(embed=embed, components=[Button(label="Top.gg", url="https://top.gg/bot/792458754208956466/vote",style = 5),Button(label="Dbl.com", url="https://disnakebotlist.com/bots/astrobot-2515/upvote",style = 5)])
-      except:
-        await ctx.send(embed=embed)
+      view = disnake.ui.View()
+      topgg = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Top.gg", url="https://top.gg/bot/792458754208956466/vote")
+      view.add_item(item=topgg)
+      dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
+      view.add_item(item=dbl)
+      await ctx.send(embed = embed , view = view)
   
     #just something i added to trigger the daily photo if somehow the bot doesnt do it 
     #by itself. Dont blame me if you understood the reference. eheheeheh
