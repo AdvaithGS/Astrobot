@@ -54,7 +54,8 @@ async def set_activity(caller):
   #  db['hour'] = mktime(datetime.now().timetuple())
   #  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity,type = choice))
 
-
+async def command_logs(ctx,command):
+  if ctx.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   #x = strftime('%y%m%d')
@@ -140,6 +141,8 @@ async def daily(
       await ctx.response.send_message(content ='There\'s seems to be something wrong with the NASA APOD service, try after some time')
     else:
       await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.slash_command(guild_ids = guild_ids)
 async def help(
@@ -184,6 +187,8 @@ async def help(
   dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
   view.add_item(item=dbl)
   await ctx.response.send_message(embed=embed, view=view)
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.slash_command(guild_ids = guild_ids)
 async def channel(ctx):
@@ -198,6 +203,8 @@ async def channel(ctx):
   else:
     embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
     await ctx.response.send_message(embed = embed)
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.slash_command(guild_ids = guild_ids)
 async def remove(ctx):
@@ -212,6 +219,8 @@ async def remove(ctx):
   else:
     embed = disnake.Embed(title = 'Error',description = 'This server had not been registered to the APOD feed.', color=disnake.Color.orange())
     await ctx.response.send_message(embed = embed)
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.slash_command(guild_ids = guild_ids)
 async def info(
@@ -240,7 +249,8 @@ async def info(
   except:
     embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange())
   await ctx.edit_original_message(embed = embed)
-
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.slash_command(guild_ids = guild_ids)
 async def iss(ctx):
@@ -273,6 +283,9 @@ async def iss(ctx):
   embed.add_field(name ='Visibility',value = req['visibility'].title())
   embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
   await ctx.edit_original_message(embed=embed,file = file)
+  await check_apod()
+  await set_activity('Automatic')
+
 
 @client.slash_command(guild_ids = guild_ids)
 async def fact(ctx):
@@ -286,6 +299,8 @@ async def fact(ctx):
   except:
     pass
   await ctx.response.send_message(embed = embed)
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.slash_command(guild_ids = guild_ids)
 async def weather(ctx,location):
@@ -341,6 +356,8 @@ async def weather(ctx,location):
     print(e)
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
   await ctx.edit_original_message(embed = embed)
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.slash_command(guild_ids = guild_ids)
 async def sky(
@@ -396,6 +413,8 @@ async def sky(
   except:
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
   await ctx.edit_original_message(embed = embed)
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.slash_command(guild_ids = guild_ids)
 async def phase(
@@ -450,6 +469,8 @@ async def phase(
   except:
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
   await ctx.edit_original_message(embed = embed)
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.slash_command(guild_ids = guild_ids)
 async def webb(ctx):
@@ -472,6 +493,8 @@ async def webb(ctx):
     embed.add_field(name = f'{i[:-1]} ({i[-1]})',value = temp[f'tempInst{i[:-1]}K'])
   
   await ctx.edit_original_message(embed = embed)
+  await check_apod()
+  await set_activity('Automatic')
 
 @client.event
 async def on_message(message):
@@ -535,6 +558,7 @@ async def on_message(message):
             await ctx.send(content = 'There\'s seems to be something wrong with the NASA APOD service, try after some time')
           else:
             await ctx.send(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+  
 
 
     # ask for help and commands
