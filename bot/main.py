@@ -55,6 +55,7 @@ async def set_activity(caller):
   #  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity,type = choice))
 
 async def log_command(ctx,command):
+  print(command)
   return
   if ctx.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
     db[command] += 1
@@ -897,7 +898,7 @@ async def on_message(message):
   #keeps the number of times each command has been called overall
     try:
       if mes.split()[0] in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb'] :#and message.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
-        log_command(message,mes.split()[0])
+        await log_command(message,mes.split()[0])
     except:
       pass
       
