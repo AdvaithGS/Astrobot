@@ -54,8 +54,18 @@ async def set_activity(caller):
   #  db['hour'] = mktime(datetime.now().timetuple())
   #  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity,type = choice))
 
-async def command_logs(ctx,command):
+async def log_command(ctx,command):
   if ctx.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
+    db[command] += 1
+
+  if db['resetlast'] - mktime(datetime.now().timetuple()) >= 2592000:
+    db['resetlast'] = mktime(datetime.now().timetuple())
+    for i in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb']:
+        db[i] = 0
+    #update(dict(db),'db','Database reset')
+
+  #else:
+    #update(dict(db))
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   #x = strftime('%y%m%d')
@@ -143,6 +153,7 @@ async def daily(
       await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'daily')
 
 @client.slash_command(guild_ids = guild_ids)
 async def help(
@@ -189,6 +200,7 @@ async def help(
   await ctx.response.send_message(embed=embed, view=view)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'help')
 
 @client.slash_command(guild_ids = guild_ids)
 async def channel(ctx):
@@ -205,6 +217,7 @@ async def channel(ctx):
     await ctx.response.send_message(embed = embed)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'channel')
 
 @client.slash_command(guild_ids = guild_ids)
 async def remove(ctx):
