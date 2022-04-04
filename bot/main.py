@@ -55,6 +55,7 @@ async def set_activity(caller):
   #  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity,type = choice))
 
 async def log_command(ctx,command):
+  return
   if ctx.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
     db[command] += 1
 
@@ -66,6 +67,7 @@ async def log_command(ctx,command):
 
   #else:
     #update(dict(db))
+  
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   #x = strftime('%y%m%d')
@@ -234,6 +236,7 @@ async def remove(ctx):
     await ctx.response.send_message(embed = embed)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'remove')
 
 @client.slash_command(guild_ids = guild_ids)
 async def info(
@@ -264,6 +267,7 @@ async def info(
   await ctx.edit_original_message(embed = embed)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'info')
 
 @client.slash_command(guild_ids = guild_ids)
 async def iss(ctx):
@@ -298,6 +302,7 @@ async def iss(ctx):
   await ctx.edit_original_message(embed=embed,file = file)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'iss')
 
 
 @client.slash_command(guild_ids = guild_ids)
@@ -314,6 +319,7 @@ async def fact(ctx):
   await ctx.response.send_message(embed = embed)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'fact')
 
 @client.slash_command(guild_ids = guild_ids)
 async def weather(ctx,location):
@@ -371,6 +377,7 @@ async def weather(ctx,location):
   await ctx.edit_original_message(embed = embed)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'weather')
 
 @client.slash_command(guild_ids = guild_ids)
 async def sky(
@@ -428,6 +435,7 @@ async def sky(
   await ctx.edit_original_message(embed = embed)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'sky')
 
 @client.slash_command(guild_ids = guild_ids)
 async def phase(
@@ -484,6 +492,7 @@ async def phase(
   await ctx.edit_original_message(embed = embed)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'phase')
 
 @client.slash_command(guild_ids = guild_ids)
 async def webb(ctx):
@@ -508,6 +517,7 @@ async def webb(ctx):
   await ctx.edit_original_message(embed = embed)
   await check_apod()
   await set_activity('Automatic')
+  await log_command(ctx,'webb')
 
 @client.event
 async def on_message(message):
@@ -886,19 +896,8 @@ async def on_message(message):
   
   #keeps the number of times each command has been called overall
     try:
-      if mes.split()[0] in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb'] and message.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
-        x =  mes.split()[0]
-        db[x] += 1
-        #update(dict(db))
-
-        if db['resetlast'] - mktime(datetime.now().timetuple()) >= 2592000:
-          db['resetlast'] = mktime(datetime.now().timetuple())
-          for i in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb']:
-            db[i] = 0
-          #update(dict(db),'db','Database reset')
-
-        #else:
-          #update(dict(db))
+      if mes.split()[0] in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb'] :#and message.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
+        log_command(message,mes.split()[0])
     except:
       pass
       
