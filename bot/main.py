@@ -78,7 +78,26 @@ async def check_apod():
   #  for guild in db.keys():
   #    try:
   #      channel = client.get_channel(db[guild])
-  #      await channel.send('.daily')
+  #      daily = db['daily']
+  #      if 'hdurl' in daily:
+  #        url = daily['hdurl']
+  #        name = ''
+  #      else:
+  #        url = daily['url']
+  #        name = url
+#
+  #      title = daily['title']
+  #      desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
+  #  
+  #      embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
+  #      embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
+  #      embed.set_image(url=url)
+  #      await channel.send(embed=embed)
+#
+  #      if name:
+  #        name = f'https://youtube.com/watch?v={name[30:41]}'
+  #        embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
+  #        await channel.send(content = name)
   #    except:
   #      pass
   #  update(dict(db))
@@ -96,7 +115,7 @@ async def on_ready():
 
 @client.event
 async def on_guild_join(guild):
-  embed = disnake.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `.help` to begin.', color = disnake.Color.orange())
+  embed = disnake.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `/help` to begin.', color = disnake.Color.orange())
   channel = guild.channels[0]
   for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
@@ -104,6 +123,10 @@ async def on_guild_join(guild):
         break
 
 guild_ids = [808201667543433238]
+@client.slash_command(guild_ids = guild_ids)
+async def test(ctx):
+  await ctx.response.send_message('/iss')
+
 @client.slash_command(guild_ids = guild_ids)
 async def daily(
   ctx,
@@ -192,7 +215,7 @@ async def help(
   `@AstroBot webb` or `/webb` - To get the current state of the James Webb Space Telescope.
   
   Have fun!''', color=disnake.Color.orange())
-  embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700 reach out to me for help or grievances. Vote for us at these websites")
+  embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700. Reach out for help or grievances. Vote for us at these websites")
 
   view = disnake.ui.View()
   topgg = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Top.gg", url="https://top.gg/bot/792458754208956466/vote")
@@ -613,7 +636,7 @@ async def on_message(message):
       `@AstroBot webb` or `/webb` - To get the current state of the James Webb Space Telescope.
 
       Have fun!''', color=disnake.Color.orange())
-      embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700 reach out to me for help or grievances. Vote for us at these websites")
+      embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700. Reach out for help or grievances. Vote for us at these websites")
       view = disnake.ui.View()
       topgg = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Top.gg", url="https://top.gg/bot/792458754208956466/vote")
       view.add_item(item=topgg)
