@@ -67,7 +67,6 @@ async def log_command(ctx,command):
 
   #else:
     #update(dict(db))
-  
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   #x = strftime('%y%m%d')
@@ -128,6 +127,7 @@ async def test(ctx):
   await ctx.response.send_message('/iss')
 
 @client.slash_command(guild_ids = guild_ids)
+@commands.cooldown(1, 10, type=commands.BucketType.user)
 async def daily(
   ctx,
   date : str = ''):
@@ -181,6 +181,7 @@ async def daily(
   await log_command(ctx,'daily')
 
 @client.slash_command(guild_ids = guild_ids)
+@commands.cooldown(1, 10, type=commands.BucketType.user)
 async def help(
   ctx
 ):
@@ -542,6 +543,12 @@ async def webb(ctx):
   await set_activity('Automatic')
   await log_command(ctx,'webb')
 
+@client.event
+async def on_application_command_error(ctx,error):
+  if isinstance(error,commands.CommandOnCooldown):
+    embed = disnake.Embed(title = "You're on cooldown",description = error,color = disnake.color.orange())
+    await ctx.respond(embed = embed)
+  
 @client.event
 async def on_message(message):
   if message.content.startswith('<@!958986707376672838>'): #to be replaced
