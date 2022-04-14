@@ -4,7 +4,7 @@ from disnake.ext import commands,tasks
 from datetime import datetime
 from os import environ
 import reverse_geocoder
-
+from itertools import cycle
 #from assets.database.database import *
 #db = retrieve()
 #
@@ -35,23 +35,31 @@ api_key3 = environ['api_key3']
 secret = environ['api_key4']
 appid = environ['appid']
 
+activities = iter(cycle([{0, 'With the stars'}, {2, 'The Sounds Of The Universe'},{ 3, 'Cosmos'}, {0, 'With a bunch of Neutron stars'}, {2, '.help'},{ 3, 'How The Universe Works'},{ 0, 'Life of A Star'},{ 2, 'Richard Feynman talk about bongos'}, {3, 'Milky Way and Andromeda collide'}, {3,'The James Webb Space Telescope'}, {2, 'Your .iss requests' }]))
+@client.event
+async def on_ready():
+  s = len(client.guilds)
+  print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
+  # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
+  s = (type(reverse_geocoder.search((60.12,33.12))))
+  await set_activity('Startup')
+
 @tasks.loop(hours = 6)
 #generates a random activity that the bot can set as its status
 async def set_activity(caller = 'Automatic'):
   pass
-  #if mktime(datetime.now().timetuple()) - db['hour'] >= 21600:
-  #  choice = random.choice([0,2,3,4,6,7,8,10,11,15,18])
-  #  lst = ['With the stars','','The Sounds Of The Universe','Cosmos','With a bunch of Neutron stars','','.help','How The  Universe Works','Life of A Star', '', 'Richard Feynman talk about bongos','Milky Way and Andromeda collide','','','', 'The James Webb Space Telescope','','','Your .iss requests']
-  #   0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
-  #  activity = lst[choice]
-  #  choice = choice%4
-  #  with open('log.txt','a') as f:
-  #    time = strftime('%d/%m/%Y-%H:%M')
-  #    f.write(f'\n{time} {caller}: {choice}-{activity}')
-  #  with open('log.txt','r') as f:
-  #    update(f.read(),'logs')
-  #  db['hour'] = mktime(datetime.now().timetuple())
-  #  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity,type = choice))
+  #global activities
+  #activity = next(activities)
+  ##0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
+  #desc = activity[1]
+  #choice = activity[0]%4
+  #with open('log.txt','a') as f:
+  #  time = strftime('%d/%m/%Y-%H:%M')
+  #  f.write(f'\n{time} {caller}: {choice}-{desc}')
+  #with open('log.txt','r') as f:
+  #  update(f.read(),'logs')
+  #db['hour'] = mktime(datetime.now().timetuple())
+  #await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = desc,type = choice))
 
 async def log_command(ctx,command):
   return
@@ -101,13 +109,7 @@ async def check_apod():
   #  update(dict(db))
   pass
 
-@client.event
-async def on_ready():
-  s = len(client.guilds)
-  print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
-  # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
-  s = (type(reverse_geocoder.search((60.12,33.12))))
-  await set_activity('Startup')
+
 
 
 
