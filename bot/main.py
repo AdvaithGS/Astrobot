@@ -536,8 +536,8 @@ async def webb(ctx):
 @client.event
 async def on_slash_command_error(ctx, error):
   if isinstance(error,commands.CommandOnCooldown):
-    embed = disnake.Embed(title = "You're on cooldown", description = f"You're on cooldown. Try after {error.retry_after} seconds." ,color = disnake.Color.orange())
-    await ctx.respond(embed = embed)
+    embed = disnake.Embed(title = "You're on cooldown", description = f"Try after {round(error.retry_after,1)} seconds." ,color = disnake.Color.red())
+    await ctx.response.send_message(embed = embed)
   else:
     print('Error')
   
