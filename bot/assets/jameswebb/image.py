@@ -172,7 +172,7 @@ Status: Ongoing
 Although Image Stacking puts all the light in one place on the detector, the segments are still acting as 18 small telescopes rather than one big one. The segments need to be lined up with each other with an accuracy smaller than the wavelength of the light.
 
 Conducted three times during the commissioning process, Coarse Phasing measures and corrects the vertical displacement (piston difference) of the mirror segments. Using a technology known as Dispersed Fringe Sensing, we use NIRCam to capture light spectra from 20 separate pairings of mirror segments. The spectrum will resemble a barber pole pattern with a slope (or angle) determined by the piston difference of the two segments in the pairing.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step4VideoGrab-1000px.jpg'],
-'latest':['''Telescope Alignment Over All Instrument Fields Of View
+'95':['''Telescope Alignment Over All Instrument Fields Of View
 Step 6
 
 Nominal Event Time: Starts - Launch + ~3 Months
@@ -181,8 +181,20 @@ Status: ONGOING
 
 After Fine Phasing (step 5), the telescope will be well aligned at one place in the NIRCam field of view. Now we need to extend the alignment to the rest of the instruments.
 
-In this phase of the commissioning process, we make measurements at multiple locations, or field points, across each of the science instruments, as shown below. More variation in intensity indicates larger errors at that field point. An algorithm calculates the final corrections needed to achieve a well-aligned telescope across all science instruments.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step6.jpg']
-}
+In this phase of the commissioning process, we make measurements at multiple locations, or field points, across each of the science instruments, as shown below. More variation in intensity indicates larger errors at that field point. An algorithm calculates the final corrections needed to achieve a well-aligned telescope across all science instruments.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step6.jpg'],
+'lastest':['''Final Cooling - MIRI
+Precedes Mirror Alignment Step 7
+
+Nominal Event Time: Starts - Launch + ~3.5 Months
+
+Status: Ongoing
+
+Webb’sMid-Infrared Instrument (MIRI) is in the final phase of its cooldown which is a precondition to mirror alignment step 7.
+
+The near-infrared instruments (NIRCam, NIRSpec, FGS-NIRISS) have reached their target range from 34 to 39 kelvins cooling passively. MIRI carries detectors that need to be at a temperature of less than 7 kelvins to be able to detect longer wavelength photons. This temperature is not possible on Webb by passive means alone, so Webb carries an innovative cryocooler that is dedicated to cooling MIRI's detectors.
+
+This cryocooler uses helium gas to carry heat from MIRI’s optics and detectors out to the warm side of the sunshield. To manage the cooldown process, MIRI also has heaters onboard, to protect its sensitive components from the risk of ice forming. The Webb team has begun progressively adjusting both the cryocooler and these heaters, to ensure a slow, controlled, stable cooldown for the instrument. Soon, the team will turn off MIRI’s heaters entirely, to bring the instrument down to its operating temperature of less than 7 kelvins (-447 degrees Fahrenheit, or -266 degrees Celsius).''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/miriFinalCooldown-1200px.png']
+     }
 def get_image():
     global db
     return db['latest']
