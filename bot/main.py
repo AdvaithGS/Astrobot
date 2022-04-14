@@ -51,8 +51,8 @@ async def set_activity(caller = 'Automatic'):
   #global activities
   #activity = next(activities)
   ##0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
+  #choice = activity[0]
   #desc = activity[1]
-  #choice = activity[0]%4
   #with open('log.txt','a') as f:
   #  time = strftime('%d/%m/%Y-%H:%M')
   #  f.write(f'\n{time} {caller}: {choice}-{desc}')
@@ -536,7 +536,7 @@ async def webb(ctx):
 @client.event
 async def on_slash_command_error(ctx, error):
   if isinstance(error,commands.CommandOnCooldown):
-    embed = disnake.Embed(title = "You're on cooldown", description = f"You're on cooldown. Try after {error.retry_after} seconds." ,color = disnake.color.orange())
+    embed = disnake.Embed(title = "You're on cooldown", description = f"You're on cooldown. Try after {error.retry_after} seconds." ,color = disnake.Color.orange())
     await ctx.respond(embed = embed)
   else:
     print('Error')
