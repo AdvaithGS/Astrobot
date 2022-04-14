@@ -223,7 +223,10 @@ async def help(
   view.add_item(item=topgg)
   dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
   view.add_item(item=dbl)
-  await ctx.response.send_message(embed=embed, view=view)
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed=  embed, view = view)
+  else:
+    await ctx.response.send_message(embed=embed, view=view)
   await check_apod()
   await log_command(ctx,'help')
 
@@ -543,9 +546,9 @@ async def on_slash_command_error(ctx, error):
   
 @client.event
 async def on_message(message):
-  if message.content.startswith('<@!958986707376672838>'): #to be replaced
+  if message.content.startswith('<@958986707376672838>'): #to be replaced
     ctx = message.channel
-    mes = message.content[23:]
+    mes = message.content[22:]
     '''gets the image from nasa's api, if its just 'daily' - it gets it from the database else if its the 'daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''
     if mes.startswith('daily'):
       try:
@@ -608,40 +611,7 @@ async def on_message(message):
 
     # ask for help and commands
     elif mes.startswith('help'):
-      embed = disnake.Embed(title='Help has arrived.', description=
-      '''
-      As of now, there are only the following commands- 
-  
-      `@AstroBot daily` or `/daily` -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
-      __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `@AstroBot daily 2005-06-08` or `/daily 2005-06-08`, this was for 8th June, 2005)
-      __Random APOD Photo__ - You can now request a random APOD photo from the archive using `@AstroBot daily random` or `/daily random`
-
-      `@AstroBot channel` or `/channel` - get daily apod picture automatically to the channel in which you post this message. 
-
-      `@AstroBot remove` or `/remove`- remove your channel from the daily APOD picture list. 
-
-      `@AstroBot info <query>` or `/info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science.
-
-      `@AstroBot iss` or `/iss` - Find the live location of the international space station with respect to the Earth.
-
-      `@AstroBot fact` or `/fact` - gives a random fact from the fact library.
-
-      `@AstroBot weather <location>` or  `/weather <location>` - gives the real-time weather at the specified location.
-
-      `@AstroBot phase <location>` or `/phase <location>` - To find the phase of the moon at the specified location.
-
-      `@AstroBot sky <location>` or `/sky <location>` - To get the sky map at any specified location.
-
-      `@AstroBot webb` or `/webb` - To get the current state of the James Webb Space Telescope.
-
-      Have fun!''', color=disnake.Color.orange())
-      embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700. Reach out for help or grievances. Vote for us at these websites")
-      view = disnake.ui.View()
-      topgg = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Top.gg", url="https://top.gg/bot/792458754208956466/vote")
-      view.add_item(item=topgg)
-      dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
-      view.add_item(item=dbl)
-      await ctx.send(embed = embed , view = view)
+      await help(ctx)
   
     #just something i added to trigger the daily photo if somehow the bot doesnt do it 
     #by itself. Dont blame me if you understood the reference. eheheeheh
