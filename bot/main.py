@@ -529,6 +529,13 @@ async def on_message(message):
           await channel.send('.daily')
         except:
           pass
+        try:
+          x = await client.fetch_guild_commands(ctx.guild.id)
+        except:
+          embed = discord.Embed(title = 'Notice - Please reinvite the bot',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, this requires server owners to reinvite the bot - without the need to kick AstroBot. The link can be found in the bot\'s profile.',colour = discord.Colour.orange())
+          channel = client.get_channel(db[guild])
+          #embed.set_image()
+          channel.send(embed = embed)
       update(dict(db))
 
   
@@ -565,7 +572,7 @@ async def on_message(message):
         x = await client.fetch_guild_commands(ctx.guild.id)
       except:
         embed = discord.Embed(title = 'Notice - Please reinvite the bot',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, this requires server owners to reinvite the bot - without the need to kick AstroBot. The link can be found in the bot\'s profile.',colour = discord.Colour.orange())
-        embed.set_image()
+        #embed.set_image()
         ctx.send(embed = embed)
   except:
     pass
