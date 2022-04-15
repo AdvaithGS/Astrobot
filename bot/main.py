@@ -1,10 +1,9 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
-import discord
+import disnake as discord
 from datetime import datetime
 from os import environ
-from discord_components import Button
 import reverse_geocoder
-
+import disnake
 from assets.database.database import *
 db = retrieve()
 
@@ -149,10 +148,12 @@ async def on_message(message):
   elif message.content.startswith('.help'):
     embed = discord.Embed(title='Help has arrived.', description='''As of now, there are only the following commands- \n\n`.daily`   -  See the NASA astronomy picture of the day, along with an explanation of the picture. \n    __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `.daily 2005-06-08`, this was for 8th June, 2005) \n    __Random APOD Photo__ - You can now request a random APOD photo from the archive using `.daily random` \n\n`.channel` - get daily apod picture automatically to the channel in which you post this message. \n\n`.remove` - remove your channel from the daily APOD picture list. \n\n `.info <query>` - The ultimate source for data, videos and pictures on ANYTHING related to space science. \n\n`.iss` - Find the live location of the international space station with respect to the Earth.\n\n`.fact` - gives a random fact from the fact library. \n\n`.weather <location>` - gives the real-time weather at the specified location. \n\n`.phase <location>` - To find the phase of the moon at the specified location\n\n`.sky <location>` - To get the sky map at any specified location\n\n`.webb` - To get the current state of the James Webb Space Telescope.\n\nHave fun!''', color=discord.Color.orange())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700. Reach out to me for help or grievances. Vote for us at these websites")
-    try:
-      await ctx.send(embed=embed, components=[Button(label="Top.gg", url="https://top.gg/bot/792458754208956466/vote",style = 5),Button(label="Dbl.com", url="https://discordbotlist.com/bots/astrobot-2515/upvote",style = 5)])
-    except:
-      await ctx.send(embed=embed)
+    view = disnake.ui.View()
+    topgg = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Top.gg", url="https://top.gg/bot/792458754208956466/vote")
+    view.add_item(item=topgg)
+    dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
+    view.add_item(item=dbl)
+    await ctx.send(embed=embed,view = view)
 
   #just something i added to trigger the daily photo if somehow the bot doesnt do it 
   #by itself. Dont blame me if you understood the reference. eheheeheh
@@ -526,9 +527,6 @@ async def on_message(message):
         try:
           channel = client.get_channel(db[guild])
           await channel.send('.daily')
-          embed = discord.Embed(title = 'Notice - Please reinvite the bot - Ignore if already done or invited after April 6',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, this requires server owners to reinvite the bot - without the need to kick AstroBot- due to Discord\'s new policy changes.Link can be taken from the bot\'s profile. Please make note of this change.',colour = discord.Colour.orange())
-          await channel.send(embed = embed)
-
         except:
           pass
       update(dict(db))
@@ -563,8 +561,11 @@ async def on_message(message):
         
       else:
         update(dict(db))
-      if random.randrange(1,11) == 4:
-        embed = discord.Embed(title = 'Notice - Please reinvite the bot - Ignore if already done or invited after April 6',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, this requires server owners to reinvite the bot - without the need to kick AstroBot- due to Discord\'s new policy changes.Link can be found in the bot\'s profile. Please make note of this change.',colour = discord.Colour.orange())
+      try:
+        x = await client.fetch_guild_commands(ctx.guild.id)
+      except:
+        embed = discord.Embed(title = 'Notice - Please reinvite the bot',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, this requires server owners to reinvite the bot - without the need to kick AstroBot. The link can be found in the bot\'s profile.',colour = discord.Colour.orange())
+        embed.set_image()
         ctx.send(embed = embed)
   except:
     pass
