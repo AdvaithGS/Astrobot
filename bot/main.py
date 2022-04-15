@@ -35,7 +35,7 @@ api_key3 = environ['api_key3']
 secret = environ['api_key4']
 appid = environ['appid']
 
-activities = iter(cycle([{0, 'With the stars'}, {2, 'The Sounds Of The Universe'},{ 3, 'Cosmos'}, {0, 'With a bunch of Neutron stars'}, {2, '.help'},{ 3, 'How The Universe Works'},{ 0, 'Life of A Star'},{ 2, 'Richard Feynman talk about bongos'}, {3, 'Milky Way and Andromeda collide'}, {3,'The James Webb Space Telescope'}, {2, 'Your .iss requests' }]))
+activities = iter(cycle([[0, 'With the stars'], [2, 'The Sounds Of The Universe'],[3, 'Cosmos'], [0, 'With a bunch of Neutron stars'], [2, '.help'],[3, 'How The Universe Works'],[0, 'Life of A Star'],[2, 'Richard Feynman talk about bongos'], [3, 'Milky Way and Andromeda collide'], [3,'The James Webb Space Telescope'], [2, 'Your .iss requests' ]]))
 @client.event
 async def on_ready():
   s = len(client.guilds)
@@ -47,19 +47,20 @@ async def on_ready():
 @tasks.loop(hours = 6)
 #generates a random activity that the bot can set as its status
 async def set_activity(caller = 'Automatic'):
-  pass
-  #global activities
-  #activity = next(activities)
-  ##0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
-  #choice = activity[0]
-  #desc = activity[1]
+  #pass
+  global activities
+  activity = next(activities)
+  #0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
+  choice = activity[0]
+  desc = activity[1]
   #with open('log.txt','a') as f:
   #  time = strftime('%d/%m/%Y-%H:%M')
   #  f.write(f'\n{time} {caller}: {choice}-{desc}')
   #with open('log.txt','r') as f:
   #  update(f.read(),'logs')
   #db['hour'] = mktime(datetime.now().timetuple())
-  #await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = desc,type = choice))
+  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = desc,type = choice))
+  print('done')
 
 async def log_command(ctx,command):
   return
@@ -76,6 +77,10 @@ async def log_command(ctx,command):
     #update(dict(db))
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
+  async for i in client.fetch_guilds():
+    print(i.id)
+    x = await client.fetch_guild_commands(i.id)
+    print(x)
   #x = strftime('%y%m%d')
   #if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.#nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
   #  db['apod'] = x
@@ -542,8 +547,8 @@ async def on_slash_command_error(ctx, error):
     embed = disnake.Embed(title = "You're on cooldown", description = f"Try after {round(error.retry_after,1)} seconds." ,color = disnake.Color.red())
     await ctx.response.send_message(embed = embed)
   else:
-    print('Error')
-  
+    print(error)
+
 @client.event
 async def on_message(message):
   if message.content.startswith('<@958986707376672838>'): #to be replaced
