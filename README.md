@@ -20,19 +20,19 @@ https://discord.com/api/oauth2/authorize?client_id=792458754208956466&permission
 
 ## Commands
 As of now, there are the following commands:
-* [help](#/help)
-* [daily](#/daily)
-* [daily `YYYY-MM-DD`](#/daily-yyyy-mm-dd)
-* [daily random](#/daily-random)
-* [info `<query>`](#/info-query)
-* [iss ](#/iss)
-* [channel](#/channel)
-* [remove](#/remove)
-* [fact](#/fact)
-* [weather `<location>`](#/weather-location)
-* [sky `<location>`](#/sky-location)
-* [phase `<location>`](#/phase-location)
-* [webb](#/webb)
+* [help](#/help-or-astrobot-help)
+* [daily](#/daily-or-astrobot-daily)
+* [daily `YYYY-MM-DD`](#/daily-yyyy-mm-dd-or-astrobot-daily-yyyy-mm-dd)
+* [daily random](#/daily-random-or-astrobot-daily-random)
+* [info `<query>`](#/info-query-or-astrobot-info-query)
+* [iss ](#/iss-or-astrobot-iss)
+* [channel](#/channel-or-astrobot-channel)
+* [remove](#/remove-or-astrobot-remove)
+* [fact](#/fact-or-astrobot-fact)
+* [weather `<location>`](#/weather-location-or-astrobot-weather-location)
+* [sky `<location>`](#/sky-location-or-astrobot-sky-location)
+* [phase `<location>`](#/phase-location-astrobot-phase-location)
+* [webb](#/webb-or-astrobot-webb)
 
 #### `/help` or `@AstroBot help`
 Returns the same list of commands that are listed below.
@@ -42,7 +42,7 @@ Gives the NASA APOD picture for the day.
 
 Made using the discord embeds and the APOD api.
 
-#### `/daily <YYYY-MM-DD>` or `@AstroBot help`
+#### `/daily <YYYY-MM-DD>` or `@AstroBot daily <YYYY-MM-DD>`
 Gives the NASA picture for a specific date given by a user. Any valid date after 1995-6-16 is accepted.
 For eg. `/daily 2005-6-7` or `@AstroBot daily 2005-6-7`
 
