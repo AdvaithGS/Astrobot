@@ -532,10 +532,13 @@ async def on_message(message):
         try:
           x = await client.fetch_guild_commands(ctx.guild.id)
         except:
-          embed = discord.Embed(title = 'Notice - Please reinvite the bot',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, this requires server owners to reinvite the bot - without the need to kick AstroBot. The link can be found in the bot\'s profile.',colour = discord.Colour.orange())
-          channel = client.get_channel(db[guild])
-          embed.set_image('https://raw.githubusercontent.com/AdvaithGS/Astrobot/master/bot/reinivite.jpeg')
-          await channel.send(embed = embed)
+          try:
+            embed = discord.Embed(title = 'Notice - Please reinvite the bot',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, this requires server owners to reinvite the bot - without the need to kick AstroBot. The link can be found in the bot\'s profile.',colour = discord.Colour.orange())
+            channel = client.get_channel(db[guild])
+            embed.set_image('https://raw.githubusercontent.com/AdvaithGS/Astrobot/master/bot/reinivite.jpeg')
+            await channel.send(embed = embed)
+          except Exception as e:
+            print(e)
       update(dict(db))
 
   
