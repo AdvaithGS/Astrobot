@@ -37,7 +37,7 @@ As of now, there are the following commands:
 #### `/help` or `@AstroBot help`
 Returns the same list of commands that are listed below.
 
-#### `/daily` or `@AstroBot help`
+#### `/daily` or `@AstroBot daily`
 Gives the NASA APOD picture for the day. 
 
 Made using the discord embeds and the APOD api.
