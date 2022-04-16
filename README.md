@@ -20,19 +20,19 @@ https://discord.com/api/oauth2/authorize?client_id=792458754208956466&permission
 
 ## Commands
 As of now, there are the following commands:
-* [help](#help)
-* [daily](#daily)
-* [daily `YYYY-MM-DD`](#daily-yyyy-mm-dd)
-* [daily random](#daily-random)
-* [info `<query>`](#info-query)
-* [iss ](#iss)
-* [channel](#channel)
-* [remove](#remove)
-* [fact](#fact)
-* [weather `<location>`](#weather-location)
-* [sky `<location>`](#sky-location)
-* [phase `<location>`](#phase-location)
-* [webb](#webb)
+* [help](#/help)
+* [daily](#/daily)
+* [daily `YYYY-MM-DD`](#/daily-yyyy-mm-dd)
+* [daily random](#/daily-random)
+* [info `<query>`](#/info-query)
+* [iss ](#/iss)
+* [channel](#/channel)
+* [remove](#/remove)
+* [fact](#/fact)
+* [weather `<location>`](#/weather-location)
+* [sky `<location>`](#/sky-location)
+* [phase `<location>`](#/phase-location)
+* [webb](#/webb)
 
 #### `/help` or `@AstroBot help`
 Returns the same list of commands that are listed below.
