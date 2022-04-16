@@ -20,19 +20,19 @@ https://discord.com/api/oauth2/authorize?client_id=792458754208956466&permission
 
 ## Commands
 As of now, there are the following commands:
-* [help](#/help-or-astrobot-help)
-* [daily](#/daily-or-astrobot-daily)
-* [daily `YYYY-MM-DD`](#/daily-yyyy-mm-dd-or-astrobot-daily-yyyy-mm-dd)
-* [daily random](#/daily-random-or-astrobot-daily-random)
-* [info `<query>`](#/info-query-or-astrobot-info-query)
-* [iss ](#/iss-or-astrobot-iss)
-* [channel](#/channel-or-astrobot-channel)
-* [remove](#/remove-or-astrobot-remove)
-* [fact](#/fact-or-astrobot-fact)
-* [weather `<location>`](#/weather-location-or-astrobot-weather-location)
-* [sky `<location>`](#/sky-location-or-astrobot-sky-location)
-* [phase `<location>`](#/phase-location-astrobot-phase-location)
-* [webb](#/webb-or-astrobot-webb)
+* [help](#help-or-astrobot-help)
+* [daily](#daily-or-astrobot-daily)
+* [daily `YYYY-MM-DD`](#daily-yyyy-mm-dd-or-astrobot-daily-yyyy-mm-dd)
+* [daily random](#daily-random-or-astrobot-daily-random)
+* [info `<query>`](#info-query-or-astrobot-info-query)
+* [iss ](#iss-or-astrobot-iss)
+* [channel](#channel-or-astrobot-channel)
+* [remove](#remove-or-astrobot-remove)
+* [fact](#fact-or-astrobot-fact)
+* [weather `<location>`](#weather-location-or-astrobot-weather-location)
+* [sky `<location>`](#sky-location-or-astrobot-sky-location)
+* [phase `<location>`](#phase-location-astrobot-phase-location)
+* [webb](#webb-or-astrobot-webb)
 
 #### `/help` or `@AstroBot help`
 Returns the same list of commands that are listed below.
