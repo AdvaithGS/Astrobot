@@ -182,7 +182,7 @@ Status: ONGOING
 After Fine Phasing (step 5), the telescope will be well aligned at one place in the NIRCam field of view. Now we need to extend the alignment to the rest of the instruments.
 
 In this phase of the commissioning process, we make measurements at multiple locations, or field points, across each of the science instruments, as shown below. More variation in intensity indicates larger errors at that field point. An algorithm calculates the final corrections needed to achieve a well-aligned telescope across all science instruments.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/step6.jpg'],
-'lastest':['''Final Cooling - MIRI
+'latest':['''Final Cooling - MIRI
 Precedes Mirror Alignment Step 7
 
 Nominal Event Time: Starts - Launch + ~3.5 Months

@@ -530,7 +530,7 @@ async def on_message(message):
         except:
           pass
         try:
-          x = await client.fetch_guild_commands(ctx.guild.id)
+          x = await client.fetch_guild_commands(int(guild))
         except:
           try:
             embed = discord.Embed(title = 'Notice - Please reinvite the bot',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, this requires server owners to reinvite the bot - without the need to kick AstroBot. The link can be found in the bot\'s profile.',colour = discord.Colour.orange())
