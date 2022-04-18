@@ -527,8 +527,8 @@ async def on_message(message):
         try:
           channel = client.get_channel(db[guild])
           await channel.send('.daily')
-        except:
-          pass
+        except Exception as e:
+          print(e,'from 1')
         try:
           x = await client.fetch_guild_commands(int(guild))
         except:
@@ -538,7 +538,7 @@ async def on_message(message):
             embed.set_image('https://raw.githubusercontent.com/AdvaithGS/Astrobot/master/bot/reinivite.jpeg')
             await channel.send(embed = embed)
           except Exception as e:
-            print(e)
+            print(e,'from 2')
       update(dict(db))
 
   
