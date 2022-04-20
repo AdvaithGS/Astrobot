@@ -138,7 +138,6 @@ async def on_message(message):
         except:
           pass
       except Exception as e:
-        print(e)
         if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] == '500':
           await ctx.send('There\'s seems to be something wrong with the NASA APOD service, try after some time')
         else:
@@ -198,10 +197,8 @@ async def on_message(message):
   elif message.content.startswith('.info'):
     try:
       query = message.content.split(' ',1)[1]
-      print(query)
       await ctx.send('Getting the information might take some time, please wait.')
       text,image,desc = get_wiki(query)
-      print(text,image,query)
       if text:
         embed = discord.Embed(title = query.title() , description = text,   color=discord.Color.orange())
         get_body(embed, query)
@@ -212,7 +209,6 @@ async def on_message(message):
       await ctx.send(embed = embed)
 
     except Exception as e:
-      print(e)
       embed = discord.Embed(title = 'Invalid query' , description = 'The command is `.info <query>`. Fill a query and do not leave it blank. For example - `.info Uranus` ,`.info Apollo 11`',   color=discord.Color.orange())
       await ctx.send(embed = embed) 
   
