@@ -529,16 +529,6 @@ async def on_message(message):
           await channel.send('.daily')
         except Exception as e:
           print(e,'from 1')
-        try:
-          x = await client.fetch_guild_commands(int(guild))
-        except:
-          try:
-            embed = discord.Embed(title = 'Notice - Please reinvite the bot',description = 'Effective 1st May, Astrobot will be moving to slash commands and mention commands - `/help` and `@AstroBot help`, this requires server owners to reinvite the bot - without the need to kick AstroBot. The link can be found in the bot\'s profile.',colour = discord.Colour.orange())
-            channel = client.get_channel(db[guild])
-            embed.set_image('https://raw.githubusercontent.com/AdvaithGS/Astrobot/master/bot/reinivite.jpeg')
-            await channel.send(embed = embed)
-          except Exception as e:
-            print(e,'from 2')
       update(dict(db))
 
   
@@ -558,7 +548,7 @@ async def on_message(message):
   
   #keeps the number of times each command has been called overall
   try:
-    if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id not in [756496844867108937, 792458754208956466]:
+    if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb']:
       x =  message.content.split()[0]
       db[x] += 1
       update(dict(db))
