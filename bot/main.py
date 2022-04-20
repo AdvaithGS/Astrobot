@@ -416,7 +416,7 @@ async def on_message(message):
     embed.add_field(name = 'Elapsed Time',value = elapsedtime)
     embed.set_thumbnail(url="https://webb.nasa.gov/content/webbLaunch/assets/images/extra/webbTempLocationsGradient1.4TweenAll-300px.jpg")
     embed.set_image(url=image[1])
-    embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
+    embed.set_footer(text = 'The James Webb Space Telescope (JWST) is a large infrared telescope with a 6.5 meter primary mirror, and will study every phase in the history of our Universe.\nBuilt using NASA\'s Where is Webb website')
 
     #temperatures
     places = ['Warm','Cool']
