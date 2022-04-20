@@ -198,15 +198,17 @@ async def on_message(message):
   elif message.content.startswith('.info'):
     try:
       query = message.content.split(' ',1)[1]
+      print(query)
       await ctx.send('Getting the information might take some time, please wait.')
       text,image,desc = get_wiki(query)
+      print(text,image,query)
       if text:
         embed = discord.Embed(title = query.title() , description = text,   color=discord.Color.orange())
         get_body(embed, query)
         embed.set_footer(text = f'{desc} \n\nObtained from Solar System OpenData API and the Wikipedia API')
         embed.set_image(url = image)
       else:
-        embed = discord.Embed(title = desc , description = 'Try again with a refined search   parameter',   color=discord.Color.orange())
+        embed = discord.Embed(title = desc , description = 'Try again with a refined search parameter',   color=discord.Color.orange())
       await ctx.send(embed = embed)
 
     except Exception as e:
