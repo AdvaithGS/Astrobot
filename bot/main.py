@@ -210,6 +210,7 @@ async def on_message(message):
       await ctx.send(embed = embed)
 
     except Exception as e:
+      print(e)
       embed = discord.Embed(title = 'Invalid query' , description = 'The command is `.info <query>`. Fill a query and do not leave it blank. For example - `.info Uranus` ,`.info Apollo 11`',   color=discord.Color.orange())
       await ctx.send(embed = embed) 
   
