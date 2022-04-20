@@ -548,7 +548,7 @@ async def on_message(message):
   
   #keeps the number of times each command has been called overall
   try:
-    if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb']:
+    if message.content.split()[0] in ['.daily','.help','.channel','.remove','.info','.iss','.fact','.weather','.phase','.sky','.webb'] and message.author.id not in [756496844867108937]:
       x =  message.content.split()[0]
       db[x] += 1
       update(dict(db))
