@@ -7,6 +7,7 @@ This is an Astronomy discord bot (now verified!) with various functionalities an
 * [Commands](#Commands)
 * [Sources](#Sources)
 * [Vote](#Vote)
+* [Support](#Support)
 * [Targets](#Targets)
 * [Creator](#Creator)
 
@@ -93,6 +94,12 @@ You can vote for the bot so as to get more exposure at -
 https://top.gg/bot/792458754208956466/vote
 
 https://discordbotlist.com/bots/astrobot-2515/upvote
+
+## Support
+
+Join this discord server for any queries/problems/suggestions:
+ 
+https://discord.gg/ZtPU67wVa5
 
 ## Targets
 1. [ ] Improve `.iss` to have the names of people in the ISS - using OpenNotify and https://awesomeopensource.com/project/corquaid/international-space-station-APIs
