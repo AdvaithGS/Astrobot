@@ -5,6 +5,7 @@ This is an Astronomy discord bot (now verified!) with various functionalities an
 ## Table of contents
 * [Invite](#Invite)
 * [Commands](#Commands)
+* [Sources](#Sources)
 * [Vote](#Vote)
 * [Targets](#Targets)
 * [Creator](#Creator)
@@ -78,6 +79,12 @@ Get a map of the sky at a user specified location
 
 #### `.webb`
 Get the current state of the James Webb Space Telescope.
+## Sources
+
+Given below is the list of APIs/Sources Astrobot uses for its commands (list incomplete)
+
+1. NASA's Astronomy Picture of The Day service
+2. Wikipedia API
 
 ## Vote
 
