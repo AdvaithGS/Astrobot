@@ -152,6 +152,8 @@ async def on_message(message):
     view.add_item(item=topgg)
     dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
     view.add_item(item=dbl)
+    server = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Support Server", url="https://discord.gg/ZtPU67wVa5")
+    view.add_item(item=server)
     await ctx.send(embed=embed,view = view)
 
   #just something i added to trigger the daily photo if somehow the bot doesnt do it 
