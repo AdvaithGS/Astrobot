@@ -190,7 +190,10 @@ async def daily(
       else:
         await ctx.response.send_message(content ='There seems to be something wrong with the NASA APOD service, try after some time')
     else:
-      await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+      if type(ctx) == disnake.channel.TextChannel:
+        await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+      else:
+        await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
   await check_apod()
   await log_command(ctx,'daily')
 
@@ -326,7 +329,7 @@ async def iss(ctx):
   if type(ctx) == disnake.channel.TextChannel:
     await ctx.send('Preparing...')
   else:
-    await ctx.edit_original_message(content = 'Preparing...')
+    await ctx.response.send_message(content = 'Preparing...')
 
   req = loads(get('https://api.wheretheiss.at/v1/satellites/25544').text)
   result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
@@ -629,8 +632,9 @@ async def on_message(message):
     mes = message.content[22:]
     '''gets the image from nasa's api, if its just 'daily' - it gets it from the database else if its the 'daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''
     if mes.startswith('daily'):
+      await daily(ctx,mes.split(' ',1)[1])
       try:
-        parameters = {'date': mes.split(' ')[1]}
+        parameters = {'date': mes.split(' ',1)[1]}
       except:
         parameters = {}
       if mes.startswith('daily random'):
@@ -724,6 +728,7 @@ async def on_message(message):
   
     #removes a given channel from the apod service.
     elif mes.startswith('remove'):
+      await remove(ctx)
       if str(message.guild.id) in db:
         del db[str(message.guild.id)]
         #update(dict(db))
@@ -734,18 +739,7 @@ async def on_message(message):
     #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
     elif mes.startswith( 'info'):
       try:
-        query = mes.split(' ',1)[1]
-        await ctx.send(content ='Getting the information might take some time, please wait.')
-        text,image,desc = get_wiki(query)
-        if text:
-          embed = disnake.Embed(title = query.title() , description = text,   color=disnake.Color.orange())
-          get_body(embed, query)
-          embed.set_footer(text = f'{desc} \n\nObtained from Solar System OpenData API and the Wikipedia API')
-          embed.set_image(url = image)
-        else:
-          embed = disnake.Embed(title = desc , description = 'Try again with a refined search   parameter',   color=disnake.Color.orange())
-        await ctx.send(embed = embed)
-  
+        await info(ctx,query)
       except Exception as e:
         embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `.info <query>`. Fill a query and do not leave it blank. For example - `.info Uranus` ,`.info Apollo 11`',   color=disnake.Color.orange())
         await ctx.send(embed = embed) 
