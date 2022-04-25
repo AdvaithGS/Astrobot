@@ -60,7 +60,6 @@ async def set_activity(caller = 'Automatic'):
   #  update(f.read(),'logs')
   #db['hour'] = mktime(datetime.now().timetuple())
   await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = desc,type = choice))
-  print('done')
 
 async def log_command(ctx,command):
   return
@@ -170,17 +169,26 @@ async def daily(
     embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
     embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
     embed.set_image(url=url)
-    await ctx.response.send_message(embed=embed)
+    if type(ctx) == disnake.channel.TextChannel:
+      await ctx.send(embed=embed)
+    else:
+      await ctx.response.send_message(embed=embed)
 
     if name:
       name = f'https://youtube.com/watch?v={name[30:41]}'
       embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
-      await ctx.response.send_message(content = name)
+      if type(ctx) == disnake.channel.TextChannel:
+        await ctx.send(name)
+      else:
+        await ctx.response.send_message(content = name)
     
   except Exception as e:
     print(e)
     if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)[8:11] == '500':
-      await ctx.response.send_message(content ='There\'s seems to be something wrong with the NASA APOD service, try after some time')
+      if type(ctx) == disnake.channel.TextChannel:
+        await ctx.send('There seems to be something wrong with the NASA APOD service, try after some time')
+      else:
+        await ctx.response.send_message(content ='There seems to be something wrong with the NASA APOD service, try after some time')
     else:
       await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
   await check_apod()
@@ -245,10 +253,14 @@ async def channel(ctx):
     db[str(ctx.guild.id)] = ctx.id
     #update(dict(db))
     embed = disnake.Embed(title = 'Registered',description = 'This channel has been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
-    await ctx.response.send_message(embed = embed)
   else:
     embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
-    await ctx.response.send_message(embed = embed)
+
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed=embed)
+  else:
+    await ctx.response.send_message(embed=embed)
+
   await check_apod()
   await log_command(ctx,'channel')
 
@@ -261,10 +273,12 @@ async def remove(ctx):
     del db[str(ctx.guild.id)]
     #update(dict(db))
     embed = disnake.Embed(title = 'Unsubscribed',description = 'Removed from daily APOD feed.', color=disnake.Color.orange())
-    await ctx.response.send_message(embed = embed)
   else:
     embed = disnake.Embed(title = 'Error',description = 'This server had not been registered to the APOD feed.', color=disnake.Color.orange())
-    await ctx.response.send_message(embed = embed)
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed=embed)
+  else:
+    await ctx.response.send_message(embed=embed)
   await check_apod()
   await log_command(ctx,'remove')
 
@@ -282,7 +296,10 @@ async def info(
     It can be anything pertaining to astronomy you wish to know about. 
   '''
   try:
-    await ctx.response.send_message(content ='Getting the information might take some time, please wait.')
+    if type(ctx) == disnake.channel.TextChannel:
+      await ctx.send('Getting the information might take some time, please wait.')
+    else:
+      await ctx.response.send_message(content ='Getting the information might take some time, please wait.')
     text,image,desc = get_wiki(query)
     if text:
       embed = disnake.Embed(title = query.title() , description = text, color=disnake.Color.orange())
@@ -294,14 +311,23 @@ async def info(
 
   except:
     embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange())
-  await ctx.edit_original_message(embed = embed)
+
+  
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed=embed)
+  else:
+    await ctx.edit_original_message(embed = embed)
   await check_apod()
   await log_command(ctx,'info')
 
 @client.slash_command(guild_ids = guild_ids)
 async def iss(ctx):
   '''Sends the current location of the International Space Station'''
-  await ctx.response.send_message('Preparing...')
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send('Preparing...')
+  else:
+    await ctx.edit_original_message(content = 'Preparing...')
+
   req = loads(get('https://api.wheretheiss.at/v1/satellites/25544').text)
   result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
   location = ''
@@ -328,7 +354,12 @@ async def iss(ctx):
   embed.add_field(name = 'Altitude' , value = f'{altitude} km')
   embed.add_field(name ='Visibility',value = req['visibility'].title())
   embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
-  await ctx.edit_original_message(embed=embed,file = file)
+
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed=embed)
+  else:
+    await ctx.edit_original_message(embed = embed)
+
   await check_apod()
   await log_command(ctx,'iss')
 
@@ -344,7 +375,12 @@ async def fact(ctx):
     embed.set_footer(text=line[3])
   except:
     pass
-  await ctx.response.send_message(embed = embed)
+
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed=embed)
+  else:
+    await ctx.response.send_message(embed = embed)
+
   await check_apod()
   await log_command(ctx,'fact')
 
@@ -358,7 +394,10 @@ async def weather(ctx,location):
   location: class `str` 
     The place of which you want to know the weather conditions. 
   '''
-  await ctx.response.send_message('Preparing...')
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send('Preparing...')
+  else:
+    await ctx.response.send_message(content = 'Preparing...')
   try:
     req = loads(get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
     location = location + ', ' + find_country(req['sys']['country'])
@@ -401,7 +440,12 @@ async def weather(ctx,location):
   except Exception as e:
     print(e)
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
-  await ctx.edit_original_message(embed = embed)
+  
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed = embed)
+  else:
+    await ctx.edit_original_message(embed = embed)
+  
   await check_apod()
   await log_command(ctx,'weather')
 
@@ -419,7 +463,12 @@ async def sky(
     The place of which you want to know the sky map. 
   '''
   #Using AstronomyAPI to get .sky 
-  await ctx.response.send_message('Generating....this will take some time.')
+
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send('Generating....this will take some time.')
+  else:
+    await ctx.response.send_message('Generating....this will take some time.')
+
   try:
     result = geolocator.geocode(location)
     coords,location = result[1],result[0]
@@ -458,7 +507,12 @@ async def sky(
     embed.set_footer(text = 'Generated using AstronomyAPI and python geopy  library')
   except:
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
-  await ctx.edit_original_message(embed = embed)
+  
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed = embed)
+  else:
+    await ctx.edit_original_message(embed = embed)
+  
   await check_apod()
   await log_command(ctx,'sky')
 
@@ -475,7 +529,11 @@ async def phase(
   location: class `str` 
     The place of which you want to know the phase of the moon.
   '''
-  await ctx.response.send_message('Generating....this will take some time.')
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send('Generating....this will take some time.')
+  else:
+    await ctx.response.send_message('Generating....this will take some time.')
+
   try:
     result = geolocator.geocode(location)
     coords,location = result[1],result[0]
@@ -514,7 +572,12 @@ async def phase(
     embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
   except:
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
-  await ctx.edit_original_message(embed = embed)
+  
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed = embed)
+  else:
+    await ctx.edit_original_message(embed = embed)
+
   await check_apod()
   await log_command(ctx,'phase')
 
@@ -523,7 +586,12 @@ async def webb(ctx):
   '''
   Get the current status of the James Webb Space Telescope
   '''
-  await ctx.response.send_message('Generating....this will take some time.')
+
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send('Generating....this will take some time.')
+  else:
+    await ctx.response.send_message('Generating....this will take some time.')
+
   elapsedtime,image,deployment_step,temp = get_james_webb()
   embed = disnake.Embed(title = f'The James Webb Space Telescope - {deployment_step}', description = image[0] ,color =  disnake.Color.orange())
   embed.add_field(name = 'Elapsed Time',value = elapsedtime)
@@ -538,7 +606,11 @@ async def webb(ctx):
   for i in ['NirCam2','NirSpec3','FgsNiriss4','Miri1','Fsm5']:
     embed.add_field(name = f'{i[:-1]} ({i[-1]})',value = temp[f'tempInst{i[:-1]}K'])
   
-  await ctx.edit_original_message(embed = embed)
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed = embed)
+  else:
+    await ctx.edit_original_message(embed = embed)
+
   await check_apod()
   await log_command(ctx,'webb')
 
@@ -642,6 +714,7 @@ async def on_message(message):
             
     # adds that channel to the db so that it will be sent the '.daily' message whenever an APOD image is released
     elif mes.startswith('channel'):
+      await channel(ctx)
       if str(message.guild.id) not in list(db.keys()):
         db[str(message.guild.id)] = ctx.id
         #update(dict(db))
