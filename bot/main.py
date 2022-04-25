@@ -768,178 +768,41 @@ async def on_message(message):
       try:  
         location = mes.split(' ',1)[1].title()
         await weather(ctx,location)
-        req = loads(get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
-        location = location + ', ' + find_country(req['sys']['country'])
-        
-        result = geolocator.geocode(location)
-        coords,location = result[1],result[0]
-        
-        embed = disnake.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = disnake.Color.orange())
-        embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
   
-        temp = str(req['main']['temp']) + ' °C'
-        embed.add_field(name = 'Temperature', value = temp)
-  
-        lat = round(req['coord']['lat'],2)
-        embed.add_field(name = 'Latitude' , value = lat)
-  
-        lon = round(req['coord']['lon'],2)
-        embed.add_field(name = 'Longitude', value = lon)
-  
-        wind = str(req['wind']['speed']) + ' m/s' 
-        embed.add_field(name = 'Wind Speed' , value = wind)
-  
-        skies = req['weather'][0]['main'].title()
-        embed.add_field(name = 'Skies', value = skies)
-  
-        visibility = str(req['visibility']/1000) + ' km'
-        embed.add_field(name = 'Visibility', value = visibility)
-        
-        clouds = str(req['clouds']['all']) + ' %'
-        embed.add_field(name = 'Cloudiness' , value = clouds)
-  
-        for i in ['sunrise','sunset']:
-          hours = int(req['timezone']/3600//1  + int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%H')))
-          minutes = int(req['timezone']/3600%1*60 + int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%M')))
-          if minutes >= 60:
-            hours += 1
-            minutes= minutes%60
-          if hours >= 24:
-            hours = hours%24
-          #seconds  = int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%S'))
-          final_time = f'{hours}.{minutes}'
-          embed.add_field(name = f'Local {i}' , value = final_time)
-  
-        icon = req['weather'][0]['icon']
-        embed.set_thumbnail(url=f"http://openweathermap.org/img/wn/{icon}@2x.png")
-  
-        embed.set_image(url = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
-  
-      except Exception as e:
-        print(e)
+      except:
         if mes == 'weather':
           embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `@Astrobt weather Jaipur`  ',color = disnake.Color.orange())
         else:
           embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
-      await ctx.send(embed = embed)
+        await ctx.send(embed = embed)
     
     #Using AstronomyAPI to get .sky 
     elif mes.startswith('sky'):
       try:
         location = mes.split(' ',1)[1].title()
         await sky(ctx,location)
-        await ctx.send('Generating....this will take some time.')
-        result = geolocator.geocode(location)
-        coords,location = result[1],result[0]
-        if int(coords[0]) > 0:
-            orientation = "north-up"
-        else:
-            orientation = "south-up"
-        req = post("https://api.astronomyapi.com/api/v2/studio/star-chart",  auth=HTTPBasicAuth(appid, secret), 
-          json = {
-            "style":"default",
-            "observer": {
-            "latitude": coords[0],
-            "longitude": coords[1],
-            "date": strftime('%Y-%m-%d')
-                },
-            "view": {
-              "type": "area",
-              "parameters": {
-                  "position": {
-                      "equatorial": {
-                        "rightAscension": 1,
-                        "declination": coords[0]
-                      }
-                  },
-                "zoom": 2 
-                }
-              }
-            }
-          )
-        req = req.json()
-        embed = disnake.Embed(title = f'Sky Map at {location}', color =   disnake.Color.orange())
-        embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
-        embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
-        embed.add_field(name = 'Hemisphere',value = orientation.split('-')[0] .capitalize())
-        embed.set_image(url = req['data'] ['imageUrl'])
-        embed.set_footer(text = 'Generated using AstronomyAPI and python geopy  library')
       except:
         if mes == 'sky':
           embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `sky Jaipur`  ',color = disnake.Color.orange())
         else:
           embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
-      await ctx.send(embed = embed)
+        await ctx.send(embed = embed)
     
     #Using AstronomyAPI to get .phase
     elif mes.startswith('phase'):
       try:
         location = mes.split(' ',1)[1].title()
         await phase(ctx,location)
-        await ctx.send('Generating....this will take some time.')
-        result = geolocator.geocode(location)
-        coords,location = result[1],result[0]
-        if int(coords[0]) > 0:
-          orientation = "north-up"
-          ori2 = "south-up"
-        else:
-          orientation = "south-up" 
-          ori2 = "north-up"
-        req = post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret),
-        json = {
-            "format": "png",
-            "style": {
-                "moonStyle": "default",
-                "backgroundStyle": "stars",
-                "backgroundColor": "red",
-                "headingColor": "white",
-                "textColor": "white"
-            },
-            "observer": {
-                "latitude": coords[0],
-                "longitude": coords[1],
-                "date": strftime('%Y-%m-%d')
-            },
-            "view": {
-                "type": "landscape-simple",
-                'orientation': ori2
-            }
-        })
-        req = req.json()
-        embed = disnake.Embed(title = f'Moon phase at {location}', color =  disnake.Color.orange())
-        embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
-        embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
-        embed.add_field(name = 'Hemisphere',value = orientation)
-        embed.set_image(url = req['data'] ['imageUrl'])
-        embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
       except:
         if mes == '.phase':
           embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `.phase Jaipur`  ',color = disnake.Color.orange())
         else:
           embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
-      await ctx.send(embed = embed)
+        await ctx.send(embed = embed)
     
     #Taking all the data from the NASA 'WhereIsWebb?' website and from the webb tracker api
     elif mes.startswith('webb') or mes.startswith('james webb'):
-      await webb(ctx)
-      elapsedtime,image,deployment_step,temp = get_james_webb()
-      embed = disnake.Embed(title = f'The James Webb Space Telescope - {deployment_step}', description = image[0] ,color =  disnake.Color.orange())
-  
-      embed.add_field(name = 'Elapsed Time',value = elapsedtime)
-      embed.set_thumbnail(url="https://webb.nasa.gov/content/webbLaunch/assets/images/extra/webbTempLocationsGradient1.4TweenAll-300px.jpg")
-      embed.set_image(url=image[1])
-      embed.set_footer(text = 'Built using NASA\'s Where is Webb website')
-  
-      #temperatures
-      places = ['Warm','Cool']
-      for i in places:
-        for j in ['A1AC','B2BD']:
-          embed.add_field(name = f'Temp {i} Side {j[0]} ({j[ places.index(i) + 2 ]})', value = temp[f'temp{i}Side{j[1]}C'])
-      for i in ['NirCam2','NirSpec3','FgsNiriss4','Miri1','Fsm5']:
-        embed.add_field(name = f'{i[:-1]} ({i[-1]})',value = temp[f'tempInst{i[:-1]}K'])
-      
-      await ctx.send(embed = embed)
-    
+      await webb(ctx)   
   
       
   #this info command first checks the total number of pages by going to 
