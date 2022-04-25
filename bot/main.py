@@ -359,9 +359,9 @@ async def iss(ctx):
   embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
 
   if type(ctx) == disnake.channel.TextChannel:
-    await ctx.send(embed=embed)
+    await ctx.send(embed=embed,file = file)
   else:
-    await ctx.edit_original_message(embed = embed)
+    await ctx.edit_original_message(embed = embed,file = file)
 
   await check_apod()
   await log_command(ctx,'iss')
@@ -738,7 +738,9 @@ async def on_message(message):
   
     #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
     elif mes.startswith( 'info'):
+      
       try:
+        query = mes.split(' ',1)[1]
         await info(ctx,query)
       except Exception as e:
         embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `.info <query>`. Fill a query and do not leave it blank. For example - `.info Uranus` ,`.info Apollo 11`',   color=disnake.Color.orange())
@@ -746,34 +748,7 @@ async def on_message(message):
     
     #takes info about the location of iss from wheretheiss.at and uses mapquest to obtain a map image of that
     elif mes.startswith('whereiss') or mes.startswith('iss'):
-      req = loads(get('https://api.wheretheiss.at/v1/satellites/25544').text)
-      result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
-      
-      location = ''
-      if result['name']:
-        location += result['name'] + ', '
-      if result['admin1']:
-        location += result['admin1'] + ', '
-      if result['admin2']:
-        location += result['admin2'] + ', '
-      if result['cc']:
-        location += find_country(result['cc'])
-      location.replace('`', '')
-      lat,long = round(req['latitude'],3),round(req['longitude'],3)
-      place = f'{lat},{long}'
-      url = get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}')
-      with open('iss.jpg', 'wb') as handler:
-        handler.write(url.content)
-      file = disnake.File('iss.jpg')
-      embed = disnake.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = disnake.Color.orange())
-      embed.set_image(url = 'attachment://iss.jpg')
-      velocity = round(req['velocity'],2)
-      embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
-      altitude = round(req['altitude'],2)
-      embed.add_field(name = 'Altitude' , value = f'{altitude} km')
-      embed.add_field(name ='Visibility',value = req['visibility'].title())
-      embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
-      await ctx.send(embed=embed,file = file)
+      await iss(ctx)
     
     #takes a fact using random_fact() method from the facts.py file which in turn obtains it from facts.txt
     elif mes.startswith('fact'):
