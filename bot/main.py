@@ -633,63 +633,6 @@ async def on_message(message):
     '''gets the image from nasa's api, if its just 'daily' - it gets it from the database else if its the 'daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''
     if mes.startswith('daily'):
       await daily(ctx,mes.split(' ',1)[1])
-      try:
-        parameters = {'date': mes.split(' ',1)[1]}
-      except:
-        parameters = {}
-      if mes.startswith('daily random'):
-        year = random.randrange(1995,2022)
-        month = random.randrange(1,13)
-        if month in [1,3,5,7,8,10,12]:
-          date = random.randrange(1,32)
-        else:
-          date = random.randrange(1,31)
-        if year == 1995:
-          month = random.randrange(6,13)
-          if month in [7,8,10,12]:
-            date = random.randrange(1,32)
-          elif month == 6:
-            date = random.randrage(6,31)
-          else:
-            date = random.randrange(1,31)
-        message = f'<@808262803227410465> daily {year}-{month}-{date}'
-        await ctx.send(content = message)
-      else:
-        try:
-          if parameters == {}:
-            daily_ = db['daily']
-          else:
-            daily_ = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
-          try:
-            url = daily_['hdurl']
-          except:
-            url = daily_['url']
-            name = url
-  
-          title = daily_['title']
-          desc = f'''{daily_['date']}\nDiscover the cosmos!\n\n{daily_['explanation']}\n{('Credits: '+ daily_['copyright']) if 'copyright' in daily_ else ''}'''
-  
-          embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
-          embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
-          embed.set_image(url=url)
-  
-          await ctx.send(embed=embed)
-  
-          try:
-            if name:
-              name = f'https://youtube.com/watch?v={name[30:41]}'
-              embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange(),video =   {'url':url})
-              await ctx.send(content = name)
-          except:
-            pass
-        except Exception as e:
-          print(e)
-          if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}',params=parameters).text)[8:11] == '500':
-            await ctx.send(content = 'There\'s seems to be something wrong with the NASA APOD service, try after some time')
-          else:
-            await ctx.send(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-  
-
 
     # ask for help and commands
     elif mes.startswith('help'):
@@ -771,7 +714,7 @@ async def on_message(message):
   
       except:
         if mes == 'weather':
-          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `@Astrobt weather Jaipur`  ',color = disnake.Color.orange())
+          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `@Astrobot weather Jaipur`  ',color = disnake.Color.orange())
         else:
           embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
         await ctx.send(embed = embed)
@@ -783,7 +726,7 @@ async def on_message(message):
         await sky(ctx,location)
       except:
         if mes == 'sky':
-          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `sky Jaipur`  ',color = disnake.Color.orange())
+          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `@Astrobot sky Jaipur`  ',color = disnake.Color.orange())
         else:
           embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
         await ctx.send(embed = embed)
@@ -795,7 +738,7 @@ async def on_message(message):
         await phase(ctx,location)
       except:
         if mes == '.phase':
-          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `.phase Jaipur`  ',color = disnake.Color.orange())
+          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `@Astrobot phase Jaipur`  ',color = disnake.Color.orange())
         else:
           embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
         await ctx.send(embed = embed)
