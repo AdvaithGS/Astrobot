@@ -418,8 +418,8 @@ async def weather(ctx,location):
     embed.add_field(name = 'Longitude', value = lon)
     wind = str(req['wind']['speed']) + ' m/s' 
     embed.add_field(name = 'Wind Speed' , value = wind)
-    sky = req['weather'][0]['main'].title()
-    embed.add_field(name = 'Skies', value = sky)
+    skies = req['weather'][0]['main'].title()
+    embed.add_field(name = 'Skies', value = skies)
     visibility = str(req['visibility']/1000) + ' km'
     embed.add_field(name = 'Visibility', value = visibility)
     
@@ -652,22 +652,22 @@ async def on_message(message):
             date = random.randrage(6,31)
           else:
             date = random.randrange(1,31)
-        message = f'<@!808262803227410465> daily {year}-{month}-{date}'
+        message = f'<@808262803227410465> daily {year}-{month}-{date}'
         await ctx.send(content = message)
       else:
         try:
           if parameters == {}:
-            daily = db['daily']
+            daily_ = db['daily']
           else:
-            daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+            daily_ = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
           try:
-            url = daily['hdurl']
+            url = daily_['hdurl']
           except:
-            url = daily['url']
+            url = daily_['url']
             name = url
   
-          title = daily['title']
-          desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
+          title = daily_['title']
+          desc = f'''{daily_['date']}\nDiscover the cosmos!\n\n{daily_['explanation']}\n{('Credits: '+ daily_['copyright']) if 'copyright' in daily_ else ''}'''
   
           embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
           embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
@@ -752,6 +752,7 @@ async def on_message(message):
     
     #takes a fact using random_fact() method from the facts.py file which in turn obtains it from facts.txt
     elif mes.startswith('fact'):
+      await fact(ctx)
       line = random_fact()
       title,desc = line[0],line[1]
       embed = disnake.Embed(title = title , description = desc, color = disnake.Color.orange())
@@ -766,6 +767,7 @@ async def on_message(message):
     elif mes.startswith('weather'):
       try:  
         location = mes.split(' ',1)[1].title()
+        await weather(ctx,location)
         req = loads(get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
         location = location + ', ' + find_country(req['sys']['country'])
         
@@ -787,8 +789,8 @@ async def on_message(message):
         wind = str(req['wind']['speed']) + ' m/s' 
         embed.add_field(name = 'Wind Speed' , value = wind)
   
-        sky = req['weather'][0]['main'].title()
-        embed.add_field(name = 'Skies', value = sky)
+        skies = req['weather'][0]['main'].title()
+        embed.add_field(name = 'Skies', value = skies)
   
         visibility = str(req['visibility']/1000) + ' km'
         embed.add_field(name = 'Visibility', value = visibility)
@@ -825,6 +827,7 @@ async def on_message(message):
     elif mes.startswith('sky'):
       try:
         location = mes.split(' ',1)[1].title()
+        await sky(ctx,location)
         await ctx.send('Generating....this will take some time.')
         result = geolocator.geocode(location)
         coords,location = result[1],result[0]
@@ -862,8 +865,8 @@ async def on_message(message):
         embed.set_image(url = req['data'] ['imageUrl'])
         embed.set_footer(text = 'Generated using AstronomyAPI and python geopy  library')
       except:
-        if mes == '.sky':
-          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `.sky Jaipur`  ',color = disnake.Color.orange())
+        if mes == 'sky':
+          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `sky Jaipur`  ',color = disnake.Color.orange())
         else:
           embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
       await ctx.send(embed = embed)
@@ -872,6 +875,7 @@ async def on_message(message):
     elif mes.startswith('phase'):
       try:
         location = mes.split(' ',1)[1].title()
+        await phase(ctx,location)
         await ctx.send('Generating....this will take some time.')
         result = geolocator.geocode(location)
         coords,location = result[1],result[0]
@@ -917,6 +921,7 @@ async def on_message(message):
     
     #Taking all the data from the NASA 'WhereIsWebb?' website and from the webb tracker api
     elif mes.startswith('webb') or mes.startswith('james webb'):
+      await webb(ctx)
       elapsedtime,image,deployment_step,temp = get_james_webb()
       embed = disnake.Embed(title = f'The James Webb Space Telescope - {deployment_step}', description = image[0] ,color =  disnake.Color.orange())
   
@@ -936,12 +941,6 @@ async def on_message(message):
       await ctx.send(embed = embed)
     
   
-  #keeps the number of times each command has been called overall
-    try:
-      if mes.split()[0] in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb'] :#and message.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
-        await log_command(message,mes.split()[0])
-    except:
-      pass
       
   #this info command first checks the total number of pages by going to 
   #the 100th page (since no queries are 100 pages long, the image and 
@@ -1029,8 +1028,6 @@ async def on_message(message):
       await ctx.send(embed = embed)
     except:
       await ctx.send('You have not specified a query or your query is wrong, use `.info   <query>`')'''
-      
-  await check_apod()
 
 #using notepadboi as test 
 client.run(environ['astrobottest'])
