@@ -78,9 +78,10 @@ async def log_command(ctx,command):
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   async for i in client.fetch_guilds():
-    print(i.id)
-    x = await client.fetch_guild_commands(i.id)
-    print(x)
+    try:
+      x = await client.fetch_guild_commands(i.id)
+    except:
+      print(f"no permissions in {i.name},{i.id}")
   #x = strftime('%y%m%d')
   #if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.#nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
   #  db['apod'] = x
@@ -89,7 +90,7 @@ async def check_apod():
   #  for guild in db.keys():
   #    try:
   #      channel = client.get_channel(db[guild])
-  #      daily = db['daily']
+  #      daily = db['daily']                          
   #      if 'hdurl' in daily:
   #        url = daily['hdurl']
   #        name = ''
@@ -229,7 +230,7 @@ async def help(
   dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
   view.add_item(item=dbl)
   if type(ctx) == disnake.channel.TextChannel:
-    await ctx.send(embed=  embed, view = view)
+    await ctx.send(embed=embed, view=view)
   else:
     await ctx.response.send_message(embed=embed, view=view)
   await check_apod()
