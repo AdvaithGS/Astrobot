@@ -529,7 +529,8 @@ async def on_message(message):
           channel = client.get_channel(db[guild])
           await channel.send('.daily')
         except Exception as e:
-          print(e,'from 1')
+          if guild.isdigit():
+            print(guild,e,'from 1')
       update(dict(db))
 
   
