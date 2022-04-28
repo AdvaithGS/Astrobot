@@ -24,7 +24,6 @@ if __name__ == '__main__':
   client = commands.Bot(".", sync_commands_debug=True)
 else:
   exit()
-from keep_alive import keep_alive
 from json import loads
 from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
@@ -128,9 +127,6 @@ async def on_guild_join(guild):
         break
 
 guild_ids = [808201667543433238]
-@client.slash_command(guild_ids = guild_ids)
-async def test(ctx):
-  await ctx.response.send_message('/iss')
 
 @client.slash_command(guild_ids = guild_ids)
 @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -196,7 +192,10 @@ async def daily(
         await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
   await check_apod()
   await log_command(ctx,'daily')
-
+@client.event
+async def on_interaction(inter):
+  await check_apod()
+  print(inter.text)
 @client.slash_command(guild_ids = guild_ids)
 @commands.cooldown(1, 10, type=commands.BucketType.user)
 async def help(
@@ -286,6 +285,7 @@ async def remove(ctx):
   await log_command(ctx,'remove')
 
 @client.slash_command(guild_ids = guild_ids)
+@commands.cooldown(1, 10, type=commands.BucketType.user)
 async def info(
   ctx,
   query : str 
