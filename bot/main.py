@@ -293,10 +293,10 @@ async def info(
     if text:
       embed = disnake.Embed(title = query.title() , description = text, color=disnake.Color.orange())
       get_body(embed, query)
-      embed.set_footer(text = f'{query} {desc} \n\nObtained from Solar System OpenData API and the Wikipedia API')
+      embed.set_footer(text = f'{desc} \n\nObtained from Solar System OpenData API and the Wikipedia API')
       embed.set_image(url = image)
     else:
-      embed = disnake.Embed(title = desc , description = 'Try again with a refined search parameter', color=disnake.Color.orange())
+      embed = disnake.Embed(title = f'{query} {desc}' , description = 'Try again with a refined search parameter', color=disnake.Color.orange())
 
 
   except:
