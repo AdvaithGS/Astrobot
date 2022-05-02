@@ -662,13 +662,8 @@ async def on_message(message):
   
     #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
     elif mes.startswith( 'info'):
-      
-      try:
-        query = mes.split(' ',1)[1]
-        await info(ctx,query)
-      except Exception as e:
-        embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `.info <query>`. Fill a query and do not leave it blank. For example - `.info Uranus` ,`.info Apollo 11`',   color=disnake.Color.orange())
-        await ctx.send(embed = embed) 
+      query = mes.split(' ',1)[1]
+      await info(ctx,query)
     
     #takes info about the location of iss from wheretheiss.at and uses mapquest to obtain a map image of that
     elif mes.startswith('whereiss') or mes.startswith('iss'):
@@ -677,52 +672,30 @@ async def on_message(message):
     #takes a fact using random_fact() method from the facts.py file which in turn obtains it from facts.txt
     elif mes.startswith('fact'):
       await fact(ctx)
-      line = random_fact()
-      title,desc = line[0],line[1]
-      embed = disnake.Embed(title = title , description = desc, color = disnake.Color.orange())
-      try:
-        embed.set_image(url=line[2])
-        embed.set_footer(text=line[3])
-      except:
-        pass
-      await ctx.send(embed = embed)
+      #line = random_fact()
+      #title,desc = line[0],line[1]
+      #embed = disnake.Embed(title = title , description = desc, color = disnake.Color.orange())
+      #try:
+      #  embed.set_image(url=line[2])
+      #  embed.set_footer(text=line[3])
+      #except:
+      #  pass
+      #await ctx.send(embed = embed)
   
     #using the open weather service API to get weather details
     elif mes.startswith('weather'):
-      try:  
-        location = mes.split(' ',1)[1].title()
-        await weather(ctx,location)
-  
-      except:
-        if mes == 'weather':
-          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `@Astrobot weather Jaipur`  ',color = disnake.Color.orange())
-        else:
-          embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
-        await ctx.send(embed = embed)
+      location = mes.split(' ',1)[1].title()
+      await weather(ctx,location)
     
     #Using AstronomyAPI to get .sky 
     elif mes.startswith('sky'):
-      try:
-        location = mes.split(' ',1)[1].title()
-        await sky(ctx,location)
-      except:
-        if mes == 'sky':
-          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `@Astrobot sky Jaipur`  ',color = disnake.Color.orange())
-        else:
-          embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
-        await ctx.send(embed = embed)
+      location = mes.split(' ',1)[1].title()
+      await sky(ctx,location)
     
     #Using AstronomyAPI to get .phase
     elif mes.startswith('phase'):
-      try:
-        location = mes.split(' ',1)[1].title()
-        await phase(ctx,location)
-      except:
-        if mes == '.phase':
-          embed = disnake.Embed(title = 'Error' , description = 'Mention the name of the place. For example , `@Astrobot phase Jaipur`  ',color = disnake.Color.orange())
-        else:
-          embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
-        await ctx.send(embed = embed)
+      location = mes.split(' ',1)[1].title()
+      await phase(ctx,location)
     
     #Taking all the data from the NASA 'WhereIsWebb?' website and from the webb tracker api
     elif mes.startswith('webb') or mes.startswith('james webb'):
