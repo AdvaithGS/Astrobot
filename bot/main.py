@@ -606,7 +606,7 @@ async def on_slash_command_error(ctx, error):
 
 @client.event
 async def on_message(message):
-  if message.content.startswith('<@958986707376672838>'): #to be replaced
+  if message.content.startswith('<@792458754208956466>'): #to be replaced
     ctx = message.channel
     mes = message.content[22:]
     '''gets the image from nasa's api, if its just 'daily' - it gets it from the database else if its the 'daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''
@@ -813,6 +813,5 @@ async def on_message(message):
     except:
       await ctx.send('You have not specified a query or your query is wrong, use `.info   <query>`')'''
 
-#using astrobottest as test 
 client.run(environ['TOKEN'])
 
