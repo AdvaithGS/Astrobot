@@ -120,9 +120,8 @@ async def on_guild_join(guild):
 @client.event
 async def on_interaction(inter):
   await check_apod()
-guild_ids = [808201667543433238]
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
 async def daily(
   ctx,
@@ -186,7 +185,7 @@ async def daily(
         await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
   await log_command(ctx,'daily')
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
 async def help(
   ctx
@@ -235,7 +234,7 @@ async def help(
     await ctx.response.send_message(embed=embed, view=view)
   await log_command(ctx,'help')
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 async def channel(ctx):
   '''
   Register for the automatic APOD subscription 
@@ -254,7 +253,7 @@ async def channel(ctx):
 
   await log_command(ctx,'channel')
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 async def remove(ctx):
   '''
   Remove the channel from the APOD subscription
@@ -310,7 +309,7 @@ async def info(
     await ctx.edit_original_message(embed = embed)
   await log_command(ctx,'info')
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 async def iss(ctx):
   '''Sends the current location of the International Space Station'''
   if type(ctx) == disnake.channel.TextChannel:
@@ -353,7 +352,7 @@ async def iss(ctx):
   await log_command(ctx,'iss')
 
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 async def fact(ctx):
   '''Ask for a fact from the awesome fact repository'''
   line = random_fact()
@@ -372,7 +371,7 @@ async def fact(ctx):
 
   await log_command(ctx,'fact')
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 async def weather(ctx,location):
   '''
   Get the live weather for any specified location
@@ -436,7 +435,7 @@ async def weather(ctx,location):
   
   await log_command(ctx,'weather')
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 async def sky(
   ctx,
   location : str
@@ -502,7 +501,7 @@ async def sky(
   
   await log_command(ctx,'sky')
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 async def phase(
   ctx,
   location : str
@@ -566,7 +565,7 @@ async def phase(
 
   await log_command(ctx,'phase')
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 async def webb(ctx):
   '''
   Get the current status of the James Webb Space Telescope
