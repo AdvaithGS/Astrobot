@@ -5,12 +5,12 @@ from datetime import datetime
 from os import environ
 import reverse_geocoder
 from itertools import cycle
-#from assets.database.database import *
-#db = retrieve()
-#
-#if len(retrieve('logs')) > 200:
-#  with open('log.txt','w') as f:
-#    f.write(retrieve('logs'))
+from assets.database.database import *
+db = retrieve()
+
+if len(retrieve('logs')) > 200:
+  with open('log.txt','w') as f:
+    f.write(retrieve('logs'))
 
 from assets.countries.country_code import find_country
 from assets.wiki.solarsystem import get_body
@@ -46,22 +46,20 @@ async def on_ready():
 @tasks.loop(hours = 6)
 #generates a random activity that the bot can set as its status
 async def set_activity(caller = 'Automatic'):
-  #pass
   global activities
   activity = next(activities)
   #0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
   choice = activity[0]
   desc = activity[1]
-  #with open('log.txt','a') as f:
-  #  time = strftime('%d/%m/%Y-%H:%M')
-  #  f.write(f'\n{time} {caller}: {choice}-{desc}')
-  #with open('log.txt','r') as f:
-  #  update(f.read(),'logs')
-  #db['hour'] = mktime(datetime.now().timetuple())
+  with open('log.txt','a') as f:
+    time = strftime('%d/%m/%Y-%H:%M')
+    f.write(f'\n{time} {caller}: {choice}-{desc}')
+  with open('log.txt','r') as f:
+    update(f.read(),'logs')
+  db['hour'] = mktime(datetime.now().timetuple())
   await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = desc,type = choice))
 
 async def log_command(ctx,command):
-  return
   if ctx.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
     db[command] += 1
 
@@ -69,43 +67,41 @@ async def log_command(ctx,command):
     db['resetlast'] = mktime(datetime.now().timetuple())
     for i in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb']:
         db[i] = 0
-    #update(dict(db),'db','Database reset')
+    update(dict(db),'db','Database reset')
 
-  #else:
-    #update(dict(db))
+  else:
+    update(dict(db))
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
-  pass
-  #x = strftime('%y%m%d')
-  #if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.#nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
-  #  db['apod'] = x
-  #  req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
-  #  db['daily'] = req
-  #  for guild in db.keys():
-  #    try:
-  #      channel = client.get_channel(db[guild])
-  #      daily = db['daily']                          
-  #      if 'hdurl' in daily:
-  #        url = daily['hdurl']
-  #        name = ''
-  #      else:
-  #        url = daily['url']
-  #        name = url
-  #      title = daily['title']
-  #      desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
-  #  
-  #      embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
-  #      embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
-  #      embed.set_image(url=url)
-  #      await channel.send(embed=embed)
-  #      if name:
-  #        name = f'https://youtube.com/watch?v={name[30:41]}'
-  #        embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
-  #        await channel.send(content = name)
-  #    except:
-  #      pass
-  #  update(dict(db))
-  #pass
+  x = strftime('%y%m%d')
+  if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.#nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
+    db['apod'] = x
+    req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
+    db['daily'] = req
+    for guild in db.keys():
+      try:
+        channel = client.get_channel(db[guild])
+        daily = db['daily']                          
+        if 'hdurl' in daily:
+          url = daily['hdurl']
+          name = ''
+        else:
+          url = daily['url']
+          name = url
+        title = daily['title']
+        desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
+    
+        embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
+        embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
+        embed.set_image(url=url)
+        await channel.send(embed=embed)
+        if name:
+          name = f'https://youtube.com/watch?v={name[30:41]}'
+          embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
+          await channel.send(content = name)
+      except:
+        pass
+    update(dict(db))
 
 
 
@@ -818,5 +814,5 @@ async def on_message(message):
       await ctx.send('You have not specified a query or your query is wrong, use `.info   <query>`')'''
 
 #using astrobottest as test 
-client.run(environ['astrobottest'])
+client.run(environ['TOKEN'])
 
