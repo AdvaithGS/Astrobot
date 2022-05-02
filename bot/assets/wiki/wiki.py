@@ -22,6 +22,7 @@ def get_wiki(search_query):
         page = f'https://en.wikipedia.org/w/rest.php/v1/page/{search_query}/html'
         req = requests.get(page).text
         soup = BeautifulSoup(req,'lxml')
+        print(soup.find_all('p'))
         d = {}
         try:
             if 'refer' in soup.find_all('p')[1].text:
@@ -81,9 +82,9 @@ def get_wiki(search_query):
         return text,image,desc
     except:
         if not_space:
-            return None,None,'Not space'
+            return None,None,'is not a space query'
         else:
-            return None,None,'Not found'
+            return None,None,'could not be resolved'
             #    return None,None,'Not found'
             #return get_wiki(search_query + ' (moon)')
 
