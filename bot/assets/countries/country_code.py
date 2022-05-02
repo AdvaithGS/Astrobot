@@ -5,7 +5,7 @@ def find_country(code):
     with open('countries.txt') as f:
       lst = f.readlines()
   except:
-    with open('assets/countries/countries.txt') as f:
+    with open('bot/assets/countries/countries.txt') as f:
       lst = f.readlines()
   target = ';'+code
   for line in lst:
