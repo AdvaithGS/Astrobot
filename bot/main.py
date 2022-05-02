@@ -58,7 +58,7 @@ async def set_activity(caller = 'Automatic'):
   with open('log.txt','r') as f:
     update(f.read(),'logs')
   db['hour'] = mktime(datetime.now().timetuple())
-  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = desc,type = choice))
+  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = 'to slash commands! Type /help! Reinvite the bot if that doesnt work.',type = 2))
 
 async def log_command(ctx,command):
   if ctx.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
