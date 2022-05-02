@@ -1,4 +1,5 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
+
 import disnake
 from disnake.ext import commands,tasks
 from datetime import datetime
@@ -17,7 +18,7 @@ from assets.wiki.solarsystem import get_body
 from assets.wiki.wiki import get_wiki
 from assets.facts.facts import random_fact
 from assets.jameswebb.jameswebb import get_james_webb
-from time import strftime, sleep,mktime
+from time import strftime, mktime
 from requests import get,post
 from requests.auth import HTTPBasicAuth
 if __name__ == '__main__':
@@ -106,7 +107,6 @@ async def check_apod():
 
 
 
-
 @client.event
 async def on_guild_join(guild):
   embed = disnake.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `/help` to begin.', color = disnake.Color.orange())
@@ -151,7 +151,7 @@ async def daily(
     else:
       url = daily['url']
       name = url
-
+      
     title = daily['title']
     desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
     
@@ -297,6 +297,7 @@ async def info(
       embed.set_image(url = image)
     else:
       embed = disnake.Embed(title = desc , description = 'Try again with a refined search parameter', color=disnake.Color.orange())
+
 
   except:
     embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange())
@@ -589,6 +590,7 @@ async def webb(ctx):
   for i in ['NirCam2','NirSpec3','FgsNiriss4','Miri1','Fsm5']:
     embed.add_field(name = f'{i[:-1]} ({i[-1]})',value = temp[f'tempInst{i[:-1]}K'])
   
+  
   if type(ctx) == disnake.channel.TextChannel:
     await ctx.send(embed = embed)
   else:
@@ -812,6 +814,7 @@ async def on_message(message):
       await ctx.send(embed = embed)
     except:
       await ctx.send('You have not specified a query or your query is wrong, use `.info   <query>`')'''
+
 
 client.run(environ['TOKEN'])
 

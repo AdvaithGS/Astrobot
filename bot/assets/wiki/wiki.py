@@ -74,8 +74,8 @@ def get_wiki(search_query):
         else:
             image =  None
 
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
     try:
         return text,image,desc

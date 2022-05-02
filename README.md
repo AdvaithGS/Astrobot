@@ -2,10 +2,13 @@ This is an Astronomy discord bot (now verified!) with various functionalities an
 
 ### Note : The bot will be moving to slash commands effective 1 May hence all users are required to reinvite the bot (no need to kick) so as to give slash command permissions. Use the link below.
 
+
 ## Table of contents
 * [Invite](#Invite)
 * [Commands](#Commands)
+* [Sources](#Sources)
 * [Vote](#Vote)
+* [Support](#Support)
 * [Targets](#Targets)
 * [Creator](#Creator)
 
@@ -77,6 +80,12 @@ Get a map of the sky at a user specified location
 
 #### `/webb` or `@AstroBot webb`
 Get the current state of the James Webb Space Telescope.
+## Sources
+
+Given below is the list of APIs/Sources Astrobot uses for its commands (list incomplete)
+
+1. NASA's Astronomy Picture of The Day service
+2. Wikipedia API
 
 ## Vote
 
@@ -86,13 +95,25 @@ https://top.gg/bot/792458754208956466/vote
 
 https://discordbotlist.com/bots/astrobot-2515/upvote
 
+## Support
+
+Join this discord server for any queries/problems/suggestions:
+ 
+https://discord.gg/ZtPU67wVa5
+
 ## Targets
-1. Improve `/iss` to have the names of people in the ISS - using OpenNotify and https://awesomeopensource.com/project/corquaid/international-space-station-APIs
-2. Integrate tools like SunCalc and MoonCalc
-3. Improve `/info` to give only data and bring in `/image` to give images (50% done)
-4. Possibly use SpaceFlight News API
-5. Add video demos to README file
-6. Use NASA's PDS Search API
+1. [ ] Improve `.iss` to have the names of people in the ISS - using OpenNotify and https://awesomeopensource.com/project/corquaid/international-space-station-APIs
+
+2. [ ] Integrate tools like SunCalc and MoonCalc
+
+3. [ ] Improve `.info` to give only data and bring in `.image` to give images (50% done)
+
+4. [ ] Possibly use SpaceFlight News API
+
+5. [ ] Add video demos to README file
+
+6. [ ] Use NASA's PDS Search API
+
 ## Creator
 
 This bot has been created with blood, sweat and tears by Advaith GS.

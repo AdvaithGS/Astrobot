@@ -3,7 +3,7 @@ import os
 def random_fact():
   os.chdir(os.getcwd().replace('countries','facts'))
   try:
-    with open ('assets/facts/facts.txt',encoding='utf-8') as f:
+    with open ('bot/assets/facts/facts.txt',encoding = 'utf-8') as f:
         line = random.choice(f.readlines()).split(';')
   except:
     with open ('facts.txt',encoding='utf-8') as f:
