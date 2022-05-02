@@ -75,11 +75,7 @@ async def log_command(ctx,command):
     #update(dict(db))
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
-  async for i in client.fetch_guilds():
-    try:
-      x = await client.fetch_guild_commands(i.id)
-    except:
-      print(f"no permissions in {i.name},{i.id}")
+  pass
   #x = strftime('%y%m%d')
   #if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.#nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily'] and int(strftime('%H')) in range(10):
   #  db['apod'] = x
@@ -95,7 +91,6 @@ async def check_apod():
   #      else:
   #        url = daily['url']
   #        name = url
-#
   #      title = daily['title']
   #      desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
   #  
@@ -103,7 +98,6 @@ async def check_apod():
   #      embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
   #      embed.set_image(url=url)
   #      await channel.send(embed=embed)
-#
   #      if name:
   #        name = f'https://youtube.com/watch?v={name[30:41]}'
   #        embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
@@ -111,7 +105,7 @@ async def check_apod():
   #    except:
   #      pass
   #  update(dict(db))
-  pass
+  #pass
 
 
 
@@ -126,6 +120,9 @@ async def on_guild_join(guild):
             await channel.send(embed=embed)
         break
 
+@client.event
+async def on_interaction(inter):
+  await check_apod()
 guild_ids = [808201667543433238]
 
 @client.slash_command(guild_ids = guild_ids)
@@ -190,12 +187,8 @@ async def daily(
         await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
       else:
         await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-  await check_apod()
   await log_command(ctx,'daily')
-@client.event
-async def on_interaction(inter):
-  await check_apod()
-  print(inter.text)
+
 @client.slash_command(guild_ids = guild_ids)
 @commands.cooldown(1, 10, type=commands.BucketType.user)
 async def help(
@@ -243,7 +236,6 @@ async def help(
     await ctx.send(embed=embed, view=view)
   else:
     await ctx.response.send_message(embed=embed, view=view)
-  await check_apod()
   await log_command(ctx,'help')
 
 @client.slash_command(guild_ids = guild_ids)
@@ -263,7 +255,6 @@ async def channel(ctx):
   else:
     await ctx.response.send_message(embed=embed)
 
-  await check_apod()
   await log_command(ctx,'channel')
 
 @client.slash_command(guild_ids = guild_ids)
@@ -281,7 +272,6 @@ async def remove(ctx):
     await ctx.send(embed=embed)
   else:
     await ctx.response.send_message(embed=embed)
-  await check_apod()
   await log_command(ctx,'remove')
 
 @client.slash_command(guild_ids = guild_ids)
@@ -320,7 +310,6 @@ async def info(
     await ctx.send(embed=embed)
   else:
     await ctx.edit_original_message(embed = embed)
-  await check_apod()
   await log_command(ctx,'info')
 
 @client.slash_command(guild_ids = guild_ids)
@@ -363,7 +352,6 @@ async def iss(ctx):
   else:
     await ctx.edit_original_message(embed = embed,file = file)
 
-  await check_apod()
   await log_command(ctx,'iss')
 
 
@@ -384,7 +372,6 @@ async def fact(ctx):
   else:
     await ctx.response.send_message(embed = embed)
 
-  await check_apod()
   await log_command(ctx,'fact')
 
 @client.slash_command(guild_ids = guild_ids)
@@ -449,7 +436,6 @@ async def weather(ctx,location):
   else:
     await ctx.edit_original_message(embed = embed)
   
-  await check_apod()
   await log_command(ctx,'weather')
 
 @client.slash_command(guild_ids = guild_ids)
@@ -516,7 +502,6 @@ async def sky(
   else:
     await ctx.edit_original_message(embed = embed)
   
-  await check_apod()
   await log_command(ctx,'sky')
 
 @client.slash_command(guild_ids = guild_ids)
@@ -581,7 +566,6 @@ async def phase(
   else:
     await ctx.edit_original_message(embed = embed)
 
-  await check_apod()
   await log_command(ctx,'phase')
 
 @client.slash_command(guild_ids = guild_ids)
@@ -614,7 +598,6 @@ async def webb(ctx):
   else:
     await ctx.edit_original_message(embed = embed)
 
-  await check_apod()
   await log_command(ctx,'webb')
 
 @client.event
@@ -745,9 +728,8 @@ async def on_message(message):
     
     #Taking all the data from the NASA 'WhereIsWebb?' website and from the webb tracker api
     elif mes.startswith('webb') or mes.startswith('james webb'):
-      await webb(ctx)   
-  
-      
+      await webb(ctx)
+    await check_apod()
   #this info command first checks the total number of pages by going to 
   #the 100th page (since no queries are 100 pages long, the image and 
   #video api just mentions the last valid page number) and 
@@ -835,6 +817,6 @@ async def on_message(message):
     except:
       await ctx.send('You have not specified a query or your query is wrong, use `.info   <query>`')'''
 
-#using notepadboi as test 
+#using astrobottest as test 
 client.run(environ['astrobottest'])
 
