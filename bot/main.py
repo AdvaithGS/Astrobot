@@ -643,22 +643,10 @@ async def on_message(message):
     # adds that channel to the db so that it will be sent the '.daily' message whenever an APOD image is released
     elif mes.startswith('channel'):
       await channel(ctx)
-      if str(message.guild.id) not in list(db.keys()):
-        db[str(message.guild.id)] = ctx.id
-        #update(dict(db))
-        await ctx.send(content ='This channel has been registered for the Astronomy Picture of The Day service.')
-      else:
-        await ctx.send(content ='This server was already registered.')
   
     #removes a given channel from the apod service.
     elif mes.startswith('remove'):
       await remove(ctx)
-      if str(message.guild.id) in db:
-        del db[str(message.guild.id)]
-        #update(dict(db))
-        await ctx.send(content ='Removed from daily APOD feed.')
-      else:
-        await ctx.send(content ='This server has not been registered to the APOD feed.')
   
     #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
     elif mes.startswith( 'info'):
