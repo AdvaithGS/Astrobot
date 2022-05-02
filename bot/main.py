@@ -270,7 +270,7 @@ async def remove(ctx):
     await ctx.response.send_message(embed=embed)
   await log_command(ctx,'remove')
 
-@client.slash_command(guild_ids = guild_ids)
+@client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
 async def info(
   ctx,
