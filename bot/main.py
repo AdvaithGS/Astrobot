@@ -44,8 +44,6 @@ async def on_ready():
   s = (type(reverse_geocoder.search((60.12,33.12))))
   await set_activity('Startup')
 
-@tasks.loop(hours = 6)
-#generates a random activity that the bot can set as its status
 async def set_activity(caller = 'Automatic'):
   global activities
   activity = next(activities)
@@ -59,6 +57,11 @@ async def set_activity(caller = 'Automatic'):
     update(f.read(),'logs')
   db['hour'] = mktime(datetime.now().timetuple())
   await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = 'slash commands! Type /help! Reinvite the bot if that doesnt work.',type = 2))
+
+@tasks.loop(hours = 6)
+#generates a random activity that the bot can set as its status
+async def call_set_activity():
+  client.loop.create_task(set_activity('Automatic'))
 
 async def log_command(ctx,command):
   if ctx.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
@@ -688,7 +691,7 @@ async def on_message(message):
     #Taking all the data from the NASA 'WhereIsWebb?' website and from the webb tracker api
     elif mes.startswith('webb') or mes.startswith('james webb'):
       await webb(ctx)
-    await check_apod()
+  await check_apod()
   #this info command first checks the total number of pages by going to 
   #the 100th page (since no queries are 100 pages long, the image and 
   #video api just mentions the last valid page number) and 
