@@ -105,7 +105,8 @@ async def check_apod():
           embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
           await channel.send(content = name)
       except Exception as e:
-        print(guild,e,'from 1')
+        if guild.isdigit():
+          print(guild,e,'from 1')
     update(dict(db))
 
 
