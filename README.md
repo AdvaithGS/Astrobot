@@ -1,7 +1,5 @@
 This is an Astronomy discord bot (now verified!) with various functionalities and uses; created with python 3.10.3 version involving the discord.py module. 
 
-### Note : The bot will be moving to slash commands effective 1 May hence all users are required to reinvite the bot (no need to kick) so as to give slash command permissions. Use the link below.
-
 
 ## Table of contents
 * [Invite](#Invite)
@@ -60,7 +58,7 @@ This uses Solar system Open Api and Wikpedia's API in a discord embed.
 #### `/iss` or `@AstroBot iss`
 Find the live location of the international space station with respect to the Earth.
 This uses the reverse_geocoder python library and the WhereTheIssAt API.
-#### `/channel` or `@AstroBot help`
+#### `/channel` or `@AstroBot channel`
 Subscribe to the daily APOD service and get the daily picture as soon as it is released on the channel in which this command is posted.
 
 #### `/remove` or `@AstroBot remove`
