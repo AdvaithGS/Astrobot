@@ -123,7 +123,7 @@ async def on_guild_join(guild):
 
 async def suggestion(channel):
   suggestions = ['Astrobot has a facts database! Try `/facts`',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Support Server", url="https://discord.gg/ZtPU67wVa5")]]
-  if random.randint(40) == 4:
+  if random.randint(10) == 4:
     choice = random.choice(suggestions)
     if type(choice[1]) == disnake.ui.Button:
       view = disnake.ui.View()
