@@ -63,9 +63,8 @@ async def set_activity(caller = 'Automatic'):
 async def call_set_activity():
   client.loop.create_task(set_activity('Automatic'))
 
-async def log_command(ctx,command):
-  if ctx.author.id not in [756496844867108937,808262803227410465, 792458754208956466]:
-    db[command] += 1
+async def log_command(command):
+  db[command] += 1
 
   if db['resetlast'] - mktime(datetime.now().timetuple()) >= 2592000:
     db['resetlast'] = mktime(datetime.now().timetuple())
@@ -199,7 +198,7 @@ async def daily(
         await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
       else:
         await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-  await log_command(ctx,'daily')
+  await log_command('daily')
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -248,7 +247,7 @@ async def help(
     await ctx.send(embed=embed, view=view)
   else:
     await ctx.response.send_message(embed=embed, view=view)
-  await log_command(ctx,'help')
+  await log_command('help')
 
 @client.slash_command()
 async def channel(ctx):
@@ -267,7 +266,7 @@ async def channel(ctx):
   else:
     await ctx.response.send_message(embed=embed)
 
-  await log_command(ctx,'channel')
+  await log_command('channel')
 
 @client.slash_command()
 async def remove(ctx):
@@ -284,7 +283,7 @@ async def remove(ctx):
     await ctx.send(embed=embed)
   else:
     await ctx.response.send_message(embed=embed)
-  await log_command(ctx,'remove')
+  await log_command('remove')
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -323,7 +322,7 @@ async def info(
     await ctx.send(embed=embed)
   else:
     await ctx.edit_original_message(embed = embed)
-  await log_command(ctx,'info')
+  await log_command('info')
 
 @client.slash_command()
 async def iss(ctx):
@@ -365,7 +364,7 @@ async def iss(ctx):
   else:
     await ctx.edit_original_message(embed = embed,file = file)
 
-  await log_command(ctx,'iss')
+  await log_command('iss')
 
 
 @client.slash_command()
@@ -385,7 +384,7 @@ async def fact(ctx):
   else:
     await ctx.response.send_message(embed = embed)
 
-  await log_command(ctx,'fact')
+  await log_command('fact')
 
 @client.slash_command()
 async def weather(ctx,location):
@@ -449,7 +448,7 @@ async def weather(ctx,location):
   else:
     await ctx.edit_original_message(embed = embed)
   
-  await log_command(ctx,'weather')
+  await log_command('weather')
 
 @client.slash_command()
 async def sky(
@@ -515,7 +514,7 @@ async def sky(
   else:
     await ctx.edit_original_message(embed = embed)
   
-  await log_command(ctx,'sky')
+  await log_command('sky')
 
 @client.slash_command()
 async def phase(
@@ -579,7 +578,7 @@ async def phase(
   else:
     await ctx.edit_original_message(embed = embed)
 
-  await log_command(ctx,'phase')
+  await log_command('phase')
 
 @client.slash_command()
 async def webb(ctx):
@@ -612,7 +611,7 @@ async def webb(ctx):
   else:
     await ctx.edit_original_message(embed = embed)
 
-  await log_command(ctx,'webb')
+  await log_command('webb')
 
 @client.event
 async def on_slash_command_error(ctx, error):
