@@ -704,7 +704,7 @@ async def on_message(message):
     #Taking all the data from the NASA 'WhereIsWebb?' website and from the webb tracker api
     elif mes.startswith('webb') or mes.startswith('james webb'):
       await webb(ctx)
-    await suggestion(ctx.channel)
+    await suggestion(ctx)
   await check_apod()
   
   #this info command first checks the total number of pages by going to 
