@@ -121,9 +121,21 @@ async def on_guild_join(guild):
             await channel.send(embed=embed)
         break
 
+async def suggestion(channel):
+  suggestions = ['Astrobot has a facts database! Try `/facts`',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Support Server", url="https://discord.gg/ZtPU67wVa5")]]
+  if random.randint(40) == 4:
+    choice = random.choice(suggestions)
+    if type(choice[1]) == disnake.ui.Button:
+      view = disnake.ui.View()
+      view.add_item(choice[1])
+      await channel.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0], view = view))
+    else:
+      await channel.send(embed = disnake.Embed(title = 'Quick Tip', description = choice))
+
 @client.event
 async def on_interaction(inter):
   await check_apod()
+  await suggestion(inter.channel)
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -693,6 +705,7 @@ async def on_message(message):
     elif mes.startswith('webb') or mes.startswith('james webb'):
       await webb(ctx)
   await check_apod()
+  await suggestion(ctx.channel)
   #this info command first checks the total number of pages by going to 
   #the 100th page (since no queries are 100 pages long, the image and 
   #video api just mentions the last valid page number) and 
