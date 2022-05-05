@@ -194,7 +194,7 @@ Webb’sMid-Infrared Instrument (MIRI) is in the final phase of its cooldown whi
 The near-infrared instruments (NIRCam, NIRSpec, FGS-NIRISS) have reached their target range from 34 to 39 kelvins cooling passively. MIRI carries detectors that need to be at a temperature of less than 7 kelvins to be able to detect longer wavelength photons. This temperature is not possible on Webb by passive means alone, so Webb carries an innovative cryocooler that is dedicated to cooling MIRI's detectors.
 
 This cryocooler uses helium gas to carry heat from MIRI’s optics and detectors out to the warm side of the sunshield. To manage the cooldown process, MIRI also has heaters onboard, to protect its sensitive components from the risk of ice forming. The Webb team has begun progressively adjusting both the cryocooler and these heaters, to ensure a slow, controlled, stable cooldown for the instrument. Soon, the team will turn off MIRI’s heaters entirely, to bring the instrument down to its operating temperature of less than 7 kelvins (-447 degrees Fahrenheit, or -266 degrees Celsius).''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/miriFinalCooldown-1200px.png'],
-'latest':['''Iterate Alignment For Final Correction
+'Step 7':['''Iterate Alignment For Final Correction
 Step 7
 
 Nominal Event Time: Starts - Launch + ~4 Months
@@ -203,7 +203,15 @@ Status: Ongoing
 
 After applying the Field of View correction, the key thing left to address is the removal of any small, residual positioning errors in the primary mirror segments. We measure and make corrections using the Fine Phasing process (step 5). We will do a final check of the image quality across each of the science instruments; once this is verified, the wavefront sensing and controls process will be complete.
 
-As we go through the seven steps, we may find that we need to iterate earlier steps as well. The process is flexible and modular to allow for iteration. After roughly three months of aligning the telescope, we will be ready to proceed to commissioning the instruments.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/50489833002_654cbd9bde_b-1kpix-transCrop-png32.png']
+As we go through the seven steps, we may find that we need to iterate earlier steps as well. The process is flexible and modular to allow for iteration. After roughly three months of aligning the telescope, we will be ready to proceed to commissioning the instruments.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/50489833002_654cbd9bde_b-1kpix-transCrop-png32.png'],
+'latest':['''Instrument Commissioning
+Nominal Event Time: Starts - Launch + ~4 Months
+
+Status: ONGOING
+
+With mirror alignment completed, the Webb team will turn its attention to science instrument commissioning.
+
+For each instrument, the Webb team will now conduct an extensive suite of calibrations and characterizations of the instruments using a variety of astronomical sources. We will measure the instruments’ throughput – how much of the light that enters the telescope reaches the detectors and is recorded. We will do an astrometric calibration for each instrument, measuring the small optical distortions in the instrument to map each pixel in the detector to the precise location on the sky that it will see. We will measure the sharpness of stellar images at each point in an instrument’s image to enable the optimal extraction of scientific information. We will demonstrate target acquisition for coronagraphy and spectroscopy, and test a few special types of observations, including targets within our Solar System, and time-series observations of exoplanet transits.''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/instrumentsCommOverallCompositeImage-1200px.jpg']
      }
 def get_image():
     global db
