@@ -7,7 +7,7 @@ from os import environ
 import reverse_geocoder
 from itertools import cycle
 from assets.loops.presence import call_set_activity
-from assets.loops.top import update_logs
+from assets.loops.top import update_guilds
 from assets.database.database import contents,update,retrieve
 db = retrieve()
 
@@ -43,7 +43,7 @@ async def on_ready():
   s = len(client.guilds)
   #set_activity.start(client,db,'Automatic',update)
   await update_guilds(client)
-  await set_acivity('Automatic')
+  await set_activity('Automatic')
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
