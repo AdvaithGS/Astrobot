@@ -6,7 +6,9 @@ from datetime import datetime
 from os import environ
 import reverse_geocoder
 from itertools import cycle
-from assets.database.database import *
+from assets.loops.presence import set_activity
+from assets.loops.top import update_votes
+from assets.database.database import contents,update,retrieve
 db = retrieve()
 
 if len(retrieve('logs')) > 200:
@@ -39,10 +41,12 @@ activities = iter(cycle([[0, 'With the stars'], [2, 'The Sounds Of The Universe'
 @client.event
 async def on_ready():
   s = len(client.guilds)
+  set_activity.start(client,db,'Automatic',update)
+  await update_votes(client)
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
-  await set_activity('Startup')
+  await set_activity(client,db,'Startup',update)
 
 async def set_activity(caller = 'Automatic'):
   global activities
@@ -58,10 +62,6 @@ async def set_activity(caller = 'Automatic'):
   db['hour'] = mktime(datetime.now().timetuple())
   await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = 'slash commands! Type /help! Reinvite the bot if that doesnt work.',type = 2))
 
-@tasks.loop(hours = 6)
-#generates a random activity that the bot can set as its status
-async def call_set_activity():
-  client.loop.create_task(set_activity('Automatic'))
 
 async def log_command(command):
   db[command] += 1
