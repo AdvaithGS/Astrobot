@@ -41,7 +41,7 @@ activities = iter(cycle([[0, 'With the stars'], [2, 'The Sounds Of The Universe'
 @client.event
 async def on_ready():
   s = len(client.guilds)
-  set_activity.start(client,db,'Automatic',update)
+  #set_activity.start(client,db,'Automatic',update)
   await update_votes(client)
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
