@@ -36,7 +36,7 @@ api_key3 = environ['api_key3']
 secret = environ['api_key4']
 appid = environ['appid']
 
-activities = iter(cycle([[0, 'With the stars'], [2, 'The Sounds Of The Universe'],[3, 'Cosmos'], [0, 'With a bunch of Neutron stars'], [2, '.help'],[3, 'How The Universe Works'],[0, 'Life of A Star'],[2, 'Richard Feynman talk about bongos'], [3, 'Milky Way and Andromeda collide'], [3,'The James Webb Space Telescope'], [2, 'Your .iss requests' ]]))
+
 @client.event
 async def on_ready():
   s = len(client.guilds)
@@ -46,9 +46,12 @@ async def on_ready():
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
-  #await call_set_activity(client,db,'Startup',update)
+  call_set_activity(client,db,'Startup',update)
 
-async def set_activity(caller = 'Automatic'):
+activities = iter(cycle([[0, 'With the stars'], [2, 'The Sounds Of The Universe'],[3, 'Cosmos'], [0, 'With a bunch of Neutron stars'], [2, '.help'],[3, 'How The Universe Works'],[0, 'Life of A Star'],[2, 'Richard Feynman talk about bongos'], [3, 'Milky Way and Andromeda collide'], [3,'The James Webb Space Telescope'], [2, 'Your .iss requests' ]]))
+
+@tasks.loop(hours = 6)
+async def set_activity(client,db,caller,update):
   global activities
   activity = next(activities)
   #0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
@@ -61,6 +64,7 @@ async def set_activity(caller = 'Automatic'):
     update(f.read(),'logs')
   db['hour'] = mktime(datetime.now().timetuple())
   await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = 'slash commands! Type /help! Reinvite the bot if that doesnt work.',type = 2))
+#set_activity.start(client,db,caller,update)
 
 
 async def log_command(command):
