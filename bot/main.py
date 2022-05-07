@@ -64,15 +64,18 @@ async def set_activity(caller = 'Automatic'):
 
 
 async def log_command(command):
-  db[command] = db[command] + 1
-  if db['resetlast'] - mktime(datetime.now().timetuple()) >= 2592000:
-    db['resetlast'] = mktime(datetime.now().timetuple())
-    for i in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb']:
-        db[i] = 0
-    update(dict(db),'db','Database reset')
+  try: 
+    db[command] = db[command] + 1
+    if db['resetlast'] - mktime(datetime.now().timetuple()) >= 2592000:
+      db['resetlast'] = mktime(datetime.now().timetuple())
+      for i in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb']:
+          db[i] = 0
+      update(dict(db),'db','Database reset')
 
-  else:
-    update(dict(db))
+    else:
+      update(dict(db))
+  except Exception as e:
+    print(e,'from log command')
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   x = strftime('%y%m%d')
