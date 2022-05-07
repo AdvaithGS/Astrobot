@@ -9,11 +9,10 @@ from itertools import cycle
 from assets.loops.presence import call_set_activity
 from assets.loops.top import update_guilds
 from assets.database.database import contents,update,retrieve
-db = retrieve()
 
-if len(retrieve('logs')) > 200:
-  with open('log.txt','w') as f:
-    f.write(retrieve('logs'))
+db = retrieve()
+with open('log.txt','w') as f:
+  f.write(retrieve('logs'))
 
 from assets.countries.country_code import find_country
 from assets.wiki.solarsystem import get_body
@@ -65,8 +64,7 @@ async def set_activity(caller = 'Automatic'):
 
 
 async def log_command(command):
-  db[command] += 1
-
+  db[command] = db[command] + 1
   if db['resetlast'] - mktime(datetime.now().timetuple()) >= 2592000:
     db['resetlast'] = mktime(datetime.now().timetuple())
     for i in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb']:
@@ -128,7 +126,7 @@ async def suggestion(channel):
     if type(choice[1]) == disnake.ui.Button:
       view = disnake.ui.View()
       view.add_item(choice[1])
-      await channel.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0], view = view))
+      await channel.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0]) view = view)
     else:
       await channel.send(embed = disnake.Embed(title = 'Quick Tip', description = choice))
 
