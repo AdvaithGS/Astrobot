@@ -129,7 +129,7 @@ async def suggestion(channel):
     if type(choice[1]) == disnake.ui.Button:
       view = disnake.ui.View()
       view.add_item(choice[1])
-      await channel.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0]) view = view)
+      await channel.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0]), view = view)
     else:
       await channel.send(embed = disnake.Embed(title = 'Quick Tip', description = choice))
 
