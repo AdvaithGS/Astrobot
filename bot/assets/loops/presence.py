@@ -22,5 +22,5 @@ async def set_activity(client,db,caller,update):
   db['hour'] = mktime(datetime.now().timetuple())
   await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = 'slash commands! Type /help! Reinvite the bot if that doesnt work.',type = 2))
 
-def call_set_activity(client,db,caller):
-  set_activity.start(client,db,caller)
+def call_set_activity(client,db,caller,update):
+  set_activity.start(client,db,caller,update)
