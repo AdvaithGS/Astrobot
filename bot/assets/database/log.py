@@ -1,10 +1,6 @@
 from datetime import datetime
 from time import mktime
-import os
-import sys
-sys.path.append('../parentdirectory')
-from database.database import update
-async def log_command(command,db):
+async def log_command(command,db,update):
   try: 
     db[command] = db[command] + 1
     if db['resetlast'] - mktime(datetime.now().timetuple()) >= 2592000:
