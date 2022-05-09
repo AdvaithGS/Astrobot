@@ -1,6 +1,8 @@
 import disnake
 from disnake.ext import tasks
-import os
+import sys
+sys.path.append('../parentdirectory')
+from database.database import update
 from time import strftime,mktime
 from datetime import datetime
 from itertools import cycle
@@ -8,9 +10,9 @@ from itertools import cycle
 activities = iter(cycle([[0, 'With the stars'], [2, 'The Sounds Of The Universe'],[3, 'Cosmos'], [0, 'With a bunch of Neutron stars'], [2, '.help'],[3, 'How The Universe Works'],[0, 'Life of A Star'],[2, 'Richard Feynman talk about bongos'], [3, 'Milky Way and Andromeda collide'], [3,'The James Webb Space Telescope'], [2, 'Your .iss requests' ]]))
 
 @tasks.loop(hours = 6)
-async def set_activity(client,db,caller,update):
+async def set_activity(client,db,caller):
   global activities
-  os.chdir('bot/')
+  
   activity = next(activities)
   #0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
   choice = activity[0]
@@ -23,5 +25,5 @@ async def set_activity(client,db,caller,update):
   db['hour'] = mktime(datetime.now().timetuple())
   await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = 'slash commands! Type /help! Reinvite the bot if that doesnt work.',type = 2))
 
-def call_set_activity(client,db,caller,update):
-  set_activity.start(client,db,caller,update)
+def call_set_activity(client,db,caller):
+  set_activity.start(client,db,caller)

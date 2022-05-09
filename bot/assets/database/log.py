@@ -1,8 +1,9 @@
 from datetime import datetime
 from time import mktime
 import os
-os.chdir('bot/')
-from assets.database.database import update
+import sys
+sys.path.append('../parentdirectory')
+from database.database import update
 async def log_command(command,db):
   try: 
     db[command] = db[command] + 1
