@@ -7,8 +7,9 @@ from os import environ
 import reverse_geocoder
 from itertools import cycle
 from assets.loops.presence import call_set_activity
+from assets.database.log import log_command
 from assets.loops.top import update_guilds
-from assets.database.database import contents,update,retrieve
+from assets.database.database import update,retrieve
 
 db = retrieve()
 with open('log.txt','w') as f:
@@ -40,45 +41,13 @@ appid = environ['appid']
 @client.event
 async def on_ready():
   s = len(client.guilds)
-  #set_activity.start(client,db,'Automatic',update)
   await update_guilds(client)
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
-  call_set_activity(client,db,'Startup',update)
-
-activities = iter(cycle([[0, 'With the stars'], [2, 'The Sounds Of The Universe'],[3, 'Cosmos'], [0, 'With a bunch of Neutron stars'], [2, '.help'],[3, 'How The Universe Works'],[0, 'Life of A Star'],[2, 'Richard Feynman talk about bongos'], [3, 'Milky Way and Andromeda collide'], [3,'The James Webb Space Telescope'], [2, 'Your .iss requests' ]]))
-
-@tasks.loop(hours = 6)
-async def set_activity(client,db,caller,update):
-  global activities
-  activity = next(activities)
-  #0 - playing 1- playing and twitch  2 - Listening 3 - Watching 4 -  5- competing
-  choice = activity[0]
-  desc = activity[1]
-  with open('log.txt','a') as f:
-    time = strftime('%d/%m/%Y-%H:%M')
-    f.write(f'\n{time} {caller}: {choice}-{desc}')
-  with open('log.txt','r') as f:
-    update(f.read(),'logs')
-  db['hour'] = mktime(datetime.now().timetuple())
-  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = 'slash commands! Type /help! Reinvite the bot if that doesnt work.',type = 2))
-#set_activity.start(client,db,caller,update)
+  call_set_activity(client,db,'Startup')
 
 
-async def log_command(command):
-  try: 
-    db[command] = db[command] + 1
-    if db['resetlast'] - mktime(datetime.now().timetuple()) >= 2592000:
-      db['resetlast'] = mktime(datetime.now().timetuple())
-      for i in ['daily','help','channel','remove','info','iss','fact','weather','phase','sky','webb']:
-          db[i] = 0
-      update(dict(db),'db','Database reset')
-
-    else:
-      update(dict(db))
-  except Exception as e:
-    print(e,'from log command')
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   x = strftime('%y%m%d')
@@ -192,7 +161,7 @@ async def daily(
         await ctx.response.send_message(content = name)
     
   except Exception as e:
-    print(e)
+    print(e,'line 165')
     if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)[8:11] == '500':
       if type(ctx) == disnake.channel.TextChannel:
         await ctx.send('There seems to be something wrong with the NASA APOD service, try after some time')
@@ -261,7 +230,7 @@ async def channel(ctx):
   '''
   if str(ctx.guild.id) not in list(db.keys()):
     db[str(ctx.guild.id)] = ctx.id
-    #update(dict(db))
+    update(dict(db))
     embed = disnake.Embed(title = 'Registered',description = 'This channel has been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
   else:
     embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
@@ -280,7 +249,7 @@ async def remove(ctx):
   '''
   if str(ctx.guild.id) in db:
     del db[str(ctx.guild.id)]
-    #update(dict(db))
+    update(dict(db))
     embed = disnake.Embed(title = 'Unsubscribed',description = 'Removed from daily APOD feed.', color=disnake.Color.orange())
   else:
     embed = disnake.Embed(title = 'Error',description = 'This server had not been registered to the APOD feed.', color=disnake.Color.orange())
@@ -445,7 +414,7 @@ async def weather(ctx,location):
     embed.set_image(url = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
 
   except Exception as e:
-    print(e)
+    print(e,'line 418')
     embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
   
   if type(ctx) == disnake.channel.TextChannel:
