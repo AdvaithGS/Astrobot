@@ -2,7 +2,7 @@ from datetime import datetime
 from time import mktime
 from disnake.ext import tasks
 
-tasks.loop(days = 1)
+tasks.loop(hours = 24)
 async def stats(client,db):
   guilds = client.guilds
   now = mktime(datetime.now().timetuple())
