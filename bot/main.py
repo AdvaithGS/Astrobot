@@ -9,6 +9,7 @@ from itertools import cycle
 from assets.loops.presence import call_set_activity
 from assets.database.log import log_command
 from assets.loops.top import update_guilds
+from assets.loops.stats import call_stats
 from assets.database.database import update,retrieve
 
 db = retrieve()
@@ -46,6 +47,7 @@ async def on_ready():
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
   call_set_activity(client,db,'Startup',update)
+  call_stats(client,db)
 
 
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
@@ -221,7 +223,7 @@ async def help(
     await ctx.send(embed=embed, view=view)
   else:
     await ctx.response.send_message(embed=embed, view=view)
-  await log_command('help',update)
+  await log_command('help',db,update)
 
 @client.slash_command()
 async def channel(ctx):
@@ -240,7 +242,7 @@ async def channel(ctx):
   else:
     await ctx.response.send_message(embed=embed)
 
-  await log_command('channel',update)
+  await log_command('channel',db,update)
 
 @client.slash_command()
 async def remove(ctx):
@@ -257,7 +259,7 @@ async def remove(ctx):
     await ctx.send(embed=embed)
   else:
     await ctx.response.send_message(embed=embed)
-  await log_command('remove',update)
+  await log_command('remove',db,update)
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -296,7 +298,7 @@ async def info(
     await ctx.send(embed=embed)
   else:
     await ctx.edit_original_message(embed = embed)
-  await log_command('info',update)
+  await log_command('info',db,update)
 
 @client.slash_command()
 async def iss(ctx):
@@ -338,7 +340,7 @@ async def iss(ctx):
   else:
     await ctx.edit_original_message(embed = embed,file = file)
 
-  await log_command('iss',update)
+  await log_command('iss',db,update)
 
 
 @client.slash_command()
@@ -358,7 +360,7 @@ async def fact(ctx):
   else:
     await ctx.response.send_message(embed = embed)
 
-  await log_command('fact',update)
+  await log_command('fact',db,update)
 
 @client.slash_command()
 async def weather(ctx,location):
@@ -422,7 +424,7 @@ async def weather(ctx,location):
   else:
     await ctx.edit_original_message(embed = embed)
   
-  await log_command('weather',update)
+  await log_command('weather',db,update)
 
 @client.slash_command()
 async def sky(
@@ -488,7 +490,7 @@ async def sky(
   else:
     await ctx.edit_original_message(embed = embed)
   
-  await log_command('sky',update)
+  await log_command('sky',db,update)
 
 @client.slash_command()
 async def phase(
@@ -552,7 +554,7 @@ async def phase(
   else:
     await ctx.edit_original_message(embed = embed)
 
-  await log_command('phase',update)
+  await log_command('phase',db,update)
 
 @client.slash_command()
 async def webb(ctx):
@@ -585,7 +587,7 @@ async def webb(ctx):
   else:
     await ctx.edit_original_message(embed = embed)
 
-  await log_command('webb',update)
+  await log_command('webb',db,update)
 
 @client.event
 async def on_slash_command_error(ctx, error):
