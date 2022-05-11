@@ -22,7 +22,6 @@ def get_wiki(search_query):
         page = f'https://en.wikipedia.org/w/rest.php/v1/page/{search_query}/html'
         req = requests.get(page).text
         soup = BeautifulSoup(req,'lxml')
-        print(soup.find_all('p'))
         d = {}
         try:
             if 'refer' in soup.find_all('p')[1].text:
