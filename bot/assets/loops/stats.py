@@ -7,7 +7,7 @@ async def stats(client,db):
   guilds = client.guilds
   now = mktime(datetime.now().timetuple())
   db['member_guilds'].append([now,len(guilds)])
-  members = {}
+  members = set()
   for guild in guilds:
     members.update(set(guild.members))
   db['member_count'].append([now,len(members)])

@@ -1,7 +1,7 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
 
 import disnake
-from disnake.ext import commands,tasks
+from disnake.ext import commands
 from datetime import datetime
 from os import environ
 import reverse_geocoder
@@ -103,7 +103,7 @@ async def suggestion(channel):
     if type(choice[1]) == disnake.ui.Button:
       view = disnake.ui.View()
       view.add_item(choice[1])
-      await channel.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0]), view = view)
+      await channel.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0],color= disnake.Color.orange()), view = view)
     else:
       await channel.send(embed = disnake.Embed(title = 'Quick Tip', description = choice))
 
