@@ -7,10 +7,6 @@ async def stats_loop(client,stats,update):
   guilds = client.guilds
   now = mktime(datetime.now().timetuple())
   stats['member_guilds'].append([now,len(guilds)])
-  members = set()
-  for guild in guilds:
-    members.update(set(guild.members))
-  stats['member_count'].append([now,len(members)])
   update(stats,'stats')
 
 def call_stats(client,stats,update):
