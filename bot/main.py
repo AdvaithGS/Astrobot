@@ -16,6 +16,7 @@ db = retrieve()
 with open('log.txt','w') as f:
   f.write(retrieve('logs'))
 
+stats = retrieve('stats')
 from assets.countries.country_code import find_country
 from assets.wiki.solarsystem import get_body
 from assets.wiki.wiki import get_wiki
@@ -47,7 +48,7 @@ async def on_ready():
   # all this does is initiate the reverse_geocoder library so that .iss responses after running the server are faster
   s = (type(reverse_geocoder.search((60.12,33.12))))
   call_set_activity(client,db,'Startup',update)
-  call_stats(client,db)
+  call_stats(client,stats,update)
 
 
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
