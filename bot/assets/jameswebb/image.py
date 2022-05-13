@@ -229,8 +229,7 @@ NIRSPEC: Multi-object spectroscopy | Fixed slit spectroscopy | Integral field un
 NIRISS: Single object slitless spectroscopy | Wide field slitless spectroscopy | Aperture masking interferometry | Imaging (parallel only)
 
 MIRI: Imaging | Low resolution spectroscopy | Medium resolution spectroscopy | Coronagraphic imaging
-
-''']
+''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/InstrumentsTracking2.300-1100px.png']
      }
 def get_image():
     global db
