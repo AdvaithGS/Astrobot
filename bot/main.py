@@ -175,7 +175,7 @@ async def daily(
         await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
       else:
         await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-  await log_command('apod',db,update)
+  await log_command('daily_apod',db,update)
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
