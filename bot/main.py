@@ -83,7 +83,7 @@ async def check_apod():
       except Exception as e:
         if guild.isdigit():
           print(guild,e,'from 1')
-    update(dict(db))
+    update(db)
 
 
 
@@ -231,9 +231,9 @@ async def channel(ctx):
   '''
   Register for the automatic APOD subscription 
   '''
-  if str(ctx.guild.id) not in list(db.keys()):
-    db[str(ctx.guild.id)] = ctx.id
-    update(dict(db))
+  if ctx.guild.id not in db:
+    db[ctx.guild.id] = ctx.id
+    update(db)
     embed = disnake.Embed(title = 'Registered',description = 'This channel has been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
   else:
     embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
@@ -250,9 +250,9 @@ async def remove(ctx):
   '''
   Remove the channel from the APOD subscription
   '''
-  if str(ctx.guild.id) in db:
-    del db[str(ctx.guild.id)]
-    update(dict(db))
+  if ctx.guild.id in db:
+    del db[ctx.guild.id]
+    update(db)
     embed = disnake.Embed(title = 'Unsubscribed',description = 'Removed from daily APOD feed.', color=disnake.Color.orange())
   else:
     embed = disnake.Embed(title = 'Error',description = 'This server had not been registered to the APOD feed.', color=disnake.Color.orange())
