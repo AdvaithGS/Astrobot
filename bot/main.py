@@ -1,5 +1,6 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
 
+from xml.sax.xmlreader import Locator
 import disnake
 from disnake.ext import commands
 from datetime import datetime
@@ -276,6 +277,7 @@ async def info(
     It can be anything pertaining to astronomy you wish to know about. 
   '''
   try:
+    query = query[:]
     if type(ctx) == disnake.channel.TextChannel:
       await ctx.send('Getting the information might take some time, please wait.')
     else:
@@ -377,6 +379,7 @@ async def weather(ctx,location):
   else:
     await ctx.response.send_message(content = 'Preparing...')
   try:
+    location = location[:]
     req = loads(get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
     location = location + ', ' + find_country(req['sys']['country'])
     
@@ -416,8 +419,10 @@ async def weather(ctx,location):
     embed.set_image(url = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
 
   except Exception as e:
-    print(e,'line 418')
-    embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
+    if type(location) == str:
+      embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
+    else:
+      embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot weather <query>`. Fill a query and do not leave it blank. For example - `@Astrobot weather Madrid` ,`@Astrobot weather Raipur`', color=disnake.Color.orange())
   
   if type(ctx) == disnake.channel.TextChannel:
     await ctx.send(embed = embed)
@@ -447,6 +452,7 @@ async def sky(
     await ctx.response.send_message('Generating....this will take some time.')
 
   try:
+    location = location[:]
     result = geolocator.geocode(location)
     coords,location = result[1],result[0]
     if int(coords[0]) > 0:
@@ -483,7 +489,10 @@ async def sky(
     embed.set_image(url = req['data'] ['imageUrl'])
     embed.set_footer(text = 'Generated using AstronomyAPI and python geopy  library')
   except:
-    embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
+    if type(location) == str:
+      embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
+    else:
+      embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot sky <query>`. Fill a query and do not leave it blank. For example - `@Astrobot sky Laos` ,`@Astrobot sky Quito`', color=disnake.Color.orange())
   
   if type(ctx) == disnake.channel.TextChannel:
     await ctx.send(embed = embed)
@@ -511,6 +520,7 @@ async def phase(
     await ctx.response.send_message('Generating....this will take some time.')
 
   try:
+    location = location[:]
     result = geolocator.geocode(location)
     coords,location = result[1],result[0]
     if int(coords[0]) > 0:
@@ -547,7 +557,10 @@ async def phase(
     embed.set_image(url = req['data'] ['imageUrl'])
     embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
   except:
-    embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
+    if type(location) == str:
+      embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
+    else:
+      embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot phase <query>`. Fill a query and do not leave it blank. For example - `@Astrobot phase Kolkata` ,`@Astrobot phase Alsace`', color=disnake.Color.orange())
   
   if type(ctx) == disnake.channel.TextChannel:
     await ctx.send(embed = embed)
@@ -604,7 +617,10 @@ async def on_message(message):
     mes = message.content[22:]
     '''gets the image from nasa's api, if its just 'daily' - it gets it from the database else if its the 'daily random' command, it chooses a random viable date, and sends the message. If the date is already chosen by the user, it just makes a request from the api and shares it'''
     if mes.startswith('daily'):
-      await daily(ctx,mes.split(' ',1)[1])
+      try:
+        await daily(ctx,mes.split(' ',1)[1])
+      except:
+        await daily(ctx,'')
 
     # ask for help and commands
     elif mes.startswith('help'):
@@ -641,8 +657,12 @@ async def on_message(message):
   
     #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
     elif mes.startswith( 'info'):
-      query = mes.split(' ',1)[1]
-      await info(ctx,query)
+      try:
+        query = mes.split(' ',1)[1]
+        await info(ctx,query)
+      except:
+        await info(ctx,None)
+
     
     #takes info about the location of iss from wheretheiss.at and uses mapquest to obtain a map image of that
     elif mes.startswith('whereiss') or mes.startswith('iss'):
@@ -651,21 +671,14 @@ async def on_message(message):
     #takes a fact using random_fact() method from the facts.py file which in turn obtains it from facts.txt
     elif mes.startswith('fact'):
       await fact(ctx)
-      #line = random_fact()
-      #title,desc = line[0],line[1]
-      #embed = disnake.Embed(title = title , description = desc, color = disnake.Color.orange())
-      #try:
-      #  embed.set_image(url=line[2])
-      #  embed.set_footer(text=line[3])
-      #except:
-      #  pass
-      #await ctx.send(embed = embed)
   
     #using the open weather service API to get weather details
     elif mes.startswith('weather'):
-      location = mes.split(' ',1)[1].title()
-      await weather(ctx,location)
-    
+      try:
+        location = mes.split(' ',1)[1].title()
+        await weather(ctx,location)
+      except:
+        await weather(ctx,None)
     #Using AstronomyAPI to get .sky 
     elif mes.startswith('sky'):
       location = mes.split(' ',1)[1].title()
@@ -681,94 +694,5 @@ async def on_message(message):
       await webb(ctx)
     await suggestion(ctx)
   await check_apod()
-  
-  #this info command first checks the total number of pages by going to 
-  #the 100th page (since no queries are 100 pages long, the image and 
-  #video api just mentions the last valid page number) and 
-  #takes the last page number from there, uses the random library to pick 
-  #any page from the total pages, takes the description and image and 
-  #then uses the solar system open data api to pick numerical data 
-  #regarding the query, if it is an astronomical body. oof.
-
-  #UPDATE - THIS HAS BEEN REPLACED BY THE WIKIPEDIA API - IMAGES TO BE ADDED TO A NEW '.image' COMMAND  
-  ''' elif mes.startswith('info'):
-    try:
-      q = str(mes)[6:]
-      req3 = loads(get(f'https://images-api.nasa.gov/search?q={q}&page=100').text)['collection']['links'][0]['href'][-1]
-      parameters = {'page': str(random.randrange(1,int(req3)+1))}
-      req2 = loads(get(f'https://images-api.nasa.gov/search?q={q}',params = parameters) .text)
-      choice = random.choice(dict(req2['collection'])['items'])
-      desc = str(choice['data'][0]['description']).capitalize()
-      embed = disnake.Embed(title = q.title() , description = desc.capitalize() ,   color=disnake.Color.orange())
-      url = (choice['links'][0]['href']).replace(' ','%20') 
-      try:
-        req = loads(get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
-
-        if req['mass']:
-          a = str(req['mass']['massValue'])
-          b = str(req['mass']['massExponent'])
-          embed.add_field(name = 'Mass' , value = f'{a} x 10^{b} kg')
-        else:
-          embed.add_field(name = 'Mass', value = 'Unknown')
-
-        if not req['density']:
-          embed.add_field(name='Density' , value = 'Unknown')
-        else:
-          embed.add_field(name='Density' , value = str(req['density'])+ ' g/cm³')
-
-        if not req['gravity']:
-          embed.add_field(name='Gravity' , value = 'Unknown')
-        else:
-          embed.add_field(name='Gravity' , value = str(req['gravity']) + ' m/s²')
-
-        if not req['sideralOrbit']:
-          embed.add_field(name = 'Period of Revolution', value = 'Unknown')
-        else:
-          embed.add_field(name = 'Period of Revolution', value = str(req['sideralOrbit']) + '  days')
-
-        if not req['sideralRotation']:
-         embed.add_field(name = 'Period of Rotation', value = 'Unknown')
-        else:
-          embed.add_field(name = 'Period of Rotation', value = str(req['sideralRotation']) + '   hours')
-
-        if req['meanRadius']:
-          a = req['meanRadius']
-          embed.add_field(name = 'Mean Radius' , value = f'{a} km')
-        else:
-          embed.add_field(name = 'Mean Radius' , value = 'Unknown')
-
-        if not req['escape']:
-          embed.add_field(name = 'Escape Velocity', value = 'Unknown')
-        else:
-          a = req['escape']
-          embed.add_field(name = 'Escape Velocity', value = f'{a} m/s') 
-
-        if not req['discoveredBy']:
-          embed.add_field(name='Discovered By' , value = 'Unknown')
-        else:
-          embed.add_field(name='Discovered By' , value = req['discoveredBy'])
-
-        if not req['discoveryDate']:
-          embed.add_field(name='Discovery Date' , value = 'Unknown')
-        else:
-          embed.add_field(name='Discovery Date' , value = req['discoveryDate'])
-
-        if not req['moons']:
-          aroundPlanet = req['aroundPlanet']['planet'].title()
-          embed.add_field(name = 'Around Planet',value = aroundPlanet)
-        else:
-          numMoons = len(req['moons'])
-          embed.add_field(name = 'Moons',value = numMoons)
-        
-      except:
-        pass
-      embed.set_image(url = url)
-      text = 'Built using the Solar system OpenData Api and the NASA video and image library.'
-      embed.set_footer(text = text)
-      await ctx.send(embed = embed)
-    except:
-      await ctx.send('You have not specified a query or your query is wrong, use `.info   <query>`')'''
-
-
 client.run(environ['TOKEN'])
 
