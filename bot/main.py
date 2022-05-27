@@ -229,13 +229,13 @@ async def help(
 async def channel(ctx):
   '''
   Register for the automatic APOD subscription 
-  '''
-  if ctx.guild.id not in db:
+  '''  
+  if db[ctx.guild.id] == ctx.id:
+    embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
+  else:
     db[ctx.guild.id] = ctx.id
     update(db)
     embed = disnake.Embed(title = 'Registered',description = 'This channel has been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
-  else:
-    embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
 
   if type(ctx) == disnake.channel.TextChannel:
     await ctx.send(embed=embed)
