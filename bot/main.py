@@ -61,7 +61,7 @@ async def check_apod():
     db['daily'] = req
     for guild in db.keys():
       try:
-        channel = client.get_channel(db[guild])
+        chan = client.get_channel(db[guild])
         daily = db['daily']                          
         if 'hdurl' in daily:
           url = daily['hdurl']
@@ -75,11 +75,11 @@ async def check_apod():
         embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
         embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
         embed.set_image(url=url)
-        await channel.send(embed=embed)
+        await chan.send(embed=embed)
         if name:
           name = f'https://youtube.com/watch?v={name[30:41]}'
           embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
-          await channel.send(content = name)
+          await chan.send(content = name)
       except Exception as e:
         print(guild,e,'from 1')
     update(db)
@@ -90,22 +90,23 @@ async def check_apod():
 @client.event
 async def on_guild_join(guild):
   embed = disnake.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `/help` to begin.', color = disnake.Color.orange())
-  channel = guild.channels[0]
-  for channel in guild.text_channels:
-        if channel.permissions_for(guild.me).send_messages:
-            await channel.send(embed=embed)
+  for chan in guild.text_channels:
+        if chan.permissions_for(guild.me).send_messages:
+            await chan.send(embed=embed)
         break
 
-async def suggestion(channel):
-  suggestions = ['Astrobot has a facts database! Try `/facts`',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Support Server", url="https://discord.gg/ZtPU67wVa5")]]
-  if random.randint(1,10) == 4:
+async def suggestion(chan):
+  if random.randint(1,20) == 4:
+    
+    suggestions = ['Astrobot has a facts database! Try `/facts`',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Support Server", url="https://discord.gg/ZtPU67wVa5")]]
+
     choice = random.choice(suggestions)
     if type(choice[1]) == disnake.ui.Button:
       view = disnake.ui.View()
       view.add_item(choice[1])
-      await channel.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0],color= disnake.Color.orange()), view = view)
+      await chan.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0],color= disnake.Color.orange()), view = view)
     else:
-      await channel.send(embed = disnake.Embed(title = 'Quick Tip', description = choice))
+      await chan.send(embed = disnake.Embed(title = 'Quick Tip', description = choice))
 
 @client.event
 async def on_interaction(inter):
@@ -641,8 +642,8 @@ async def on_message(message):
           await ctx.send(content ='Yes my lord.')
           for guild in db.keys():
             try:
-              channel = client.get_channel(db[guild])
-              await channel.send('.daily')
+              chan = client.get_channel(db[guild])
+              await chan.send('.daily')
             except:
               pass
             
