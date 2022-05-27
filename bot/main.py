@@ -230,12 +230,10 @@ async def channel(ctx):
   '''
   Register for the automatic APOD subscription 
   '''
-  await print(dir(ctx),help(ctx.id))
-  if db[ctx.guild.id] == ctx.id:
+  if db[ctx.guild.id] == ctx.channel.id:
     embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
   else:
-    db[ctx.guild.id] = ctx.id
-    update(db)
+    db[ctx.guild.id] = ctx.channel.id
     embed = disnake.Embed(title = 'Registered',description = 'This channel has been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
 
   if type(ctx) == disnake.channel.TextChannel:
@@ -252,7 +250,6 @@ async def remove(ctx):
   '''
   if ctx.guild.id in db:
     del db[ctx.guild.id]
-    update(db)
     embed = disnake.Embed(title = 'Unsubscribed',description = 'Removed from daily APOD feed.', color=disnake.Color.orange())
   else:
     embed = disnake.Embed(title = 'Error',description = 'This server had not been registered to the APOD feed.', color=disnake.Color.orange())
