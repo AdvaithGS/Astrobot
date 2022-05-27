@@ -1,6 +1,5 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
 
-from xml.sax.xmlreader import Locator
 import disnake
 from disnake.ext import commands
 from datetime import datetime
@@ -679,19 +678,26 @@ async def on_message(message):
         await weather(ctx,location)
       except:
         await weather(ctx,None)
+
     #Using AstronomyAPI to get .sky 
     elif mes.startswith('sky'):
-      location = mes.split(' ',1)[1].title()
-      await sky(ctx,location)
+      try:
+        location = mes.split(' ',1)[1].title()
+        await sky(ctx,location)
+      except:
+        await sky(ctx,None)
     
     #Using AstronomyAPI to get .phase
     elif mes.startswith('phase'):
-      location = mes.split(' ',1)[1].title()
-      await phase(ctx,location)
-    
+      try:
+        location = mes.split(' ',1)[1].title()
+        await phase(ctx,location)
+      except:
+        await phase(ctx,None)
     #Taking all the data from the NASA 'WhereIsWebb?' website and from the webb tracker api
     elif mes.startswith('webb') or mes.startswith('james webb'):
       await webb(ctx)
+      
     await suggestion(ctx)
   await check_apod()
 client.run(environ['TOKEN'])
