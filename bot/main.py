@@ -226,6 +226,7 @@ async def help(
   await log_command('help',db,update)
 
 @client.slash_command()
+@commands.cooldown(1, 10, type=commands.BucketType.user)
 async def channel(ctx):
   '''
   Register for the automatic APOD subscription 
@@ -244,6 +245,7 @@ async def channel(ctx):
   await log_command('channel',db,update)
 
 @client.slash_command()
+@commands.cooldown(1, 10, type=commands.BucketType.user)
 async def remove(ctx):
   '''
   Remove the channel from the APOD subscription
