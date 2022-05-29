@@ -55,19 +55,19 @@ async def on_ready():
 async def check_apod():
   global client
   x = strftime('%y%m%d')
-  if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']:
+  if any([db[i][1] != db['apod'] for i in db.keys()]) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
     print('Checking apod....')
     db['apod'] = x
     req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
     db['daily'] = req
     for guild in db.keys():
-      if type(guild) == int:
+      if type(guild) == int and db[guild][1] != db['apod']:
         try:
-          chan = client.get_channel(db[guild])
+          chan = client.get_channel(db[guild][0])
         except:
-          chan = client.get_channel(str(db[guild]))
+          chan = client.get_channel(str(db[guild][0]))
         
-        daily = db['daily']                          
+        daily = db['daily']            
         if 'hdurl' in daily:
           url = daily['hdurl']
           name = ''
@@ -85,6 +85,7 @@ async def check_apod():
           name = f'https://youtube.com/watch?v={name[30:41]}'
           embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
           await chan.send(content = name)
+      db[guild][1] = db['apod']
     update(db)
 
 
@@ -646,7 +647,7 @@ async def on_message(message):
           for guild in db.keys():
             try:
               chan = client.get_channel(db[guild])
-              await chan.send('.daily')
+              await chan.send('<@792458754208956466> daily')
             except:
               pass
             
