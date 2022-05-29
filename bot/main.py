@@ -63,6 +63,7 @@ async def check_apod():
     for guild in db.keys():
       if type(guild) == int and db[guild][1] != db['apod']:
         try:
+          db[guild][1] = db['apod']
           chan = client.get_channel(db[guild][0])
         except:
           chan = client.get_channel(str(db[guild][0]))
@@ -85,7 +86,6 @@ async def check_apod():
           name = f'https://youtube.com/watch?v={name[30:41]}'
           embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
           await chan.send(content = name)
-      db[guild][1] = db['apod']
     update(db)
 
 
