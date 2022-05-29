@@ -53,6 +53,7 @@ async def on_ready():
 
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
+  global client
   x = strftime('%y%m%d')
   if db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']:
     print('Checking apod....')
@@ -60,8 +61,12 @@ async def check_apod():
     req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
     db['daily'] = req
     for guild in db.keys():
-      try:
-        chan = client.get_channel(db[guild])
+      if type(guild) == int:
+        try:
+          chan = client.get_channel(db[guild])
+        except:
+          chan = client.get_channel(str(db[guild]))
+        
         daily = db['daily']                          
         if 'hdurl' in daily:
           url = daily['hdurl']
@@ -71,7 +76,7 @@ async def check_apod():
           name = url
         title = daily['title']
         desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
-    
+
         embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
         embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
         embed.set_image(url=url)
@@ -80,8 +85,6 @@ async def check_apod():
           name = f'https://youtube.com/watch?v={name[30:41]}'
           embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
           await chan.send(content = name)
-      except Exception as e:
-        print(guild,e,'from 1')
     update(db)
 
 
