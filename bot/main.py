@@ -55,7 +55,7 @@ async def on_ready():
 async def check_apod():
   global client
   x = strftime('%y%m%d')
-  if any([db[i][1] != db['apod'] for i in db.keys()]) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
+  if any([db[i][1] != db['apod'] for i in db.keys() if type(i) == int]) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
     print('Checking apod....')
     db['apod'] = x
     req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
@@ -239,7 +239,7 @@ async def channel(ctx):
   if ctx.guild.id in db and db[ctx.guild.id] == ctx.channel.id:
     embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
   else:
-    db[ctx.guild.id] = ctx.channel.id
+    db[ctx.guild.id] = [ctx.channel.id,db['apod']]
     embed = disnake.Embed(title = 'Registered',description = 'This channel has been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange())
 
   if type(ctx) == disnake.channel.TextChannel:
