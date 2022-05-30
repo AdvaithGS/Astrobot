@@ -55,7 +55,7 @@ async def on_ready():
 async def check_apod():
   global client
   x = strftime('%y%m%d')
-  if any([db[i][1] != db['apod'] for i in db.keys() if type(i) == int]) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
+  if any( [db[i][1] != db['apod'] for i in db.keys() if type(i) == int] ) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
     print('Checking apod....')
     db['apod'] = x
     req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
@@ -65,27 +65,26 @@ async def check_apod():
         try:
           db[guild][1] = db['apod']
           chan = client.get_channel(db[guild][0])
-        except:
-          chan = client.get_channel(str(db[guild][0]))
-        
-        daily = db['daily']            
-        if 'hdurl' in daily:
-          url = daily['hdurl']
-          name = ''
-        else:
-          url = daily['url']
-          name = url
-        title = daily['title']
-        desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
+          daily = db['daily']            
+          if 'hdurl' in daily:
+            url = daily['hdurl']
+            name = ''
+          else:
+            url = daily['url']
+            name = url
+          title = daily['title']
+          desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
 
-        embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
-        embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
-        embed.set_image(url=url)
-        await chan.send(embed=embed)
-        if name:
-          name = f'https://youtube.com/watch?v={name[30:41]}'
-          embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
-          await chan.send(content = name)
+          embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
+          embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
+          embed.set_image(url=url)
+          await chan.send(embed=embed)
+          if name:
+            name = f'https://youtube.com/watch?v={name[30:41]}'
+            embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
+            await chan.send(content = name)
+        except Exception as e:
+          print(guild,e)
     update(db)
 
 
