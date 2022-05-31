@@ -52,8 +52,7 @@ async def on_ready():
 
 
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
-async def check_apod(caller):
-  print(caller)
+async def check_apod():
   global client
   x = strftime('%y%m%d')
   if any( [db[i][1] != db['apod'] for i in db.keys() if type(i) == int] ) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
@@ -62,9 +61,9 @@ async def check_apod(caller):
     db['daily'] = req
     for guild in db.keys():
       if type(guild) == int and db[guild][1] != db['apod']:
-        print(guild)
         try:
           chan = client.get_channel(db[guild][0])
+          db[guild][1] = db['apod']
           daily = db['daily']            
           if 'hdurl' in daily:
             url = daily['hdurl']
@@ -83,7 +82,7 @@ async def check_apod(caller):
             name = f'https://youtube.com/watch?v={name[30:41]}'
             embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
             await chan.send(content = name)
-          db[guild][1] = db['apod']
+          
         except Exception as e:
           print(guild,e)
     update(db)
