@@ -701,7 +701,7 @@ async def on_message(message):
     elif mes.startswith('webb') or mes.startswith('james webb'):
       await webb(ctx)
       
-  await suggestion(ctx)
+    await suggestion(ctx)
   await check_apod()
 client.run(environ['TOKEN'])
 
