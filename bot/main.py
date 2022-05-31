@@ -52,7 +52,8 @@ async def on_ready():
 
 
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
-async def check_apod():
+async def check_apod(caller):
+  print(caller)
   global client
   x = strftime('%y%m%d')
   if any( [db[i][1] != db['apod'] for i in db.keys() if type(i) == int] ) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
@@ -113,7 +114,7 @@ async def suggestion(chan):
 
 @client.event
 async def on_interaction(inter):
-  await check_apod()
+  await check_apod('interactions')
   await suggestion(inter.channel)
 
 @client.slash_command()
@@ -703,6 +704,6 @@ async def on_message(message):
       await webb(ctx)
       
     await suggestion(ctx)
-  await check_apod()
+  await check_apod('message')
 client.run(environ['TOKEN'])
 
