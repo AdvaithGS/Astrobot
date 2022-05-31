@@ -61,6 +61,7 @@ async def check_apod():
     db['daily'] = req
     for guild in db.keys():
       if type(guild) == int and db[guild][1] != db['apod']:
+        print(guild)
         try:
           chan = client.get_channel(db[guild][0])
           daily = db['daily']            
