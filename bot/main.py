@@ -56,14 +56,12 @@ async def check_apod():
   global client
   x = strftime('%y%m%d')
   if any( [db[i][1] != db['apod'] for i in db.keys() if type(i) == int] ) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
-    print('Checking apod....')
     db['apod'] = x
     req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
     db['daily'] = req
     for guild in db.keys():
       if type(guild) == int and db[guild][1] != db['apod']:
         try:
-          db[guild][1] = db['apod']
           chan = client.get_channel(db[guild][0])
           daily = db['daily']            
           if 'hdurl' in daily:
@@ -83,6 +81,7 @@ async def check_apod():
             name = f'https://youtube.com/watch?v={name[30:41]}'
             embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
             await chan.send(content = name)
+          db[guild][1] = db['apod']
         except Exception as e:
           print(guild,e)
     update(db)
@@ -99,8 +98,8 @@ async def on_guild_join(guild):
         break
 
 async def suggestion(chan):
+  print('Suggestion!')
   if random.randint(1,20) == 4:
-    
     suggestions = ['Astrobot has a facts database! Try `/facts`',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Support Server", url="https://discord.gg/ZtPU67wVa5")]]
 
     choice = random.choice(suggestions)
@@ -109,7 +108,7 @@ async def suggestion(chan):
       view.add_item(choice[1])
       await chan.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0],color= disnake.Color.orange()), view = view)
     else:
-      await chan.send(embed = disnake.Embed(title = 'Quick Tip', description = choice))
+      await chan.send(embed = disnake.Embed(title = 'Quick Tip', description = choice,color= disnake.Color.orange()))
 
 @client.event
 async def on_interaction(inter):
