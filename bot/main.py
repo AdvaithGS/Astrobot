@@ -56,9 +56,10 @@ async def check_apod():
   global client
   x = strftime('%y%m%d')
   if any( [db[i][1] != db['apod'] for i in db.keys() if type(i) == int] ) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
-    db['apod'] = x
-    req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
-    db['daily'] = req
+    if db['apod'] != x:
+      db['apod'] = x
+      req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
+      db['daily'] = req
     for guild in db.keys():
       if type(guild) == int and db[guild][1] != db['apod']:
         try:
@@ -83,7 +84,7 @@ async def check_apod():
             await chan.send(content = name)
           db[guild][1] = db['apod']
         except Exception as e:
-          pass
+          db[guild][1] = str(e)
           #print(guild,e,end = ':')
     update(db)
 
