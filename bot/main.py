@@ -99,7 +99,6 @@ async def on_guild_join(guild):
         break
 
 async def suggestion(chan):
-  print('Suggestion!')
   if random.randint(1,20) == 4:
     suggestions = ['Astrobot has a facts database! Try `/facts`',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Support Server", url="https://discord.gg/ZtPU67wVa5")]]
 
@@ -113,7 +112,7 @@ async def suggestion(chan):
 
 @client.event
 async def on_interaction(inter):
-  await check_apod('interactions')
+  await check_apod()
   await suggestion(inter.channel)
 
 @client.slash_command()
@@ -703,6 +702,6 @@ async def on_message(message):
       await webb(ctx)
       
     await suggestion(ctx)
-  await check_apod('message')
+  await check_apod()
 client.run(environ['TOKEN'])
 
