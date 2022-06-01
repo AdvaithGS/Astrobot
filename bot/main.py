@@ -83,7 +83,8 @@ async def check_apod():
             await chan.send(content = name)
           db[guild][1] = db['apod']
         except Exception as e:
-          print(guild,e)
+          pass
+          #print(guild,e,end = ':')
     update(db)
 
 
