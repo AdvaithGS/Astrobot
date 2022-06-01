@@ -64,7 +64,8 @@ async def check_apod():
       if type(guild) == int and db[guild][1] != db['apod']:
         try:
           chan = client.get_channel(db[guild][0])
-          daily = db['daily']            
+          db[guild][1] = db['apod']
+          daily = db['daily']
           if 'hdurl' in daily:
             url = daily['hdurl']
             name = ''
@@ -82,7 +83,6 @@ async def check_apod():
             name = f'https://youtube.com/watch?v={name[30:41]}'
             embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
             await chan.send(content = name)
-          db[guild][1] = db['apod']
         except Exception as e:
           db[guild][1] = str(e)
           #print(guild,e,end = ':')
