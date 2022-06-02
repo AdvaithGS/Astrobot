@@ -1,5 +1,6 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
 
+from pydoc import cli
 import disnake
 from disnake.ext import commands
 from datetime import datetime
@@ -84,6 +85,10 @@ async def check_apod():
             await chan.send(content = name)
         except Exception as e:
           print(guild,e,end = ':')
+          if guild in [808201667543433238,978215714685059072] and db[guild][1] != 'Sent message':
+            client.get_guild(guild).owner.send(f'''Hello there! It seems that there has been an issue with your server **{client.get_guild(guild).name}**. The Astronomy Picture of the Day system is not correctly functioning. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).
+            Thank you!''')
+            db[guild][1] = 'Sent message'
     update(db)
 
 
@@ -656,11 +661,11 @@ async def on_message(message):
             
     # adds that channel to the db so that it will be sent the '.daily' message whenever an APOD image is released
     elif mes.startswith('channel'):
-      await channel(message)
+      await channel(ctx)
   
     #removes a given channel from the apod service.
     elif mes.startswith('remove'):
-      await remove(message)
+      await remove(ctx)
   
     #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
     elif mes.startswith( 'info'):
