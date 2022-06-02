@@ -56,10 +56,9 @@ async def check_apod():
   global client
   x = strftime('%y%m%d')
   if any( [db[i][1] != db['apod'] for i in db.keys() if type(i) == int] ) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
-    if db['apod'] != x:
-      db['apod'] = x
-      req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
-      db['daily'] = req
+    db['apod'] = x
+    req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
+    db['daily'] = req
     for guild in db.keys():
       if type(guild) == int and db[guild][1] != db['apod']:
         try:
@@ -84,8 +83,7 @@ async def check_apod():
             embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
             await chan.send(content = name)
         except Exception as e:
-          db[guild][1] = str(e)
-          #print(guild,e,end = ':')
+          print(guild,e,end = ':')
     update(db)
 
 
@@ -266,7 +264,7 @@ async def remove(ctx):
   await log_command('remove',db,update)
 
 @client.slash_command()
-@commands.cooldown(1, 10, type=commands.BucketType.user)
+@commands.cooldown(1, 60, type=commands.BucketType.user)
 async def info(
   ctx,
   query : str 
@@ -306,6 +304,7 @@ async def info(
   await log_command('info',db,update)
 
 @client.slash_command()
+@commands.cooldown(1, 30, type=commands.BucketType.user)
 async def iss(ctx):
   '''Sends the current location of the International Space Station'''
   if type(ctx) == disnake.channel.TextChannel:
@@ -349,6 +348,7 @@ async def iss(ctx):
 
 
 @client.slash_command()
+@commands.cooldown(1, 10, type=commands.BucketType.user)
 async def fact(ctx):
   '''Ask for a fact from the awesome fact repository'''
   line = random_fact()
@@ -368,6 +368,7 @@ async def fact(ctx):
   await log_command('fact',db,update)
 
 @client.slash_command()
+@commands.cooldown(1, 30, type=commands.BucketType.user)
 async def weather(ctx,location):
   '''
   Get the live weather for any specified location
@@ -435,6 +436,7 @@ async def weather(ctx,location):
   await log_command('weather',db,update)
 
 @client.slash_command()
+@commands.cooldown(1,30, type=commands.BucketType.user)
 async def sky(
   ctx,
   location : str
@@ -505,6 +507,7 @@ async def sky(
   await log_command('sky',db,update)
 
 @client.slash_command()
+@commands.cooldown(1, 30, type=commands.BucketType.user)
 async def phase(
   ctx,
   location : str
@@ -573,6 +576,7 @@ async def phase(
   await log_command('phase',db,update)
 
 @client.slash_command()
+@commands.cooldown(1, 30, type=commands.BucketType.user)
 async def webb(ctx):
   '''
   Get the current status of the James Webb Space Telescope
@@ -652,11 +656,11 @@ async def on_message(message):
             
     # adds that channel to the db so that it will be sent the '.daily' message whenever an APOD image is released
     elif mes.startswith('channel'):
-      await channel(ctx)
+      await channel(message)
   
     #removes a given channel from the apod service.
     elif mes.startswith('remove'):
-      await remove(ctx)
+      await remove(message)
   
     #New version of .info - uses the wikipedia api and solar system open data api - should give better pictures and descriptions, im also moving parts of the code outside this file into functions in 'assets'
     elif mes.startswith( 'info'):
