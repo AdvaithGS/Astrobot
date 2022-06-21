@@ -86,7 +86,7 @@ async def check_apod():
         except Exception as e:
           print(guild,e,end = ':')
           if guild in [808201667543433238,971656673334804520] and db[guild][1] != 'Sent message':
-            owner = client.get_guild(guild).owner
+            owner : disnake.User = client.get_user(client.get_guild(guild).owner_id)
             await owner.send(f'''Hello there! It seems that there has been an issue with your server **{client.get_guild(guild).name}**. The Astronomy Picture of the Day system is not correctly functioning. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).
             Thank you!''')
             db[guild][1] = 'Sent message'
