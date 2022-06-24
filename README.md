@@ -1,4 +1,4 @@
-This is an Astronomy discord bot (now verified!) with various functionalities and uses; created with python 3.10.3 version involving the discord.py module. 
+This is an Astronomy discord bot (now verified!) with various functionalities and uses; created with python 3.10.3 version involving the python disnake module. 
 
 
 ## Table of contents
@@ -83,7 +83,12 @@ Get the current state of the James Webb Space Telescope.
 Given below is the list of APIs/Sources Astrobot uses for its commands (list incomplete)
 
 1. NASA's Astronomy Picture of The Day service
-2. Wikipedia API
+2. Wikimedia API
+3. WhereTheISSAt api
+4. OpenWeatherMap API
+5. Geopy Library
+6. AstronomyAPI
+7. reverse_geocode library
 
 ## Vote
 
