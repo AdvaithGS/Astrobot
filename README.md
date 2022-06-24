@@ -80,7 +80,7 @@ Get a map of the sky at a user specified location
 Get the current state of the James Webb Space Telescope.
 ## Sources
 
-Given below is the list of APIs/Sources Astrobot uses for its commands (list incomplete)
+Given below is the list of APIs/Sources Astrobot uses for its commands
 1. [AstronomyAPI](https://github.com/AstronomyAPI/Samples)
 2. [Geopy Library](https://github.com/geopy/geopy)
 3. [NASA's Astronomy Picture of The Day](https://github.com/nasa/apod-api)
