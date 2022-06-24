@@ -81,14 +81,13 @@ Get the current state of the James Webb Space Telescope.
 ## Sources
 
 Given below is the list of APIs/Sources Astrobot uses for its commands (list incomplete)
-
-1. NASA's Astronomy Picture of The Day service
-2. Wikimedia API
-3. WhereTheISSAt api
-4. OpenWeatherMap API
-5. Geopy Library
-6. AstronomyAPI
-7. reverse_geocode library
+1. [AstronomyAPI](https://github.com/AstronomyAPI/Samples)
+2. [Geopy Library](https://github.com/geopy/geopy)
+3. [NASA's Astronomy Picture of The Day](https://github.com/nasa/apod-api)
+4. [OpenWeatherMap API](https://openweathermap.org/api)
+5. [reverse_geocode library](https://github.com/thampiman/reverse-geocoder)
+6. [Wikimedia API](https://api.wikimedia.org/wiki/Main_Page)
+7. [WhereTheISSAt api](https://wheretheiss.at/w/developer)
 
 ## Vote
 
