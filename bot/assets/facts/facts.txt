@@ -6,7 +6,7 @@ The universe is weird;According to the laws of nature, bodies travelling at the 
 Neutrinos;There are about 100,000,000,000 neutrinos passing through your 1cm³ of your body, every second. They are almost undetectable and they simply pass through matter.
 The universe is heavy;All regular matter and dark matter in the observable universe weighs around 2 x 10^53 kg. 
 The universe is large;There are around 2 trillion galaxies in the observable universe.   https://www.jpost.com/health-science/astronomers-were-wrong-about-the-number-of-galaxies-in-universe-655425;https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/NASA-HS201427a-HubbleUltraDeepField2014-20140603.jpg/450px-NASA-HS201427a-HubbleUltraDeepField2014-20140603.jpg;The Hubble Ultra-Deep Field image shows some of the most remote galaxies visible with present technology, each consisting of billions of stars.
-Black holes;The mass of a black hole with radius 5cm has mass of 3 x 10^25 kg, roughly 5 times the mass of the Earth.
+Black holes;The mass of a black hole with radius 5cm has a minimum mass of 3 x 10^25 kg, roughly 5 times the mass of the Earth.
 Black holes;A black hole with the mass of the sun would have a radius of 3 km.
 If the sun were to be removed;If the sun were to be removed, you wouldn't notice it for 8 and a half minutes. The earth would keep revolving around where the sun was for 8 and a half minutes since gravity travels at the speed of light.
 If the Earth becomes a black hole;If the Earth were to become a black hole, All of its mass would have to be concentrated in a sphere of radius ~9 mm.
