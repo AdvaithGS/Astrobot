@@ -229,7 +229,20 @@ NIRSPEC: Multi-object spectroscopy | Fixed slit spectroscopy | Integral field un
 NIRISS: Single object slitless spectroscopy | Wide field slitless spectroscopy | Aperture masking interferometry | Imaging (parallel only)
 
 MIRI: Imaging | Low resolution spectroscopy | Medium resolution spectroscopy | Coronagraphic imaging
-''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/InstrumentsTracking2.300-1100px.png']
+''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/InstrumentsTracking2.300-1100px.png'],
+'latest': ['''Science Operations
+Commissioning Complete - Webb Enters Science Operations
+
+Nominal Event Time: 7/12/22
+
+Status: Ongoing
+
+From concept to blueprint, through years of extensive development and testing, a successful launch and deployment, carefully managed cooldown, precise mirror alignment and instrument calibration, and finally the stunning release of its first full-color images, Webb begins its science mission.
+
+The release of Webb’s first images and spectra kicks off the beginning of Webb’s science operations, where astronomers around the world will have their chance to observe anything from objects within our solar system to the early universe using Webb’s four instruments.
+
+The James Webb Space Telescope is the world's premier space science observatory. Webb will solve mysteries in our solar system, look beyond to distant worlds around other stars, and probe the mysterious structures and origins of our universe and our place in it. Webb is an international program led by NASA with its partners, ESA (European Space Agency) and CSA (Canadian Space Agency).
+**The JWST has released its first high-res images, which can be viewed [here]('https://webb.nasa.gov/content/webbLaunch/deploymentExplorer.html#43')**''','https://webb.nasa.gov/content/webbLaunch/assets/images/mirrorAlignment/webbBluePrintFgsComposite1.42-2000px.jpg']
      }
 def get_image():
     global db
