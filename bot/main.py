@@ -26,7 +26,7 @@ from time import strftime, mktime
 from requests import get,post
 from requests.auth import HTTPBasicAuth
 if __name__ == '__main__':
-  client = commands.Bot(".", sync_commands_debug=True)
+  client = commands.InteractionBot(sync_commands_debug=True)
 else:
   exit()
 from json import loads
