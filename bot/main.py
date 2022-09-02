@@ -1,6 +1,5 @@
 #need to bring in .image and differenciate from .info,use mooncalc and suncalc
 
-from pydoc import cli
 import disnake
 from disnake.ext import commands
 from datetime import datetime
