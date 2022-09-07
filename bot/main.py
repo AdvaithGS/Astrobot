@@ -89,7 +89,7 @@ async def check_apod():
             await owner.send(f'''Hello there! It seems that there has been an issue with your server **{client.get_guild(guild).name}**. The Astronomy Picture of the Day system is not correctly functioning. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).
             Thank you!''')
             db[guild][1] = 'Sent message'
-    update(db)
+      update(db)
 
 
 
