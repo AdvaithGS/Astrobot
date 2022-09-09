@@ -19,7 +19,7 @@ async def set_activity(client,db,caller,update):
   with open('log.txt','r') as f:
     update(f.read(),'logs')
   db['hour'] = mktime(datetime.now().timetuple())
-  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity[0],type = activity[1]))
+  await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity[1],type = activity[0]))
 
 def call_set_activity(client,db,caller,update):
   set_activity.start(client,db,caller,update)
