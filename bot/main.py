@@ -6,7 +6,6 @@ from datetime import datetime
 from os import environ
 import reverse_geocoder
 import asyncio
-from itertools import cycle
 from assets.loops.presence import call_set_activity
 from assets.database.log import log_command
 from assets.loops.top import update_guilds
