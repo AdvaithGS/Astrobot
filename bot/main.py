@@ -5,6 +5,7 @@ from disnake.ext import commands
 from datetime import datetime
 from os import environ
 import reverse_geocoder
+import asyncio
 from itertools import cycle
 from assets.loops.presence import call_set_activity
 from assets.database.log import log_command
@@ -90,6 +91,7 @@ async def check_apod():
             await owner.send(f'''Hello there! It seems that there has been an issue with your server **{client.get_guild(guild).name}**. The Astronomy Picture of the Day system is not correctly functioning. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).
             Thank you!''')
             db[guild][1] = 'Sent message'
+    await asyncio.sleep(10)
     update(db)
 
 
