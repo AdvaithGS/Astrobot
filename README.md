@@ -116,6 +116,8 @@ https://discord.gg/ZtPU67wVa5
 
 6. [ ] Use NASA's PDS Search API
 
+7. [ ] Add mars rover cam images
+
 ## Creator
 
 This bot has been created with blood, sweat and tears by Advaith GS.
