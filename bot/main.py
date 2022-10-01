@@ -582,6 +582,49 @@ async def phase(
   await log_command('phase',db,update)
 
 @client.slash_command()
+@commands.cooldown(1,30,type = commands.BucketType.user)
+async def in_space(
+  ctx,
+  location:str= commands.Param(choices=['ISS','Other'])):
+  '''
+  Get the people currently in space.
+
+  Parameters
+  ----------
+  location: class `str` 
+    Search for people in a specific station.
+  '''
+  req = loads(get('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json').text)
+  check = (location == 'ISS')
+  l = ['People currently in space']
+  total = 0
+  for i in req['people']:
+    if i['iss'] == check:
+      total += 1
+      l.append(
+      f'''
+      *{i['name']}*
+      Country : {i['country']} :flag_{i['flag_code']}:
+      Position : `{i['position']}`
+      Agency : `{i['agency']}`
+      Days in space : {i['days_in_space']}
+      [Wiki]({i['url']}) |  [Image]({i['image']})   
+      ''')
+  s = ''.join(l)
+  total = '`'+str(total)+'`'
+  embed = disnake.Embed(title = "Who's In Space" , description = s,color = disnake.Color.orange())
+  if check:
+    embed.set_footer(text = f'{req["iss_expedition"]}th expedition of the International Space Station')
+    embed.set_image(url = req['expedition_image'])
+  embed.add_field(name = 'Total',value = total)
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed=embed)
+  else:
+    await ctx.response.send_message(embed = embed)
+
+  await log_command('inspace',db,update)
+
+@client.slash_command()
 @commands.cooldown(1, 30, type=commands.BucketType.user)
 async def webb(ctx):
   '''
