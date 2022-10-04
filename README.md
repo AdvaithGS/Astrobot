@@ -32,9 +32,9 @@ As of now, there are the following commands:
 * [fact](#fact-or-astrobot-fact)
 * [weather `<location>`](#weather-location-or-astrobot-weather-location)
 * [sky `<location>`](#sky-location-or-astrobot-sky-location)
-* [phase `<location>`](#phase-location-astrobot-phase-location)
+* [phase `<location>`](#phase-location-or-astrobot-phase-location)
 * [webb](#webb-or-astrobot-webb)
-* [in_space](#inspace)
+* [in_space](#in_space)
 
 
 #### `/help` or `@AstroBot help`
