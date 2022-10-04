@@ -197,27 +197,29 @@ async def help(
   '''
   As of now, there are only the following commands- 
   
-  `@AstroBot daily` or `/daily` -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
-  __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `@AstroBot daily 2005-06-08` or `/daily 2005-06-08`, this was for 8th June, 2005)
-  __Random APOD Photo__ - You can now request a random APOD photo from the archive using `@AstroBot daily random` or `/daily random`
+  `/daily` -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
+  __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `/daily 2005-06-08`, this was for 8th June, 2005)
+  __Random APOD Photo__ - You can now request a random APOD photo from the archive using `/daily random`
    
-  `@AstroBot channel` or `/channel` - get daily apod picture automatically to the channel in which you post this message. 
+  `/channel` - get daily apod picture automatically to the channel in which you post this message. 
    
-  `@AstroBot remove` or `/remove`- remove your channel from the daily APOD picture list. 
+  `/remove`- remove your channel from the daily APOD picture list. 
    
-  `@AstroBot info <query>` or `/info <query>` - The ultimate source for data, videos and pictures on ANYTHI NG related to space science.
+  `/info <query>` - The ultimate source for data, videos and pictures on ANYTHI NG related to space science.
   
-  `@AstroBot iss` or `/iss` - Find the live location of the international space station with respect to the Earth.
+  `/iss` - Find the live location of the international space station with respect to the Earth.
   
-  `@AstroBot fact` or `/fact` - gives a random fact from the fact library.
+  `/fact` - gives a random fact from the fact library.
   
-  `@AstroBot weather <location>` or  `/weather <location>` - gives the real-time weather at the specified location.
+  `/weather <location>` - gives the real-time weather at the specified location.
   
   `@AstroBot phase <location>` or `/phase <location>` - To find the phase of the moon at the specified location.
   
   `@AstroBot sky <location>` or `/sky <location>` - To get the sky map at any specified location.
   
   `@AstroBot webb` or `/webb` - To get the current state of the James Webb Space Telescope.
+
+  `/inspace <ISS/Other>` - To get the information of people currently in space, in the ISS or other space stations.
   
   Have fun!''', color=disnake.Color.orange())
   embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700. Reach out for help or grievances. Vote for us at these websites")

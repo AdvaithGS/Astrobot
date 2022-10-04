@@ -1,4 +1,4 @@
-This is an Astronomy discord bot (now verified!) with various functionalities and uses; created with python 3.10.3 version involving the python disnake module. 
+This is an Astronomy discord bot with various functionalities and uses; created with python 3.10 and disnake. 
 
 
 ## Table of contents
@@ -14,7 +14,7 @@ This is an Astronomy discord bot (now verified!) with various functionalities an
 
 ## Invite
 
-Use the below discord invitation link to bring AstroBot to your server/guild:
+Use the below link to invite AstroBot to your server:
 
 https://discord.com/api/oauth2/authorize?client_id=792458754208956466&permissions=2147544064&scope=bot%20applications.commands
 
@@ -34,6 +34,8 @@ As of now, there are the following commands:
 * [sky `<location>`](#sky-location-or-astrobot-sky-location)
 * [phase `<location>`](#phase-location-astrobot-phase-location)
 * [webb](#webb-or-astrobot-webb)
+* [in_space](#inspace)
+
 
 #### `/help` or `@AstroBot help`
 Returns the same list of commands that are listed below.
@@ -78,6 +80,10 @@ Get a map of the sky at a user specified location
 
 #### `/webb` or `@AstroBot webb`
 Get the current state of the James Webb Space Telescope.
+
+#### `/in_space`
+Get info about the people currently in space in the ISS or in other stations.
+
 ## Sources
 
 Given below is the list of APIs/Sources Astrobot uses for its commands
@@ -104,7 +110,7 @@ Join this discord server for any queries/problems/suggestions:
 https://discord.gg/ZtPU67wVa5
 
 ## Targets
-1. [ ] Improve `.iss` to have the names of people in the ISS - using OpenNotify and https://awesomeopensource.com/project/corquaid/international-space-station-APIs
+1. [ ] Add mars rover cam images
 
 2. [ ] Integrate tools like SunCalc and MoonCalc
 
@@ -115,8 +121,6 @@ https://discord.gg/ZtPU67wVa5
 5. [ ] Add video demos to README file
 
 6. [ ] Use NASA's PDS Search API
-
-7. [ ] Add mars rover cam images
 
 ## Creator
 
