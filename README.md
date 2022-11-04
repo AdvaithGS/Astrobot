@@ -1,5 +1,10 @@
-This is an Astronomy discord bot with various functionalities and uses; created with python 3.10 and disnake. 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+<span style="font-family:'Playfair Display',serif;">
 
+
+This is an Astronomy discord bot with various functionalities and uses; created with python 3.10 and disnake. 
 
 ## Table of contents
 * [Invite](#Invite)
@@ -35,6 +40,8 @@ As of now, there are the following commands:
 * [phase `<location>`](#phase-location-or-astrobot-phase-location)
 * [webb](#webb-or-astrobot-webb)
 * [in_space](#in_space)
+
+
 
 
 #### `/help` or `@AstroBot help`
@@ -132,3 +139,4 @@ email : advaith.gs4@gmail.com <br>
 
 
 And that's it !
+</span>
