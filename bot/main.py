@@ -136,14 +136,15 @@ async def daily(
     if date == '':
       daily = db['daily']
     elif date == 'random':
+      #creating a random date
       delta = mktime(datetime.now().timetuple()) - mktime(datetime(1995,6,16).timetuple())
       random_date = datetime.utcfromtimestamp(mktime(datetime(1995,6,16).timetuple()) + random.randrange(int(delta)))
       parameters = {'date': f'{random_date.year}-{random_date.month}-{random_date.day}'}
-      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
     else:
       parameters = {'date': date }
-      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
-    if 'hdurl' in daily:
+    #querying NASA API to get picture of the day
+    daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+    if 'hdurl' in daily: # checking if the image is a video
       url = daily['hdurl']
       name = ''
     else:
@@ -152,10 +153,11 @@ async def daily(
       
     title = daily['title']
     desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
-    
+    #creating an embed 
     embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
     embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
     embed.set_image(url=url)
+    #the message can be activated either via slash command or via message, this takes care of both instances.
     if type(ctx) == disnake.channel.TextChannel:
       await ctx.send(embed=embed)
     else:
@@ -290,8 +292,9 @@ async def info(
       await ctx.send('Getting the information might take some time, please wait.')
     else:
       await ctx.response.send_message(content ='Getting the information might take some time, please wait.')
+    #this get_wiki refernces get_wiki from wiki.py
     text,image,desc = get_wiki(query)
-    if text:
+    if text: # create embed
       embed = disnake.Embed(title = query.title() , description = text, color=disnake.Color.orange())
       get_body(embed, query)
       embed.set_footer(text = f'{desc} \n\nObtained from Solar System OpenData API and the Wikipedia API')
@@ -299,7 +302,7 @@ async def info(
     else:
       embed = disnake.Embed(title = f'{query} {desc}' , description = 'Try again with a refined search parameter', color=disnake.Color.orange())
 
-
+#handling errors, if the query is wrong or not related to space
   except:
     embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange())
 
@@ -314,12 +317,15 @@ async def info(
 @commands.cooldown(1, 30, type=commands.BucketType.user)
 async def iss(ctx):
   '''Sends the current location of the International Space Station'''
+  # sends a preemptive message to users
   if type(ctx) == disnake.channel.TextChannel:
     await ctx.send('Preparing...')
   else:
     await ctx.response.send_message(content = 'Preparing...')
 
+  #queries wheretheissat api
   req = loads(get('https://api.wheretheiss.at/v1/satellites/25544').text)
+  #parsing info from api response
   result = reverse_geocoder.search((round(req['latitude'],3),round(req['longitude'],3)),mode = 1)[0]
   location = ''
   if result['name']:
@@ -333,10 +339,11 @@ async def iss(ctx):
   location.replace('`', '')
   lat,long = round(req['latitude'],3),round(req['longitude'],3)
   place = f'{lat},{long}'
+  #gets map image
   url = get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}')
-  with open('iss.jpg', 'wb') as handler:
-    handler.write(url.content)
-  file = disnake.File('iss.jpg')
+  with open('iss.jpg', 'wb') as f:
+    f.write(url.content) #saves image as file
+  file = disnake.File('iss.jpg') #creates file object for attaching to embed
   embed = disnake.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = disnake.Color.orange())
   embed.set_image(url = 'attachment://iss.jpg')
   velocity = round(req['velocity'],2)
@@ -358,6 +365,7 @@ async def iss(ctx):
 @commands.cooldown(1, 10, type=commands.BucketType.user)
 async def fact(ctx):
   '''Ask for a fact from the awesome fact repository'''
+  #calls random fact function from facts.py
   line = random_fact()
   title,desc = line[0],line[1]
   embed = disnake.Embed(title = title , description = desc, color = disnake.Color.orange())
@@ -385,18 +393,22 @@ async def weather(ctx,location):
   location: class `str` 
     The place of which you want to know the weather conditions. 
   '''
+  # preemptively send a message to user
   if type(ctx) == disnake.channel.TextChannel:
     await ctx.send('Preparing...')
   else:
     await ctx.response.send_message(content = 'Preparing...')
   try:
     location = location[:]
+    #query the openweathermap api for weather data
     req = loads(get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
     location = location + ', ' + find_country(req['sys']['country'])
     
+    #use geopy for getting coordinates from user given location  
     result = geolocator.geocode(location)
     coords,location = result[1],result[0]
     
+    #### parse data
     embed = disnake.Embed(title = location , description = req['weather'][0]['description'].capitalize() ,color = disnake.Color.orange())
     embed.set_footer(text = 'Built using the OpenWeatherMap API and clearoutside.com')
     temp = str(req['main']['temp']) + ' °C'
@@ -411,7 +423,6 @@ async def weather(ctx,location):
     embed.add_field(name = 'Skies', value = skies)
     visibility = str(req['visibility']/1000) + ' km'
     embed.add_field(name = 'Visibility', value = visibility)
-    
     clouds = str(req['clouds']['all']) + ' %'
     embed.add_field(name = 'Cloudiness' , value = clouds)
     for i in ['sunrise','sunset']:
@@ -422,15 +433,16 @@ async def weather(ctx,location):
         minutes= minutes%60
       if hours >= 24:
         hours = hours%24
-      #seconds  = int(datetime.utcfromtimestamp(req['sys'][i]).strftime('%S'))
       final_time = f'{hours}.{minutes}'
       embed.add_field(name = f'Local {i}' , value = final_time)
+    ####
+    
     icon = req['weather'][0]['icon']
     embed.set_thumbnail(url=f"http://openweathermap.org/img/wn/{icon}@2x.png")
     embed.set_image(url = f'https://clearoutside.com/forecast_image_large/{round(coords[0],2)}/{round(coords[1],2)}/forecast.png')
 
   except Exception as e:
-    if type(location) == str:
+    if type(location) == str: # handling errors
       embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
     else:
       embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot weather <query>`. Fill a query and do not leave it blank. For example - `@Astrobot weather Madrid` ,`@Astrobot weather Raipur`', color=disnake.Color.orange())
@@ -527,13 +539,17 @@ async def phase(
   location: class `str` 
     The place of which you want to know the phase of the moon.
   '''
+  #preemptively send a message to the user
   if type(ctx) == disnake.channel.TextChannel:
     await ctx.send('Generating....this will take some time.')
   else:
     await ctx.response.send_message('Generating....this will take some time.')
 
+
   try:
     location = location[:]
+
+    #get coordinates of location given by user
     result = geolocator.geocode(location)
     coords,location = result[1],result[0]
     if int(coords[0]) > 0:
@@ -542,8 +558,9 @@ async def phase(
     else:
       orientation = "south-up" 
       ori2 = "north-up"
+    #querying astronomyapi
     req = post("https://api.astronomyapi.com/api/v2/studio/moon-phase", auth=HTTPBasicAuth(appid, secret),
-    json = {
+    json = { # this is all the paramters that will be given to the api
         "format": "png",
         "style": {
             "moonStyle": "default",
@@ -555,7 +572,7 @@ async def phase(
         "observer": {
             "latitude": coords[0],
             "longitude": coords[1],
-            "date": strftime('%Y-%m-%d')
+            "date": strftime('%Y-%m-%d') 
         },
         "view": {
             "type": "landscape-simple",
@@ -563,13 +580,14 @@ async def phase(
         }
     })
     req = req.json()
+    #picking data and putting into embed
     embed = disnake.Embed(title = f'Moon phase at {location}', color =  disnake.Color.orange())
     embed.add_field(name = 'Latitude',value =   f'`{round(coords[0],2)}`')
     embed.add_field(name = 'Longitude',   value = f'`{round(coords[1],2)}`')
     embed.add_field(name = 'Hemisphere',value = orientation)
     embed.set_image(url = req['data'] ['imageUrl'])
     embed.set_footer(text = 'Generated using AstronomyAPI and python geopy library')
-  except:
+  except: #hadling errors
     if type(location) == str:
       embed = disnake.Embed(title = 'Error' , description = 'Try again. Maybe the location is not yet in the API',color = disnake.Color.orange())
     else:
