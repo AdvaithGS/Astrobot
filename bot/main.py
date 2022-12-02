@@ -293,14 +293,14 @@ async def info(
     else:
       await ctx.response.send_message(content ='Getting the information might take some time, please wait.')
     #this get_wiki refernces get_wiki from wiki.py
-    text,image,desc = get_wiki(query)
-    if text: # create embed
-      embed = disnake.Embed(title = query.title() , description = text, color=disnake.Color.orange())
+    title,text,article_url,image_url = get_wiki(query)
+    if text:  # create embed
+      embed = disnake.Embed(title = title ,url = article_url, description = text, color=disnake.Color.orange())
       get_body(embed, query)
-      embed.set_footer(text = f'{desc} \n\nObtained from Solar System OpenData API and the Wikipedia API')
-      embed.set_image(url = image)
+      embed.set_footer(text = f'Obtained from Solar System OpenData API and the Wikipedia API')
+      embed.set_image(url = image_url)
     else:
-      embed = disnake.Embed(title = f'{query} {desc}' , description = 'Try again with a refined search parameter', color=disnake.Color.orange())
+      embed = disnake.Embed(title = title , description = 'Try again with a refined search parameter', color=disnake.Color.orange())
 
 #handling errors, if the query is wrong or not related to space
   except:
