@@ -1,7 +1,7 @@
 from datetime import datetime
 from time import mktime
 from disnake.ext import tasks
-
+# this basically logs the number of guilds astrobot has been in in various points in time. 
 @tasks.loop(hours = 24)
 async def stats_loop(client,stats,update):
   guilds = client.guilds
