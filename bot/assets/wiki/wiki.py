@@ -16,9 +16,10 @@ def get_wiki(query):
     }
     response = requests.get(url, headers=headers, params=parameters)
     response = json.loads(response.text)
-    for i in response['pages'][0:1]:
+    #print(response)
+    for i in response['pages']:
       #check page validity
-      if any([j in i['excerpt'] for j in l]):
+      if any([j in i['excerpt'].lower() for j in l]):
         params = {     
           "format"      : 'json',
           'origin'      : '*',
