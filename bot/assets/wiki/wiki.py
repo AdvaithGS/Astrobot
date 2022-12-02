@@ -29,7 +29,6 @@ def get_wiki(query):
           'pageids'     : str(i['id']) 
         }
         req = json.loads(requests.get('https://en.wikipedia.org/w/api.php',params = params).text)['query']['pages'][str(i['id'])]['extract'].splitlines()[0]
-        print(req)
         title = i['title']
         article_url = 'https://' + 'en' + '.wikipedia.org/wiki/' + i['key']
         image_url = ('https:' + i['thumbnail']['url']).replace('/thumb','')
