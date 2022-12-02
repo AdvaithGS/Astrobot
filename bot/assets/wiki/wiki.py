@@ -3,7 +3,7 @@ from os import environ
 import json
 #get page id from search/page and for each page, check if valid
 #if valid, get the page using https://en.wikipedia.org/w/api.php?format=json&origin=*&action=query&prop=extracts&explaintext=false&exintro&pageids={pageid}
-def search_query(query):
+def get_wiki(query):
   l = ['atom','moon','star','space','astro','cluster','galaxy','sky','planet','solar','science','physic','scientist','cosmos']
   try:
     headers = {
