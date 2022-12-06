@@ -140,10 +140,13 @@ async def daily(
       delta = mktime(datetime.now().timetuple()) - mktime(datetime(1995,6,16).timetuple())
       random_date = datetime.utcfromtimestamp(mktime(datetime(1995,6,16).timetuple()) + random.randrange(int(delta)))
       parameters = {'date': f'{random_date.year}-{random_date.month}-{random_date.day}'}
+      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+    
     else:
       parameters = {'date': date }
-    #querying NASA API to get picture of the day
-    daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+      #querying NASA API to get picture of the day
+      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
+    
     if 'hdurl' in daily: # checking if the image is a video
       url = daily['hdurl']
       name = ''
