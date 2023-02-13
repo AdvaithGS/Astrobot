@@ -363,6 +363,28 @@ async def iss(ctx):
 
   await log_command('iss',db,update)
 
+@client.slash_command()
+@commands.cooldown(1,30,type = commands.BucketType.user)
+async def news(ctx):
+  '''
+  Get the latest space news.
+  '''
+  desc = ''
+  s = loads(get('https://api.spaceflightnewsapi.net/v3/articles?_limit=5').text)
+  index = 0
+  for i in s:
+    index += 1
+    desc += f'''\n**{index}•** __[{i['title']}]({i['url']})__
+    {i['summary']}
+      *~{i['newsSite']}*\n'''
+  embed = disnake.Embed(title="Currently happening in the realm of space",    description=desc,color=disnake.Color.orange())
+  x = random.choice(s)
+  embed.set_image(url = x['imageUrl'])
+  embed.set_footer(text = x['title'] + '.\nGenerated using SpaceFlightNews API')
+  if type(ctx) == disnake.channel.TextChannel:
+    await ctx.send(embed=embed)
+  else:
+    await ctx.response.send_message(embed = embed)
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
