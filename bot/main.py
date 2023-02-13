@@ -104,7 +104,7 @@ async def on_guild_join(guild):
 
 async def suggestion(chan):
   if random.randint(1,20) == 4:
-    suggestions = ['Astrobot has a facts database! Try `/facts`','Astrobot has a new `inspace` feature, type /inspace to get the people currently in space!',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Join", url="https://discord.gg/ZtPU67wVa5")],'Liking the bot? Leave a review on [Top.gg](https://top.gg/bot/792458754208956466/vote) and and [dbl](https://discordbotlist.com/bots/astrobot-2515/upvote)']
+    suggestions = ['Astrobot has a facts database! Try `/facts`','Astrobot has a new `inspace` feature, type /inspace to get the people currently in space!',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Join", url="https://discord.gg/ZtPU67wVa5")],'Liking the bot? Leave a review on [Top.gg](https://top.gg/bot/792458754208956466/vote) and and [dbl](https://discordbotlist.com/bots/astrobot-2515/upvote)','Astrobot has a /news feature! Try it to see the latest news in astronomy ']
 
     choice = random.choice(suggestions)
     if type(choice[1]) == disnake.ui.Button:
@@ -201,29 +201,29 @@ async def help(
   '''
   As of now, there are only the following commands- 
   
-  `/daily` -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
+  __1. `/daily`__ -  See the NASA astronomy picture of the day, along with an explanation of the picture. 
   __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `/daily 2005-06-08`, this was for 8th June, 2005)
   __Random APOD Photo__ - You can now request a random APOD photo from the archive using `/daily random`
    
-  `/channel` - get daily apod picture automatically to the channel in which you post this message. 
+  __2. `/channel`__ - get daily apod picture automatically to the channel in which you post this message. 
    
-  `/remove`- remove your channel from the daily APOD picture list. 
+  __3. `/remove`__- remove your channel from the daily APOD picture list. 
    
-  `/info <query>` - The ultimate source for data, videos and pictures on ANYTHI NG related to space science.
+  __4. `/info <query>`__ - The ultimate source for data, videos and pictures on ANYTHI NG related to space science.
   
-  `/iss` - Find the live location of the international space station with respect to the Earth.
+  __5. `/iss`__ - Find the live location of the international space station with respect to the Earth.
   
-  `/fact` - gives a random fact from the fact library.
+  __6. `/fact`__ - gives a random fact from the fact library.
   
-  `/weather <location>` - gives the real-time weather at the specified location.
+  __7. `/weather <location>`__ - gives the real-time weather at the specified location.
   
-  `@AstroBot phase <location>` or `/phase <location>` - To find the phase of the moon at the specified location.
+  __8. `/phase <location>`__ - To find the phase of the moon at the specified location.
   
-  `@AstroBot sky <location>` or `/sky <location>` - To get the sky map at any specified location.
-  
-  `@AstroBot webb` or `/webb` - To get the current state of the James Webb Space Telescope.
+  __9. `/sky <location>`__ - To get the sky map at any specified location.
 
-  `/inspace <ISS/Other>` - To get the information of people currently in space, in the ISS or other space stations.
+  __10. `/inspace <ISS/Other>`__ - To get the information of people currently in space, in the ISS or other space stations.
+
+  __11. `/news`__- Latest news in astronomy and space science.
   
   Have fun!''', color=disnake.Color.orange())
   embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700. Reach out for help or grievances. Vote for us at these websites")
