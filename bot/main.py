@@ -186,7 +186,7 @@ async def daily(
         await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
       else:
         await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-  await log_command('daily_apod',db,update)
+  await log_command('daily_apod',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -237,7 +237,7 @@ async def help(
     await ctx.send(embed=embed, view=view)
   else:
     await ctx.response.send_message(embed=embed, view=view)
-  await log_command('help',db,update)
+  await log_command('help',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -256,7 +256,7 @@ async def channel(ctx):
   else:
     await ctx.response.send_message(embed=embed)
 
-  await log_command('channel',db,update)
+  await log_command('channel',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -273,7 +273,7 @@ async def remove(ctx):
     await ctx.send(embed=embed)
   else:
     await ctx.response.send_message(embed=embed)
-  await log_command('remove',db,update)
+  await log_command('remove',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1, 60, type=commands.BucketType.user)
@@ -314,7 +314,7 @@ async def info(
     await ctx.send(embed=embed)
   else:
     await ctx.edit_original_message(embed = embed)
-  await log_command('info',db,update)
+  await log_command('info',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1, 30, type=commands.BucketType.user)
@@ -361,7 +361,7 @@ async def iss(ctx):
   else:
     await ctx.edit_original_message(embed = embed,file = file)
 
-  await log_command('iss',db,update)
+  await log_command('iss',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1,30,type = commands.BucketType.user)
@@ -385,6 +385,7 @@ async def news(ctx):
     await ctx.send(embed=embed)
   else:
     await ctx.response.send_message(embed = embed)
+  await log_command('news',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -405,7 +406,7 @@ async def fact(ctx):
   else:
     await ctx.response.send_message(embed = embed)
 
-  await log_command('fact',db,update)
+  await log_command('fact',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1, 30, type=commands.BucketType.user)
@@ -477,7 +478,7 @@ async def weather(ctx,location):
   else:
     await ctx.edit_original_message(embed = embed)
   
-  await log_command('weather',db,update)
+  await log_command('weather',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1,30, type=commands.BucketType.user)
@@ -548,7 +549,7 @@ async def sky(
   else:
     await ctx.edit_original_message(embed = embed)
   
-  await log_command('sky',db,update)
+  await log_command('sky',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1, 30, type=commands.BucketType.user)
@@ -623,7 +624,7 @@ async def phase(
   else:
     await ctx.edit_original_message(embed = embed)
 
-  await log_command('phase',db,update)
+  await log_command('phase',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1,30,type = commands.BucketType.user)
@@ -666,7 +667,7 @@ async def in_space(
   else:
     await ctx.response.send_message(embed = embed)
 
-  await log_command('inspace',db,update)
+  await log_command('inspace',db,update,ctx)
 
 @client.slash_command()
 @commands.cooldown(1, 30, type=commands.BucketType.user)
@@ -700,7 +701,7 @@ async def webb(ctx):
   else:
     await ctx.edit_original_message(embed = embed)
 
-  await log_command('webb',db,update)
+  await log_command('webb',db,update,ctx)
 
 @client.event
 async def on_slash_command_error(ctx, error):
