@@ -10,10 +10,13 @@ def contents(filename = 'db'):
   pass
 
 def update(db,filename = 'db',remarks = f"update file on {strftime('%H:%M %d/%m/%Y')}"):
-  content = str(db)
   sha = contents(filename).sha
-  f = repository.update_file(filename, remarks, content,sha)
-  pass
+  try:
+    content = str(db)
+    f = repository.update_file(filename, remarks, content,sha)
+  except:
+    content = str(retrieve())
+    f = repository.update_file(filename,remarks,content, sha)
   
 def retrieve(filename = 'db'):
   try:
