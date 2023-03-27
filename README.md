@@ -26,70 +26,70 @@ https://discord.com/api/oauth2/authorize?client_id=792458754208956466&permission
 
 ## Commands
 As of now, there are the following commands:
-* [help](#help-or-astrobot-help)
-* [daily](#daily-or-astrobot-daily)
-* [daily `YYYY-MM-DD`](#daily-yyyy-mm-dd-or-astrobot-daily-yyyy-mm-dd)
-* [daily random](#daily-random-or-astrobot-daily-random)
-* [info `<query>`](#info-query-or-astrobot-info-query)
-* [iss ](#iss-or-astrobot-iss)
-* [channel](#channel-or-astrobot-channel)
-* [remove](#remove-or-astrobot-remove)
-* [fact](#fact-or-astrobot-fact)
-* [weather `<location>`](#weather-location-or-astrobot-weather-location)
-* [sky `<location>`](#sky-location-or-astrobot-sky-location)
-* [phase `<location>`](#phase-location-or-astrobot-phase-location)
-* [webb](#webb-or-astrobot-webb)
+* [help](#help)
+* [daily](#daily)
+* [daily `YYYY-MM-DD`](#daily-yyyy-mm-dd)
+* [daily random](#daily-random)
+* [info `<query>`](#info-query)
+* [iss ](#iss)
+* [channel](#channel)
+* [remove](#remove)
+* [fact](#fact)
+* [weather `<location>`](#weather-location)
+* [sky `<location>`](#sky-location)
+* [phase `<location>`](#phase-location)
 * [in_space](#in_space)
+* [news](#news)
 
 
 
 
-#### `/help` or `@AstroBot help`
+#### `/help`
 Returns the same list of commands that are listed below.
 
-#### `/daily` or `@AstroBot daily`
+#### `/daily`
 Gives the NASA APOD picture for the day. 
 
 Made using the discord embeds and the APOD api.
 
-#### `/daily <YYYY-MM-DD>` or `@AstroBot daily <YYYY-MM-DD>`
+#### `/daily <YYYY-MM-DD>`
 Gives the NASA picture for a specific date given by a user. Any valid date after 1995-6-16 is accepted.
-For eg. `/daily 2005-6-7` or `@AstroBot daily 2005-6-7`
+For eg. `/daily 2005-6-7`
 
-#### `/daily random` or `@AstroBot daily random`
-Gives a random NASA APOD picture from archives. Including all pictures from 1996.
+#### `/daily random`
+Gives a random NASA APOD picture from archives. Dates starting from  1996.
 
-#### `/info <query>` or `@AstroBot info <query>`
+#### `/info <query>`
 Ask about ANYTHING related to astronomy and astronomical bodies. It gives data and pictures related to the given query.
 
 This uses Solar system Open Api and Wikpedia's API in a discord embed.
 
-#### `/iss` or `@AstroBot iss`
+#### `/iss`
 Find the live location of the international space station with respect to the Earth.
 This uses the reverse_geocoder python library and the WhereTheIssAt API.
-#### `/channel` or `@AstroBot channel`
+#### `/channel`
 Subscribe to the daily APOD service and get the daily picture as soon as it is released on the channel in which this command is posted.
 
-#### `/remove` or `@AstroBot remove`
+#### `/remove`
 Remove a channel from the APOD subscription.
 
-#### `/fact` or `@AstroBot fact`
+#### `/fact`
 Get a random astronomy fact from the fact library.
 
-#### `/weather <location>` or `@AstroBot weather <location>`
+#### `/weather <location>`
 Get the real-time weather at any location
 
-#### `/phase <location>` or `@AstroBot phase <location>`
+#### `/phase <location>`
 Get the phase of the moon at a user specified location
 
-#### `/sky <location>` or `@AstroBot sky <location>`
+#### `/sky <location>`
 Get a map of the sky at a user specified location
-
-#### `/webb` or `@AstroBot webb`
-Get the current state of the James Webb Space Telescope.
 
 #### `/in_space`
 Get info about the people currently in space in the ISS or in other stations.
+
+#### `/news`
+Get the latest news in the sphere of astronomy,cosmology and space science.
 
 ## Sources
 
@@ -101,6 +101,8 @@ Given below is the list of APIs/Sources Astrobot uses for its commands
 5. [reverse_geocode library](https://github.com/thampiman/reverse-geocoder)
 6. [Wikimedia API](https://api.wikimedia.org/wiki/Main_Page)
 7. [WhereTheISSAt api](https://wheretheiss.at/w/developer)
+8. [SpaceFlight API](https://api.spaceflightnewsapi.net/v3/)
+9. [Cormac Quaid's ISS API](#https://github.com/corquaid/international-space-station-APIs)
 
 ## Vote
 

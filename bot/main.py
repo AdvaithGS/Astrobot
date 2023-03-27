@@ -60,6 +60,11 @@ async def check_apod():
     req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
     db['daily'] = req
     update(db)
+    total = 0
+    for i in db:
+      if type(i) == int:
+        total += 1
+    comp = 0
     for guild in db.keys():
       if type(guild) == int and db[guild][1] != db['apod']:
         try:
@@ -89,6 +94,10 @@ async def check_apod():
             await owner.send(f'''Hello there! It seems that there has been an issue with your server **{client.get_guild(guild).name}**. The Astronomy Picture of the Day system is not correctly functioning. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).
             Thank you!''')
             db[guild][1] = 'Sent message'
+        comp += 1
+        perc = round((comp/total)*(100))
+        print( 'Sending daily APOD:','[' + "-"*perc + ' '*(100-perc) + ']',f'{perc}% Done.' ,end = '\r')
+    print( 'Sending daily APOD:','[' + "-"*perc + ' '*(100-perc) + ']',f'{perc}% Done.' )
     await asyncio.sleep(10)
     update(db)
 
@@ -659,7 +668,7 @@ async def in_space(
   total = '`'+str(total)+'`'
   embed = disnake.Embed(title = "Who's In Space" , description = s,color = disnake.Color.orange())
   if check:
-    embed.set_footer(text = f'{req["iss_expedition"]}th expedition of the International Space Station')
+    embed.set_footer(text = f"{req['iss_expedition']}th expedition of the International Space Station\n Built using __https://github.com/corquaid/international-space-station-APIs__")
     embed.set_image(url = req['expedition_image'])
   embed.add_field(name = 'Total',value = total)
   if type(ctx) == disnake.channel.TextChannel:
