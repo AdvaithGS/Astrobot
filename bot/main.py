@@ -28,7 +28,7 @@ from requests.auth import HTTPBasicAuth
 if __name__ == '__main__':
   command_sync_flags = commands.CommandSyncFlags.default()
   command_sync_flags.sync_commands_debug = True
-  client = commands.InteractionBot(command_sync_flags)
+  client = commands.InteractionBot(command_sync_flags = command_sync_flags)
 else:
   exit()
 from json import loads
