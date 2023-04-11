@@ -109,9 +109,9 @@ async def check_apod():
 async def on_guild_join(guild):
   embed = disnake.Embed(title = 'Ooh, looks really lovely in here.', description = 'Thanks for inviting us in! I\'ll be here to help. Use `/help` to begin.', color = disnake.Color.orange())
   for chan in guild.text_channels:
-        if chan.permissions_for(guild.me).send_messages:
-            await chan.send(embed=embed)
-        break
+    if chan.permissions_for(guild.me).send_messages:
+      await chan.send(embed=embed)
+      break
 
 async def suggestion(chan):
   if random.randint(1,20) == 4:
