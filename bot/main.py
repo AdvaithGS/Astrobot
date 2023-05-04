@@ -670,7 +670,7 @@ async def in_space(
   total = '`'+str(total)+'`'
   embed = disnake.Embed(title = "Who's In Space" , description = s,color = disnake.Color.orange())
   if check:
-    embed.set_footer(text = f"{req['iss_expedition']}th expedition of the International Space Station\n Built using __https://github.com/corquaid/international-space-station-APIs__")
+    embed.set_footer(text = f"{req['iss_expedition']}th expedition of the International Space Station\n Built using https://github.com/corquaid/international-space-station-APIs")
     embed.set_image(url = req['expedition_image'])
   embed.add_field(name = 'Total',value = total)
   if type(ctx) == disnake.channel.TextChannel:

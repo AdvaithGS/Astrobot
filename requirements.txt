@@ -36,6 +36,5 @@ topggpy
 typing_extensions
 urllib3
 Werkzeug
-wikipedia
 wrapt
 yarl
