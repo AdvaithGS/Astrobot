@@ -63,6 +63,7 @@ async def check_apod():
     if x == db['daily']:
       return
     db['daily'] = x
+    update(db)
     total = 0
     for i in db:
       if type(i) == int:
