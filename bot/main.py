@@ -79,9 +79,9 @@ async def check_apod():
           db[guild][1] = db['daily']['date']
           daily = db['daily']
           title = daily['title']
-          desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['desc']}\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
+          desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['desc']}\n\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
           embed = disnake.Embed(title=title, url=daily['link'], description=desc, color=disnake.Color.orange())
-          embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
+          embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrow']}")
           if not daily['video']:
             embed.set_image(url=daily['link'])
           await chan.send(embed=embed)
@@ -143,11 +143,11 @@ async def daily(
     daily = apod(date)
     if not daily:
       daily.append('this is meant to break')
-    desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
+    desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
 
     #creating an embed 
     embed = disnake.Embed(title=daily['title'], url=daily['link'], description=desc, color=disnake.Color.orange())
-    embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrrow']}")
+    embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrow']}")
     if not daily['video']:
       embed.set_image(url = daily['link'])
     #the message can be activated either via slash command or via message, this takes care of both instances.
