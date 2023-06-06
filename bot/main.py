@@ -56,11 +56,14 @@ async def on_ready():
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   global client
-  if mktime(datetime.now().timetuple()) - db['apod_error'] < 1200:
+  if 'apod_try' not in db:
+    db['apod_try'] = 0
+  if mktime(datetime.now().timetuple()) - db['apod_try'] < 1200:
     return
   if db['daily']['date'] != strftime('%Y %B %d'):
     x = apod()
     if x == db['daily']:
+      db['apod_try'] = mktime(datetime.now().timetuple())
       return
     db['daily'] = x
     update(db)

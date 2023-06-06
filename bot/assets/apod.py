@@ -1,9 +1,8 @@
 from json import loads
 from requests import get
-from os import environ
 from bs4 import BeautifulSoup
 from datetime import datetime
-from assets.database.database import retrieve,update
+from assets.database.database import retrieve
 
 from time import strftime, mktime
 from random import randrange

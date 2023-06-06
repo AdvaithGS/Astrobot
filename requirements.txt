@@ -38,3 +38,4 @@ urllib3
 Werkzeug
 wrapt
 yarl
+lxml
