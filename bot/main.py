@@ -56,8 +56,6 @@ async def on_ready():
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   global client
-  if 'apod_try' not in db:
-    db['apod_try'] = 0
   if mktime(datetime.now().timetuple()) - db['apod_try'] < 1200:
     return
   if db['daily']['date'] != strftime('%Y %B %d'):
@@ -163,6 +161,7 @@ async def daily(
         await ctx.response.send_message(content = daily['video'])
     
   except Exception as e:
+    print(e)
     if type(ctx) == disnake.channel.TextChannel:
       await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
     else:
