@@ -6,9 +6,9 @@ from assets.database.database import retrieve
 
 from time import strftime, mktime
 from random import randrange
-def apod(date:str = None):
+def apod(date:str = ''):
     db= retrieve()
-    if date == None:
+    if date == '':
         if db['daily']['date'] == strftime('%Y %B %d'):
             return db['apod']
         l = 'https://apod.nasa.gov/apod/astropix.html'
