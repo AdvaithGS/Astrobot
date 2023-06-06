@@ -11,7 +11,7 @@ from assets.database.log import log_command
 from assets.loops.top import update_guilds
 from assets.loops.stats import call_stats
 from assets.database.database import update,retrieve
-
+from assets.apod import apod
 db = retrieve()
 with open('log.txt','w') as f:
   f.write(retrieve('logs'))
@@ -56,58 +56,45 @@ async def on_ready():
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
   global client
-  x = strftime('%y%m%d')
   if mktime(datetime.now().timetuple()) - db['apod_error'] < 1200:
     return
-  try:
-    if any( [db[i][1] != db['apod'] for i in db.keys() if type(i) == int] ) or (db['apod'] != x and get(f'https://apod.nasa.gov/apod/ap{x}.html').status_code == 200 and loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text) != db['daily']):
-      db['apod'] = x
-      req = loads(get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)
-      db['daily'] = req
-      update(db)
-      total = 0
-      for i in db:
-        if type(i) == int:
-          total += 1
-      comp = 0
-      for guild in db.keys():
-        if type(guild) == int and db[guild][1] != db['apod']:
-          try:
-            chan = client.get_channel(db[guild][0])
-            db[guild][1] = db['apod']
-            daily = db['daily']
-            if 'hdurl' in daily:
-              url = daily['hdurl']
-              name = ''
-            else:
-              url = daily['url']
-              name = url
-            title = daily['title']
-            desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
+  if db['daily']['date'] != strftime('%Y %B %d'):
+    x = apod()
+    if x == db['daily']:
+      return
+    db['daily'] = x
+    total = 0
+    for i in db:
+      if type(i) == int:
+        total += 1
+    comp = 0
+    for guild in db.keys():
+      if type(guild) == int and db[guild][1] != db['daily']['date']:
+        try:
+          chan = client.get_channel(db[guild][0])
+          db[guild][1] = db['daily']['date']
+          daily = db['daily']
+          title = daily['title']
+          desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['desc']}\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
+          embed = disnake.Embed(title=title, url=daily['link'], description=desc, color=disnake.Color.orange())
+          embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
+          if not daily['video']:
+            embed.set_image(url=daily['link'])
+          await chan.send(embed=embed)
+          if daily['video']:
+            await chan.send(content = daily['link'])
 
-            embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
-            embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
-            embed.set_image(url=url)
-            await chan.send(embed=embed)
-            if name:
-              name = f'https://youtube.com/watch?v={name[30:41]}'
-              embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
-              await chan.send(content = name)
-          except Exception as e:
-            if guild in [808201667543433238,971656673334804520] and db[guild][1] != 'Sent message':
-              owner : disnake.User = client.get_user(client.get_guild(guild).owner_id)
-              await owner.send(f'''Hello there! It seems that there has been an issue with your server **{client.get_guild(guild).name}**. The Astronomy Picture of the Day system is not correctly functioning. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).
-              Thank you!''')
-              db[guild][1] = 'Sent message'
-          comp += 1
-          perc = round((comp/total)*(100))
-          print( 'Sending daily APOD:','[' + "-"*perc + ' '*(100-perc) + ']',f'{perc}% Done.' ,end = '\r')
-      print( 'Sending daily APOD:','[' + "-"*perc + ' '*(100-perc) + ']',f'{perc}% Done.' )
-      await asyncio.sleep(10)
-      update(db)
-  except:
-    db['apod_error'] = mktime(datetime.now().timetuple())
-    print('APOD ISSUE')
+        except Exception as e:
+          if guild in [808201667543433238,971656673334804520] and db[guild][1] != 'Sent message':
+            owner : disnake.User = client.get_user(client.get_guild(guild).owner_id)
+            await owner.send(f'''Hello there! It seems that there has been an issue with your server **{client.get_guild(guild).name}**. The Astronomy Picture of the Day system is not correctly functioning. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).
+            Thank you!''')
+            db[guild][1] = 'Sent message'
+        comp += 1
+        perc = round((comp/total)*(100))
+        print( 'Sending daily APOD:','[' + "-"*perc + ' '*(100-perc) + ']',f'{perc}% Done.' ,end = '\r')
+    await asyncio.sleep(10)
+    update(db)
 
 
 @client.event
@@ -149,59 +136,33 @@ async def daily(
       It can be "random" or any date that you choose, in YYYY-MM-DD format.
   '''
   try:
-    if date == '':
-      daily = db['daily']
-    elif date == 'random':
-      #creating a random date
-      delta = mktime(datetime.now().timetuple()) - mktime(datetime(1995,6,16).timetuple())
-      random_date = datetime.utcfromtimestamp(mktime(datetime(1995,6,16).timetuple()) + random.randrange(int(delta)))
-      parameters = {'date': f'{random_date.year}-{random_date.month}-{random_date.day}'}
-      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
-    
-    else:
-      parameters = {'date': date }
-      #querying NASA API to get picture of the day
-      daily = loads(get (f'https://api.nasa.gov/planetary/apod?api_key={api_key}', params=parameters).text)
-    
-    if 'hdurl' in daily: # checking if the image is a video
-      url = daily['hdurl']
-      name = ''
-    else:
-      url = daily['url']
-      name = url
-      
-    title = daily['title']
-    desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['copyright']) if 'copyright' in daily else ''}'''
+    daily = apod(date)
+    if not daily:
+      daily.append('this is meant to break')
+    desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
+
     #creating an embed 
-    embed = disnake.Embed(title=title, url=url, description=desc, color=disnake.Color.orange())
-    embed.set_footer(text="Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.")
-    embed.set_image(url=url)
+    embed = disnake.Embed(title=daily['title'], url=daily['link'], description=desc, color=disnake.Color.orange())
+    embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrrow']}")
+    if not daily['video']:
+      embed.set_image(url = daily['link'])
     #the message can be activated either via slash command or via message, this takes care of both instances.
     if type(ctx) == disnake.channel.TextChannel:
       await ctx.send(embed=embed)
     else:
       await ctx.response.send_message(embed=embed)
 
-    if name:
-      name = f'https://youtube.com/watch?v={name[30:41]}'
-      embed = disnake.Embed(title=title, url=url,   description=desc,color=disnake.Color.orange())
+    if daily['video']:
       if type(ctx) == disnake.channel.TextChannel:
-        await ctx.send(name)
+        await ctx.send(daily['video'])
       else:
-        await ctx.response.send_message(content = name)
+        await ctx.response.send_message(content = daily['video'])
     
   except Exception as e:
-    print(e,'line 165')
-    if (get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text)[8:11] == '500':
-      if type(ctx) == disnake.channel.TextChannel:
-        await ctx.send('There seems to be something wrong with the NASA APOD service, try after some time')
-      else:
-        await ctx.response.send_message(content ='There seems to be something wrong with the NASA APOD service, try after some time')
+    if type(ctx) == disnake.channel.TextChannel:
+      await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
     else:
-      if type(ctx) == disnake.channel.TextChannel:
-        await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-      else:
-        await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+      await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
   await log_command('daily_apod',db,update,ctx)
 
 @client.slash_command()
