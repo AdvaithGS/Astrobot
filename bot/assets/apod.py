@@ -14,7 +14,7 @@ def apod(date:str = None):
             return db['apod']
         l = 'https://apod.nasa.gov/apod/astropix.html'
     
-    if date.lower() == 'random':
+    elif date.lower() == 'random':
         delta = mktime(datetime.now().timetuple()) - mktime(datetime(1995,6,16).timetuple())
         random_date = datetime.utcfromtimestamp(mktime(datetime(1995,6,16).timetuple()) + randrange(int(delta))).strftime('%y%m%d')
         l = f'https://apod.nasa.gov/apod/ap{random_date}.html'
