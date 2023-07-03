@@ -185,9 +185,9 @@ async def help(
   __Specific date__  - In YYYY-MM-DD format to get an image from that date! (Example - `/daily 2005-06-08`, this was for 8th June, 2005)
   __Random APOD Photo__ - You can now request a random APOD photo from the archive using `/daily random`
    
-  __2. `/channel`__ - get daily apod picture automatically to the channel in which you post this message. 
+  __2. `/channel`__ - get daily apod picture automatically to the channel in which you post this message. **Only for users with channel and message manage perms.** 
    
-  __3. `/remove`__- remove your channel from the daily APOD picture list. 
+  __3. `/remove`__- remove your channel from the daily APOD picture list. **Only for users with channel and message manage perms.**
    
   __4. `/info <query>`__ - The ultimate source for data, videos and pictures on ANYTHI NG related to space science.
   
@@ -221,6 +221,7 @@ async def help(
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
+@bot.has_permissions(manage_channels = True, manage_messages = True)
 async def channel(ctx):
   '''
   Register for the automatic APOD subscription 
@@ -240,6 +241,7 @@ async def channel(ctx):
 
 @client.slash_command()
 @commands.cooldown(1, 10, type=commands.BucketType.user)
+@bot.has_permissions(manage_channels = True, manage_messages = True)
 async def remove(ctx):
   '''
   Remove the channel from the APOD subscription
