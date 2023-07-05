@@ -17,6 +17,7 @@ def update(db,filename = 'db',remarks = f"update file on {strftime('%H:%M %d/%m/
   except:
     content = str(retrieve())
     f = repository.update_file(filename,remarks,content, sha)
+  pass
   
 def retrieve(filename = 'db'):
   try:
@@ -24,4 +25,3 @@ def retrieve(filename = 'db'):
   except:
     db = contents(filename).decoded_content.decode()
   return db
-  pass
