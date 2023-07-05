@@ -2,7 +2,7 @@ from requests import post
 from json import dumps
 from os import environ
 
-astro_key = environ['astro_key']
+astro_key = environ['api_astro']
 
 def get_sub_id(url):
   x = post('http://nova.astrometry.net/api/login', data = {'request-json' : dumps({'apikey':astro_key})}).json()
