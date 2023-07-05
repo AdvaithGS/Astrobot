@@ -36,7 +36,6 @@ typing_extensions
 topggpy
 urllib3
 Werkzeug
-wikipedia
 wrapt
 yarl
 lxml

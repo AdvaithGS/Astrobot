@@ -1,10 +1,4 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
-<span style="font-family:'Playfair Display',serif;">
-
-
-This is an Astronomy discord bot with various functionalities and uses; created with python 3.10 and disnake. 
+This is an Astronomy discord bot with various functionalities and uses; created with python 3.11 and disnake. 
 
 ## Table of contents
 * [Invite](#Invite)
@@ -102,7 +96,7 @@ Given below is the list of APIs/Sources Astrobot uses for its commands
 6. [Wikimedia API](https://api.wikimedia.org/wiki/Main_Page)
 7. [WhereTheISSAt api](https://wheretheiss.at/w/developer)
 8. [SpaceFlight API](https://api.spaceflightnewsapi.net/v3/)
-9. [Cormac Quaid's ISS API](#https://github.com/corquaid/international-space-station-APIs)
+9. [Cormac Quaid's ISS API](https://github.com/corquaid/international-space-station-APIs)
 
 ## Vote
 
@@ -130,6 +124,8 @@ https://discord.gg/ZtPU67wVa5
 5. [ ] Add video demos to README file
 
 6. [ ] Use NASA's PDS Search API
+
+7. [ ] Beef up /news to add other news sources
 
 ## Creator
 
