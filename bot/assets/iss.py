@@ -1,17 +1,15 @@
 from json import loads
 from requests import get
-from geopy import Nominatim
 from assets.countries.country_code import find_country
 from os import environ
 api_key2 = environ['api_key2']
-from geopy import Nominatim
-geolocator = Nominatim(user_agent = 'AstroBot')
-
+from datetime import datetime
 import disnake
-from assets.cooldown import custom_cooldown
+from assets.tools.cooldown import custom_cooldown
 from disnake.ext import commands
 from assets.database.log import log_command
 from assets.database.database import update,retrieve
+from assets.countries.reverse import reverse_geocode
 db = retrieve()
 
 def setup(bot : commands.Bot):
@@ -36,10 +34,7 @@ class ISS(commands.Cog):
 
     #queries wheretheissat api
     req = loads(get('https://api.wheretheiss.at/v1/satellites/25544').text)
-    #parsing info from api response
-    result = geolocator.reverse((round(req['latitude'],3),round(req['longitude'],3)))
-    location = result.address  + find_country(result.raw['address']['country_code'])
-    
+    location = reverse_geocode(req['latitude'],req['longitude'])
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'
     #gets map image
@@ -47,7 +42,7 @@ class ISS(commands.Cog):
     with open('iss.jpg', 'wb') as f:
       f.write(url.content) #saves image as file
     file = disnake.File('iss.jpg') #creates file object for attaching to embed
-    embed = disnake.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = disnake.Color.orange())
+    embed = disnake.Embed(title = 'International Space Station',description = f'The International Space Station is currrently near `{location}`.' , color = disnake.Color.orange(),timestamp=datetime.now())
     embed.set_image(url = 'attachment://iss.jpg')
     velocity = round(req['velocity'],2)
     embed.add_field(name = 'Velocity' , value = f'{velocity} km/hr') 
@@ -55,7 +50,7 @@ class ISS(commands.Cog):
     embed.add_field(name = 'Altitude' , value = f'{altitude} km')
     embed.add_field(name ='Visibility',value = req['visibility'].title())
     embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
-
+    
     if type(ctx) == disnake.channel.TextChannel:
       await ctx.send(embed=embed,file = file)
     else:
