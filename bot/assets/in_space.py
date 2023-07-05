@@ -1,8 +1,9 @@
 from json import loads
 import disnake
 from disnake.ext import commands
-from assets.cooldown import custom_cooldown
+from assets.tools.cooldown import custom_cooldown
 from requests import get
+from datetime import datetime
 from assets.database.log import log_command
 from assets.database.database import update,retrieve
 db = retrieve()
@@ -32,7 +33,7 @@ class Inspace(commands.Cog):
     '''
     req = loads(get('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json').text)
     check = (location == 'ISS')
-    l = ['People currently in space']
+    l = ['\n']
     total = 0
     for i in req['people']:
       if i['iss'] == check:
@@ -48,9 +49,9 @@ class Inspace(commands.Cog):
         ''')
     s = ''.join(l)
     total = '`'+str(total)+'`'
-    embed = disnake.Embed(title = "Who's In Space" , description = s,color = disnake.Color.orange())
+    embed = disnake.Embed(title = "Who's In Space" , description = s,color = disnake.Color.orange(),timestamp=datetime.now())
     if check:
-      embed.set_footer(text = f"{req['iss_expedition']}th expedition of the International Space Station\n Built using https://github.com/corquaid/international-space-station-APIs")
+      embed.set_footer(text = f"{req['iss_expedition']}th expedition of the International Space Station\nBuilt using https://github.com/corquaid/international-space-station-APIs")
       embed.set_image(url = req['expedition_image'])
     embed.add_field(name = 'Total',value = total)
     if type(ctx) == disnake.channel.TextChannel:
