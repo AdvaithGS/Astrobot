@@ -1,5 +1,7 @@
 import os
 def find_country(code):
+  if not code:
+    return ''
   os.chdir(os.getcwd().replace('facts','countries'))
   try:
     with open('countries.txt') as f:
