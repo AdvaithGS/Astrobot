@@ -49,10 +49,7 @@ async def check_apod():
   global client
   db = retrieve()
   if mktime(datetime.now().timetuple()) - db['apod_try'] <= 1200:
-    print("apod check reject")
     return
-  else:
-      print(db['apod_try'],mktime(datetime.now().timetuple()))
   if db['daily']['date'] != strftime('%Y %B %d'):
     x = apod()
     if x == db['daily']:
@@ -118,23 +115,19 @@ async def suggestion(chan):
 
 
 async def check_job_status():
-  print("astro start")
   db = retrieve()
   if mktime(datetime.now().timetuple()) - db['astro_try'] <= 15:
     return
   for i in list(db['solve_queue'].keys()):
     req2 = get(f'http://nova.astrometry.net/api/submissions/{i}').json()
     if req2['processing_finished'] != 'None':
-      print(get(f'https://nova.astrometry.net/api/jobs/{req2["jobs"][0]}').json())
       try:
         if req2['job_calibrations']:
          job_id = req2['jobs'][0]
          image = req2['user_images'][0]
-         print('sucess')
         elif req2["jobs"][0] != None and get(f'https://nova.astrometry.net/api/jobs/{req2["jobs"][0]}').json()['status'] == 'failure':
           image = req2['user_images'][0]
           job_id = 'Failure'
-          print('Failure')
         else:
             continue
       except:
@@ -162,7 +155,6 @@ async def check_job_status():
       embed.set_footer(text = 'Made using the Astrometry API')
       chan = client.get_channel(db['solve_queue'][i][1])
       await chan.send( f'<@{db["solve_queue"][i][0]}>')
-      print(f'https://nova.astrometry.net/user_images/{image}#annotated')
       await chan.send(embed = embed)
       del db['solve_queue'][i]
       update(db)
@@ -189,10 +181,8 @@ async def on_slash_command_error(ctx, error):
 @client.event
 async def on_message(message):
   if message.author.id != client.user.id:
-    print("check start")
     await check_apod()
     await check_job_status()
-    print("check end")
   
 
 
