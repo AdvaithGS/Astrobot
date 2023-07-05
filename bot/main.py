@@ -31,7 +31,7 @@ api_key = environ['api_key']  #required for check_apod
 api_key2 = environ['api_key2']
 api_key3 = environ['api_key3']
 secret = environ['api_key4']
-appid = environ['appid']
+appid = environ['app_id']
 
 
 
