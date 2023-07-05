@@ -18,7 +18,7 @@ class Subs(commands.Cog):
 
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
-  @bot.has_permissions(manage_channels = True, manage_messages = True)
+  @commands.has_permissions(manage_channels = True, manage_messages = True)
   async def channel(ctx):
     '''
     Register for the automatic APOD subscription 
@@ -38,7 +38,7 @@ class Subs(commands.Cog):
 
   @commands.slash_command()
   @commands.cooldown(1, 10, type=commands.BucketType.user)
-  @bot.has_permissions(manage_channels = True, manage_messages = True)
+  @commands.has_permissions(manage_channels = True, manage_messages = True)
   async def remove(ctx):
     '''
     Remove the channel from the APOD subscription
