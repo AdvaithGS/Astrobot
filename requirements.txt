@@ -29,13 +29,14 @@ PyGithub
 PyJWT
 PyNaCl
 requests
-reverse-geocoder
 scipy
 soupsieve
 topggpy
 typing_extensions
+topggpy
 urllib3
 Werkzeug
 wikipedia
 wrapt
 yarl
+lxml
