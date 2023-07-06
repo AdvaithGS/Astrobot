@@ -26,12 +26,13 @@ def apod(date:str = None):
     
     req = get(l)
     if not req:
-         return False
+        return False
     soup = BeautifulSoup(req.text,'lxml')
 
     d = {}
 
-    d['date'] = soup.find_all('p')[1].text.strip()
+    d['date'] = soup.find_all('p')[1].text
+    d['date'] = d['date'][:d['date'].find('<')].strip()
 
     d['video'] = bool(soup.find('iframe'))
     d['title'] = soup.find('b').text.strip()
@@ -43,11 +44,11 @@ def apod(date:str = None):
 
     l = []
     for i in soup.find_all('center')[1].findChildren():
-        if i.name == 'a':
+        if i.name == 'a' and i.text != 'Copyright':
             l.append(f'[{i.text}]({ i["href"] })')
     d['credits'] = ', '.join(l)
 
-    d['desc'] = soup.find_all('p')[2].text.replace('\n','').strip().strip('Explanation')
+    d['desc'] = soup.find_all('p')[2].text.replace('\n',' ').strip().strip('Explanation :')
 
     d['tomorrow'] = str(soup.find_all('center')[2].get_text)[47:]
     d ['tomorrow'] = (d['tomorrow'][d['tomorrow'].find('>',5)+1:d['tomorrow'].find('<',25)]).strip()
