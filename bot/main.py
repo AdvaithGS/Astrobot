@@ -40,8 +40,10 @@ async def on_ready():
   s = len(client.guilds)
   await update_guilds(client)
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
-  call_set_activity(client,db,'Startup',update)
-  call_stats(client,stats,update)
+  if not call_set_activity.is_running():
+    call_set_activity(client,db,'Startup',update)
+  if not call_stats.is_running():
+    call_stats(client,stats,update)
 
 
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
