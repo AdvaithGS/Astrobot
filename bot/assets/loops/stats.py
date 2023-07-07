@@ -10,4 +10,5 @@ async def stats_loop(client,stats,update):
   update(stats,'stats')
 
 def call_stats(client,stats,update):
-  stats_loop.start(client,stats,update)
+    if not stats_loop.is_running():
+        stats_loop.start(client,stats,update)
