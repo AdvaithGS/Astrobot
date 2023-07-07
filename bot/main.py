@@ -46,50 +46,43 @@ async def on_ready():
 
 #sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
 async def check_apod():
-  global client
-  db = retrieve()
-  if mktime(datetime.now().timetuple()) - db['apod_try'] <= 1200:
-    return
-  if db['daily']['date'] != strftime('%Y %B %d'):
-    x = apod()
+    global client
+    db = retrieve()
+    if mktime(datetime.now().timetuple()) - db['apod_try'] <= 1200:
+        pass
+    if db['daily']['date'] != strftime('%Y %B %d'):
+        x = apod()
     if x == db['daily']:
-      db['apod_try'] = mktime(datetime.now().timetuple())
-      update(db)
-      await asyncio.sleep(5)
-      return
-    db['daily'] = x
-    update(db)
-    total = 0
-    for i in db:
-      if type(i) == int:
-        total += 1
-    comp = 0
-    for guild in db.keys():
-      if type(guild) == int and db[guild][1] != db['daily']['date']:
-        try:
-          chan = client.get_channel(db[guild][0])
-          daily = db['daily']
-          title = daily['title']
-          desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['desc']}\n\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
-          embed = disnake.Embed(title=title, url=daily['link'], description=desc, color=disnake.Color.orange(),timestamp=datetime.now())
-          embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrow']}")
-          if not daily['video']:
+        db['apod_try'] = mktime(datetime.now().timetuple())
+        update(db)
+        await asyncio.sleep(5)
+        return
+    else:    
+        db['daily'] = x
+        update(db)
+        daily = db['daily']
+        title = daily['title']
+        desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['desc']}\n\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
+        embed = disnake.Embed(title=title, url=daily['link'], description=desc, color=disnake.Color.orange(),timestamp=datetime.now())
+        embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrow']}")
+        if not daily['video']:
             embed.set_image(url=daily['link'])
-          await chan.send(embed=embed)
-          if daily['video']:
-            await chan.send(content = daily['link'])
-          db[guild][1] = db['daily']['date']
-        except Exception as e:
-          if guild == 808201667543433238 and db[guild][1] != 'Sent message':
-            owner = await client.getch_user(client.get_guild(guild).owner_id)
-            embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
-            await owner.send(embed = embed)
-            db[guild][1] = 'Sent message'
-          '''comp += 1
-          perc = round((comp/total)*(100))
-          print( 'Sending daily APOD:','[' + "-"*perc + ' '*(100-perc) + ']',f'{perc}% Done.' ,end = '\r')'''
-      update(db)
-      await asyncio.sleep(10)
+        for guild in db.keys():
+            if type(guild) == int and db[guild][1] != db['daily']['date']:
+                try:
+                    chan = client.get_channel(db[guild][0])
+                    await chan.send(embed=embed)
+                    if daily['video']:
+                        await chan.send(content = daily['link'])
+                    db[guild][1] = db['daily']['date']
+                except Exception as e:
+                    if guild == 808201667543433238 and db[guild][1] != 'Sent message':
+                        owner = await client.getch_user(client.get_guild(guild).owner_id)
+                        embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
+                        await owner.send(embed = embed)
+                        db[guild][1] = 'Sent message'
+                update(db)
+    await asyncio.sleep(10)
       
 
 
