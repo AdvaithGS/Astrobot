@@ -10,7 +10,6 @@ from assets.loops.top import update_guilds
 from assets.loops.stats import call_stats
 from assets.database.database import update,retrieve
 from assets.tools.apod import apod
-from keep_alive import keep_alive
 db = retrieve()
 with open('log.txt','w') as f:
   f.write(retrieve('logs'))
@@ -178,6 +177,4 @@ async def on_message(message):
     await check_apod()
     await check_job_status()
   
-
-keep_alive()
 client.run(environ['TOKEN'])

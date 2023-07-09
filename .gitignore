@@ -19,6 +19,7 @@ lib64/
 parts/
 sdist/
 var/
+.space/
 wheels/
 pip-wheel-metadata/
 share/python-wheels/
@@ -143,3 +144,5 @@ settings.json
 *.sql
 *~
 *.jpg
+
+.space
