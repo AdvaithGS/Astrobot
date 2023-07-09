@@ -4,7 +4,6 @@ from datetime import datetime
 import disnake
 from disnake.ext import commands
 from os import listdir,environ
-import asyncio
 from assets.loops.presence import call_set_activity
 from assets.loops.top import update_guilds
 from assets.loops.stats import call_stats
@@ -49,13 +48,12 @@ async def check_apod():
     global client
     db = retrieve()
     if mktime(datetime.now().timetuple()) - db['apod_try'] <= 1200:
-        pass
+        return
     if db['daily']['date'] != strftime('%Y %B %d'):
         x = apod()
     if x == db['daily']:
         db['apod_try'] = mktime(datetime.now().timetuple())
         update(db)
-        await asyncio.sleep(5)
         return
     else:    
         db['daily'] = x
@@ -82,7 +80,6 @@ async def check_apod():
                         await owner.send(embed = embed)
                         db[guild][1] = 'Sent message'
                 update(db)
-    await asyncio.sleep(10)
       
 
 
@@ -151,7 +148,6 @@ async def check_job_status():
       await chan.send(embed = embed)
       del db['solve_queue'][i]
       update(db)
-      await asyncio.sleep(10)
   db['astro_try'] = mktime(datetime.now().timetuple())
   update(db)
 @client.event
