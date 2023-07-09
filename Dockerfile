@@ -4,9 +4,11 @@ FROM python:3.10
 WORKDIR ./
 
 # Copy the application files into the working directory
-COPY . ./bot
+COPY . ./Astrobot
 
 # Install the application dependencies
+RUN ls bot
+RUN pwd
 RUN pip install -r bot/requirements.txt
 
 CMD ["python", "bot/main.py"]
