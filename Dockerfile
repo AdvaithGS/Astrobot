@@ -9,5 +9,6 @@ COPY . ./astrobot
 # Install the application dependencies
 RUN pip install -r astrobot/requirements.txt
 RUN cd astrobot
+RUN ls
 
 CMD ["python", "bot/main.py"]
