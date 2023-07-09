@@ -4,11 +4,10 @@ FROM python:3.10
 WORKDIR ./
 
 # Copy the application files into the working directory
-COPY . ./Astrobot
+COPY . ./astrobot
 
 # Install the application dependencies
-RUN ls bot
-RUN pwd
-RUN pip install -r Astrobot/requirements.txt
+RUN pip install -r astrobot/requirements.txt
+RUN cd astrobot
 
 CMD ["python", "bot/main.py"]
