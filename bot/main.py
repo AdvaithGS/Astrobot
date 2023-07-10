@@ -49,13 +49,16 @@ async def check_apod():
     db = retrieve()
     if mktime(datetime.now().timetuple()) - db['apod_try'] <= 1200:
         return
-    if db['daily']['date'] != strftime('%Y %B %d'):
-        x = apod()
-    if x == db['daily']:
+    if db['daily']['date'] == strftime('%Y %B %d'):
         db['apod_try'] = mktime(datetime.now().timetuple())
         update(db)
         return
-    else:    
+    else:
+        x = apod()
+        if x == db['daily']:
+            db['apod_try'] = mktime(datetime.now().timetuple())
+            update(db)
+            return  
         db['daily'] = x
         update(db)
         daily = db['daily']
