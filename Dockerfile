@@ -13,5 +13,6 @@ COPY ./bot ./bot
 
 CMD ["python", "./bot/main.py"]
 
-#docker build -t astrobot .
-#docker run astrobot
+#sudo docker build -t astrobot .
+#sudo docker run astrobot
+#sudo  docker run --env-file my-env.txt alpine
