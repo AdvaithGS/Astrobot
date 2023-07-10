@@ -1,14 +1,17 @@
 FROM python:3.10
 
 # Set the working directory in the container
-WORKDIR ./
+WORKDIR /astrobot
 
 # Copy the application files into the working directory
-COPY . ./astrobot
+COPY requirements.txt .
 
 # Install the application dependencies
-RUN pip install -r astrobot/requirements.txt
-RUN cd astrobot
-RUN ls
+RUN pip install -r requirements.txt
 
-CMD ["python", "bot/main.py"]
+COPY ./bot ./bot
+
+CMD ["python", "./bot/main.py"]
+
+#docker build -t astrobot .
+#docker run astrobot
