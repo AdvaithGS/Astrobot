@@ -26,11 +26,11 @@ from json import loads
 from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
 import random
-api_key = environ['api_key']  #required for check_apod
-api_key2 = environ['api_key2']
-api_key3 = environ['api_key3']
-secret = environ['api_key4']
-appid = environ['app_id']
+API_KEY = environ['API_KEY']  #required for check_apod
+API_KEY2 = environ['API_KEY2']
+API_KEY3 = environ['API_KEY3']
+secret = environ['API_KEY4']
+appid = environ['APP_ID']
 
 
 

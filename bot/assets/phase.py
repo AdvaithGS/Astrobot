@@ -6,7 +6,7 @@ from requests.auth import HTTPBasicAuth
 from datetime import datetime
 from os import environ
 appid = environ['app_id']
-secret = environ['api_key4']
+secret = environ['API_KEY4']
 
 import disnake
 from disnake.ext import commands

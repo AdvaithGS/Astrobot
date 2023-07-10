@@ -1,7 +1,7 @@
 from os import environ
 from github import Github
 from time import strftime
-github = Github(environ['api_key6'])
+github = Github(environ['API_KEY6'])
 repository = github.get_user().get_repo('db')
 filename = 'db'
 

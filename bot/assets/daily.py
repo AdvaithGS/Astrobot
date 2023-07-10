@@ -7,7 +7,7 @@ from assets.database.log import log_command
 from assets.database.database import update,retrieve
 from os import environ
 db = retrieve()
-api_key = environ['api_key']
+API_KEY = environ['API_KEY']
 
   
 def setup(bot : commands.Bot):

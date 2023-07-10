@@ -2,7 +2,7 @@ from json import loads
 from requests import get
 from assets.countries.country_code import find_country
 from os import environ
-api_key2 = environ['api_key2']
+API_KEY2 = environ['API_KEY2']
 from datetime import datetime
 import disnake
 from assets.tools.cooldown import custom_cooldown
@@ -38,7 +38,7 @@ class ISS(commands.Cog):
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'
     #gets map image
-    url = get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={api_key2}')
+    url = get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={API_KEY2}')
     with open('iss.jpg', 'wb') as f:
       f.write(url.content) #saves image as file
     file = disnake.File('iss.jpg') #creates file object for attaching to embed

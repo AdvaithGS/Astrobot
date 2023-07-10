@@ -4,7 +4,7 @@ from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
 from assets.countries.country_code import find_country
 from os import environ
-api_key3 = environ['api_key3']
+API_KEY3 = environ['API_KEY3']
 
 import disnake
 from disnake.ext import commands
@@ -44,7 +44,7 @@ class Weather(commands.Cog):
    try:
      location = location[:]
      #query the openweathermap api for weather data
-     req = loads(get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key3}&units=metric').text)
+     req = loads(get (f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={API_KEY3}&units=metric').text)
      location = location + ', ' + find_country(req['sys']['country'])
      
      #use geopy for getting coordinates from user given location  
