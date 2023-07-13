@@ -115,9 +115,9 @@ async def check_job_status():
     req2 = get(f'http://nova.astrometry.net/api/submissions/{i}').json()
     
     if req2['processing_finished'] != 'None':
-      del db['solve_queue'][i]
       chan = client.get_channel(db['solve_queue'][i][1])
       user = db["solve_queue"][i][0]
+      del db['solve_queue'][i]
       update(db)
       
       if req2['job_calibrations']:
