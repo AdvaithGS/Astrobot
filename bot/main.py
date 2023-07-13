@@ -113,18 +113,20 @@ async def check_job_status():
     return
   for i in list(db['solve_queue'].keys()):
     req2 = get(f'http://nova.astrometry.net/api/submissions/{i}').json()
+    
     if req2['processing_finished'] != 'None':
-      try:
-        if req2['job_calibrations']:
-         job_id = req2['jobs'][0]
-         image = req2['user_images'][0]
-        elif req2["jobs"][0] != None and get(f'https://nova.astrometry.net/api/jobs/{req2["jobs"][0]}').json()['status'] == 'failure':
-          image = req2['user_images'][0]
-          job_id = 'Failure'
-        else:
-            continue
-      except:
-       continue
+      del db['solve_queue'][i]
+      chan = client.get_channel(db['solve_queue'][i][1])
+      user = db["solve_queue"][i][0]
+      update(db)
+      
+      if req2['job_calibrations']:
+       job_id = req2['jobs'][0]
+       image = req2['user_images'][0]
+      elif req2["jobs"][0] != None and get(f'https://nova.astrometry.net/api/jobs/{req2["jobs"][0]}').json()['status'] == 'failure':
+        image = req2['user_images'][0]
+        job_id = 'Failure'
+      
       if job_id == 'Failure':
         embed = disnake.Embed(title="Unsuccessful",description = 'Your submission has failed.',color=disnake.Color.red(),timestamp=datetime.now())
         embed.add_field(name = '`Job ID`', value = req2['jobs'][0])
@@ -146,11 +148,9 @@ async def check_job_status():
         link = f'https://nova.astrometry.net/annotated_display/{job_id}'
         embed.set_image(url = link)
       embed.set_footer(text = 'Made using the Astrometry API')
-      chan = client.get_channel(db['solve_queue'][i][1])
-      await chan.send( f'<@{db["solve_queue"][i][0]}>')
+      
+      await chan.send( f'<@{user}>')
       await chan.send(embed = embed)
-      del db['solve_queue'][i]
-      update(db)
   db['astro_try'] = mktime(datetime.now().timetuple())
   update(db)
 @client.event
