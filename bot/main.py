@@ -9,7 +9,6 @@ from assets.loops.top import update_guilds
 from assets.loops.stats import call_stats
 from assets.database.database import update,retrieve
 from assets.tools.apod import apod
-db = retrieve()
 with open('log.txt','w') as f:
   f.write(retrieve('logs'))
 
@@ -22,7 +21,6 @@ if __name__ == '__main__':
   client = commands.InteractionBot(command_sync_flags = command_sync_flags,reload = True) 
 else:
   exit()
-from json import loads
 from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
 import random
@@ -39,50 +37,62 @@ async def on_ready():
   s = len(client.guilds)
   await update_guilds(client)
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
-  call_set_activity(client,db,'Startup',update)
+  call_set_activity(client,'Startup',update)
   call_stats(client,stats,update)
 
 
-#sends APOD message if one has been released. This piece of code is triggered whenever a message in any server is sent. If it finds a new photo, it saves the updated date in db['apod'] and never does this again till the next day.
+#This is triggered whenever a new message/interaction is sent.
+#It first checks if the last time it check was more than 20 mins ago, if true, then it continues.
+#Checks first if the image that is has was published on the current day
+#Then if image was of earlier than today, it asks for a new image from the apod function
+#If the new image now obtained is the same as the image it already has (which was of earlier than today), this means that the new image for today has not yet
+#been released and it will look for the new image after 20 mins.
+#It then goes to check if all servers have recieved the apod image and if not sends it to those who are missing. 
 async def check_apod():
     global client
-    db = retrieve()
-    if mktime(datetime.now().timetuple()) - db['apod_try'] <= 1200:
-        return
-    if db['daily']['date'] == strftime('%Y %B %d'):
-        db['apod_try'] = mktime(datetime.now().timetuple())
-        update(db)
-        return
+    db_tries = retrieve('db')
+
+    if mktime(datetime.now().timetuple()) - db_tries['apod_try'] <= 1200:
+      return
+    
+    db_tries['apod_try'] = mktime(datetime.now().timetuple())
+    update(db_tries,'tries')
+
+    db_daily = retrieve('daily')
+    if db_daily['date'] == strftime('%Y %B %d'):
+      return
     else:
-        x = apod()
-        if x == db['daily']:
-            db['apod_try'] = mktime(datetime.now().timetuple())
-            update(db)
-            return  
-        db['daily'] = x
-        update(db)
-        daily = db['daily']
-        title = daily['title']
-        desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['desc']}\n\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
-        embed = disnake.Embed(title=title, url=daily['link'], description=desc, color=disnake.Color.orange(),timestamp=datetime.now())
-        embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrow']}")
-        if not daily['video']:
-            embed.set_image(url=daily['link'])
-        for guild in db.keys():
-            if type(guild) == int and db[guild][1] != db['daily']['date']:
-                try:
-                    chan = client.get_channel(db[guild][0])
-                    await chan.send(embed=embed)
-                    if daily['video']:
-                        await chan.send(content = daily['link'])
-                    db[guild][1] = db['daily']['date']
-                except Exception as e:
-                    if guild == 808201667543433238 and db[guild][1] != 'Sent message':
-                        owner = await client.getch_user(client.get_guild(guild).owner_id)
-                        embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
-                        await owner.send(embed = embed)
-                        db[guild][1] = 'Sent message'
-                update(db)
+      x = apod()
+      if x == db_daily:
+        return
+      update(x,'daily')
+    
+    db_guilds = retrieve('guilds')
+    db_daily = retrieve('daily')
+    if all([ db_guilds[i][1]== db_daily['date'] for i in db_guilds]):
+      return
+    
+    title = db_daily['title']
+    desc = f'''{db_daily['date']}\nDiscover the cosmos!\n\n{db_daily['desc']}\n\n{('Credits: '+ db_daily['credits']) if 'credits' in db_daily else ''}'''
+    embed = disnake.Embed(title=title, url=db_daily['link'], description=desc, color=disnake.Color.orange(),timestamp=datetime.now())
+    embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {db_daily['tomorrow']}")
+    if not db_daily['video']:
+      embed.set_image(url=db_daily['link'])
+    for guild in db_guilds.keys():
+      if db_guilds[guild][1] != db_daily['date']: #check if they all have latest apod
+        try:
+          chan = client.get_channel(db_guilds[guild][0])
+          await chan.send(embed=embed)
+          if db_daily['video']:
+              await chan.send(content = db_daily['link'])
+          db_guilds[guild][1] = db_daily['date'] #says they have the latest apod
+        except Exception as e:
+          if guild == 808201667543433238 and db_guilds[guild][1] != 'Sent message':
+            owner = await client.getch_user(client.get_guild(guild).owner_id)
+            embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
+            await owner.send(embed = embed)
+            db_guilds[guild][1] = 'Sent message'
+    update(db_guilds)
       
 
 
@@ -108,25 +118,31 @@ async def suggestion(chan):
 
 
 async def check_job_status():
-  db = retrieve()
-  if mktime(datetime.now().timetuple()) - db['astro_try'] <= 15:
+  queue = retrieve('asrometry')
+  tries = retrieve('tries')
+  if mktime(datetime.now().timetuple()) - tries['astro_try'] <= 20:
     return
-  for i in list(db['solve_queue'].keys()):
-    req2 = get(f'http://nova.astrometry.net/api/submissions/{i}').json()
+  j = 0  
+  while j < len(queue):
+    #schema of queue dict
+    #sub_id: (user_id,channel_id)
+    req2 = get(f'http://nova.astrometry.net/api/submissions/{queue[queue.keys()[j]]}').json()
     
     if req2['processing_finished'] == 'None':
-       continue
+      j += 1
+      continue
   
     if req2['job_calibrations']:
-     job_id = req2['jobs'][0]
+      job_id = req2['jobs'][0]
     elif req2["jobs"][0] != None and get(f'https://nova.astrometry.net/api/jobs/{req2["jobs"][0]}').json()['status'] == 'failure':
       job_id = 'Failure'
     else:
-       continue
+      j += 1
+      continue
     
-    chan = client.get_channel(db['solve_queue'][i][1])
-    user = db["solve_queue"][i][0]
-    del db['solve_queue'][i]
+    chan = client.get_channel(queue[queue.keys()[j]][1])
+    user = queue[queue.keys()[j]][1]
+    queue.pop(queue.keys()[j])
     if job_id == 'Failure':
       embed = disnake.Embed(title="Unsuccessful",description = 'Your submission has failed.',color=disnake.Color.red(),timestamp=datetime.now())
       embed.add_field(name = '`Job ID`', value = req2['jobs'][0])
@@ -150,8 +166,10 @@ async def check_job_status():
     embed.set_footer(text = 'Made using the Astrometry API')
     await chan.send( f'<@{user}>')
     await chan.send(embed = embed)
-  db['astro_try'] = mktime(datetime.now().timetuple())
-  update(db)
+  update(queue,'astrometry')
+  tries['astro_try'] = mktime(datetime.now().timetuple())
+  update(tries,'tries')
+
 @client.event
 async def on_interaction(inter):
   await check_apod()
