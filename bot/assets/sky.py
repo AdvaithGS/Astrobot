@@ -11,8 +11,6 @@ import disnake
 from assets.tools.cooldown import custom_cooldown
 from disnake.ext import commands
 from assets.database.log import log_command
-from assets.database.database import update,retrieve
-db = retrieve()
 
 def setup(bot : commands.Bot):
   bot.add_cog(Sky(bot))
@@ -93,4 +91,4 @@ class Sky(commands.Cog):
     else:
       await ctx.edit_original_message(embed = embed)
 
-    await log_command('sky',db,update,ctx)
+    await log_command('sky',ctx.user.id)
