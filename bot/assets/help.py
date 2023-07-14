@@ -2,9 +2,7 @@ import disnake
 from assets.tools.cooldown import custom_cooldown
 from disnake.ext import commands
 from assets.database.log import log_command
-from assets.database.database import update,retrieve
 from datetime import datetime
-db = retrieve()
 
 def setup(bot : commands.Bot):
   bot.add_cog(Help(bot))
@@ -19,7 +17,7 @@ class Help(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def help(
-    ctx
+    ctx : disnake.ApplicationCommandInteraction
   ):
     '''
     Ask for help regarding the bot's functionalities.
@@ -52,6 +50,8 @@ class Help(commands.Cog):
     __10. `/inspace <ISS/Other>`__ - To get the information of people currently in space, in the ISS or other space stations.
 
     __11. `/news`__- Latest news in astronomy and space science.
+
+    __12. `/solve`__- *NEW* use atrometry.net for solving your images.
     
     Have fun!''', color=disnake.Color.orange(),timestamp=datetime.now())
     embed.set_footer(text= "This bot has been developed with blood, tears, and loneliness by AdvaithGS#6700. Reach out for help or grievances. Vote for us at these websites")
@@ -65,5 +65,5 @@ class Help(commands.Cog):
       await ctx.send(embed=embed, view=view)
     else:
       await ctx.response.send_message(embed=embed, view=view)
-    await log_command('help',db,update,ctx)
+    await log_command('help',ctx.uesr.id)
 
