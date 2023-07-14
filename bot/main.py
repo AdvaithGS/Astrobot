@@ -126,7 +126,7 @@ async def check_job_status():
   while j < len(queue):
     #schema of queue dict
     #sub_id: (user_id,channel_id)
-    req2 = get(f'http://nova.astrometry.net/api/submissions/{queue[queue.keys()[j]]}').json()
+    req2 = get(f'http://nova.astrometry.net/api/submissions/{queue[list(queue.keys())[j]]}').json()
     
     if req2['processing_finished'] == 'None':
       j += 1
@@ -140,9 +140,9 @@ async def check_job_status():
       j += 1
       continue
     
-    chan = client.get_channel(queue[queue.keys()[j]][1])
-    user = queue[queue.keys()[j]][1]
-    queue.pop(queue.keys()[j])
+    chan = client.get_channel(queue[list(queue.keys())[j]][1])
+    user = queue[list(queue.keys())[j]][1]
+    queue.pop(list(queue.keys())[j])
     if job_id == 'Failure':
       embed = disnake.Embed(title="Unsuccessful",description = 'Your submission has failed.',color=disnake.Color.red(),timestamp=datetime.now())
       embed.add_field(name = '`Job ID`', value = req2['jobs'][0])
