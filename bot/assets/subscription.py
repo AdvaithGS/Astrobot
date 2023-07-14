@@ -4,6 +4,7 @@ from disnake.ext import commands
 from assets.database.log import log_command
 from assets.database.database import update,retrieve
 from datetime import datetime
+from time import strftime
 
 def setup(bot : commands.Bot):
   bot.add_cog(Subs(bot))
@@ -26,7 +27,7 @@ class Subs(commands.Cog):
     if ctx.guild.id in db_guilds and ctx.channel.id in db_guilds[ctx.guild.id]:
       embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange(),timestamp=datetime.now())
     else:
-      db_guilds[ctx.guild.id] = [ctx.channel.id,db_guilds['apod']]
+      db_guilds[ctx.guild.id] = [ctx.channel.id,strftime('%Y %B %d')]
       embed = disnake.Embed(title = 'Registered',description = 'This channel has been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange(),timestamp=datetime.now())
 
     await ctx.response.send_message(embed=embed)
