@@ -4,9 +4,7 @@ from assets.tools.cooldown import custom_cooldown
 import disnake
 from disnake.ext import commands
 from assets.database.log import log_command
-from assets.database.database import update,retrieve
 from os import environ
-db = retrieve()
 API_KEY = environ['API_KEY']
 
   
@@ -24,7 +22,7 @@ class daily(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def daily(
-    ctx,
+    ctx :disnake.ApplicationCommandInteraction,
     date : str = ''):
     '''
       Returns the Astronomy Picture Of The Day depending on the arguments given.
@@ -62,4 +60,4 @@ class daily(commands.Cog):
         await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
       else:
         await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-    await log_command('daily_apod',db,update,ctx)
+    await log_command('daily_apod',ctx.user.id)
