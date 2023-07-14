@@ -6,8 +6,6 @@ from disnake.ext import commands
 from assets.tools.cooldown import custom_cooldown
 from requests import get
 from assets.database.log import log_command
-from assets.database.database import update,retrieve
-db = retrieve()
 
 def setup(bot : commands.Bot):
   bot.add_cog(News(bot))
