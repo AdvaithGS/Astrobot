@@ -4,7 +4,6 @@ from disnake.ext import commands
 from assets.database.log import log_command
 from assets.database.database import update,retrieve
 from datetime import datetime
-db = retrieve()
 
 def setup(bot : commands.Bot):
   bot.add_cog(Subs(bot))
@@ -19,22 +18,20 @@ class Subs(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   @commands.has_permissions(manage_channels = True, manage_messages = True)
-  async def channel(ctx):
+  async def channel(ctx:disnake.ApplicationCommandInteraction):
     '''
     Register for the automatic APOD subscription 
     '''
-    if ctx.guild.id in db and ctx.channel.id in db[ctx.guild.id]:
+    db_guilds = retrieve('guilds')
+    if ctx.guild.id in db_guilds and ctx.channel.id in db_guilds[ctx.guild.id]:
       embed = disnake.Embed(title = 'This server already has an APOD subscription',description = 'This channel had previously already been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange(),timestamp=datetime.now())
     else:
-      db[ctx.guild.id] = [ctx.channel.id,db['apod']]
+      db_guilds[ctx.guild.id] = [ctx.channel.id,db_guilds['apod']]
       embed = disnake.Embed(title = 'Registered',description = 'This channel has been registered for the Astronomy Picture of The Day service.', color=disnake.Color.orange(),timestamp=datetime.now())
 
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send(embed=embed)
-    else:
-      await ctx.response.send_message(embed=embed)
-
-    await log_command('channel',db,update,ctx)
+    await ctx.response.send_message(embed=embed)
+    update(db_guilds,'guilds')
+    await log_command('channel',ctx.user.id)
 
   @commands.slash_command()
   @commands.cooldown(1, 10, type=commands.BucketType.user)
@@ -43,14 +40,13 @@ class Subs(commands.Cog):
     '''
     Remove the channel from the APOD subscription
     '''
-    if ctx.guild.id in db:
-      del db[ctx.guild.id]
+    db_guilds = retrieve('guilds') 
+    if ctx.guild.id in db_guilds:
+      del db_guilds[ctx.guild.id]
       embed = disnake.Embed(title = 'Unsubscribed',description = 'Removed from daily APOD feed.', color=disnake.Color.orange())
     else:
       embed = disnake.Embed(title = 'Error',description = 'This server had not been registered to the APOD feed.', color=disnake.Color.orange())
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send(embed=embed)
-    else:
-      await ctx.response.send_message(embed=embed)
-    await log_command('remove',db,update,ctx)
+    await ctx.response.send_message(embed=embed)
+    update(db_guilds,'guilds')
+    await log_command('remove',ctx.user.id)
   
