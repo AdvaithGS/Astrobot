@@ -21,7 +21,7 @@ class News(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def news(
-      ctx,
+      ctx :disnake.ApplicationCommandInteraction,
       limit: int = 5):
     '''
     Get the latest space news.
@@ -47,4 +47,4 @@ class News(commands.Cog):
       await ctx.send(embed=embed)
     else:
       await ctx.response.send_message(embed = embed)
-    await log_command('news',db,update,ctx)
+    await log_command('news',ctx.user.id)
