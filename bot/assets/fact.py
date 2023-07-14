@@ -4,8 +4,6 @@ from assets.tools.cooldown import custom_cooldown
 import disnake
 from disnake.ext import commands
 from assets.database.log import log_command
-from assets.database.database import update,retrieve
-db = retrieve()
 
 def setup(bot : commands.Bot):
   bot.add_cog(Fact(bot))
@@ -19,7 +17,7 @@ class Fact(commands.Cog):
 
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
-  async def fact(ctx):
+  async def fact(ctx:disnake.ApplicationCommandInteraction):
     '''Ask for a fact from the awesome fact repository'''
     #calls random fact function from facts.py
     line = random_fact()
@@ -36,4 +34,4 @@ class Fact(commands.Cog):
     else:
       await ctx.response.send_message(embed = embed)
 
-    await log_command('fact',db,update,ctx)
+    await log_command('fact',ctx.user.id)
