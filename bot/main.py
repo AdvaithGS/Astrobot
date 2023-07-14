@@ -126,7 +126,7 @@ async def check_job_status():
   for i in list(queue.keys()):
     #schema of queue dict
     #sub_id: (user_id,channel_id)
-    req2 = get(f'http://nova.astrometry.net/api/submissions/{queue[i]}').json()
+    req2 = get(f'http://nova.astrometry.net/api/submissions/{i}').json()
     
     if req2['processing_finished'] == 'None':
       continue
