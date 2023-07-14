@@ -2,11 +2,9 @@ import disnake
 from disnake.ext import commands
 from assets.tools.cooldown import custom_cooldown
 from assets.database.log import log_command
-from assets.database.database import update,retrieve
 from assets.wiki.solarsystem import get_body
 from assets.wiki.wiki import get_wiki
 from datetime import datetime
-db = retrieve()
 
 def setup(bot : commands.Bot):
   bot.add_cog(Info(bot))
@@ -50,4 +48,4 @@ class Info(commands.Cog):
 
 
     await ctx.edit_original_message(embed = embed)
-    await log_command('info',db,update,ctx)
+    await log_command('info',ctx.user.id)
