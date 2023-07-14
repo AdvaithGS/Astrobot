@@ -1,16 +1,14 @@
 from json import loads
 from requests import get
-from assets.countries.country_code import find_country
 from os import environ
-API_KEY2 = environ['API_KEY2']
 from datetime import datetime
 import disnake
 from assets.tools.cooldown import custom_cooldown
 from disnake.ext import commands
 from assets.database.log import log_command
-from assets.database.database import update,retrieve
 from assets.countries.reverse import reverse_geocode
-db = retrieve()
+
+API_KEY2 = environ['API_KEY2']
 
 def setup(bot : commands.Bot):
   bot.add_cog(ISS(bot))
@@ -24,7 +22,7 @@ class ISS(commands.Cog):
 
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
-  async def iss(ctx):
+  async def iss(ctx:disnake.ApplicationCommandInteraction):
     '''Gets the current location of the International Space Station'''
     # sends a preemptive message to users
     if type(ctx) == disnake.channel.TextChannel:
@@ -56,4 +54,4 @@ class ISS(commands.Cog):
     else:
       await ctx.edit_original_message(embed = embed,file = file)
 
-    await log_command('iss',db,update,ctx)
+    await log_command('iss',ctx.user.id)
