@@ -21,7 +21,7 @@ class Inspace(commands.Cog):
   @commands.slash_command()  
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def in_space(
-    ctx,
+    ctx: disnake.ApplicationCommandInteraction,
     location:str= commands.Param(choices=['ISS','Other'])):
     '''
     Get the people currently in space.
@@ -59,4 +59,4 @@ class Inspace(commands.Cog):
     else:
       await ctx.response.send_message(embed = embed)
 
-    await log_command('inspace',db,update,ctx)
+    await log_command('inspace',ctx.user.id)
