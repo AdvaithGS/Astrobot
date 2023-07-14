@@ -120,7 +120,7 @@ async def suggestion(chan):
 async def check_job_status():
   queue = retrieve('astrometry')
   tries = retrieve('tries')
-  if mktime(datetime.now().timetuple()) - tries['astro_try'] <= 20:
+  if mktime(datetime.now().timetuple()) - tries['astro_try'] <= 60:
     return
   
   for i in list(queue.keys()):
