@@ -50,4 +50,4 @@ class Webb(commands.Cog):
     else:
       await ctx.edit_original_message(embed = embed)
 
-    await log_command('webb',db,update,ctx)
+    await log_command('webb',ctx.user.id)
