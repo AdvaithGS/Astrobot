@@ -3,10 +3,8 @@ from assets.jameswebb.jameswebb import get_james_webb
 import disnake
 from disnake.ext import commands
 from assets.database.log import log_command
-from assets.database.database import update,retrieve
 from datetime import datetime
 from assets.tools.cooldown import custom_cooldown
-db = retrieve()
 
 def setup(bot : commands.Bot):
   bot.add_cog(Webb(bot))
