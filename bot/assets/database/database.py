@@ -3,13 +3,12 @@ from github import Github
 from time import strftime
 github = Github(environ['API_KEY6'])
 repository = github.get_user().get_repo('db')
-filename = 'db'
 
 def contents(filename = 'db'):
   return repository.get_contents(filename)
   pass
 
-def update(db,filename = 'db',remarks = f"update file on {strftime('%H:%M %d/%m/%Y')}"):
+def update(db,filename,remarks = f"update file on {strftime('%H:%M %d/%m/%Y')}"):
   sha = contents(filename).sha
   try:
     content = str(db)
@@ -17,9 +16,9 @@ def update(db,filename = 'db',remarks = f"update file on {strftime('%H:%M %d/%m/
   except:
     content = str(retrieve())
     f = repository.update_file(filename,remarks,content, sha)
-  pass
   
-def retrieve(filename = 'db'):
+def retrieve(filename:str) -> dict:
+  """Returns the dictionary contained in the mentioned filename."""
   try:
     db = eval(contents(filename).decoded_content.decode())
   except:
