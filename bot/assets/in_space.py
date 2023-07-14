@@ -5,8 +5,6 @@ from assets.tools.cooldown import custom_cooldown
 from requests import get
 from datetime import datetime
 from assets.database.log import log_command
-from assets.database.database import update,retrieve
-db = retrieve()
 
 def setup(bot : commands.Bot):
   bot.add_cog(Inspace(bot))
