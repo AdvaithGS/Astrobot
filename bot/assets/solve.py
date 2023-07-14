@@ -6,7 +6,6 @@ from assets.database.log import log_command
 from assets.database.database import update,retrieve
 from datetime import datetime
 
-db = retrieve()
 
 def setup(bot : commands.Bot):
   bot.add_cog(Solve(bot))
@@ -29,12 +28,13 @@ class Solve(commands.Cog):
     Image: class `disnake.Attachment` 
       The image required to be solved 
     '''
+    queue = retrieve('astrometry')
+
     embed = disnake.Embed(title="Your image has been submitted",description = 'You will be notified in this channel when the image is completely processed.',color=disnake.Color.orange(),timestamp = datetime.now())
     embed.set_image(url = image.url)
     await ctx.response.send_message(embed = embed)
     sub_id = get_sub_id(image.url)
-    db['solve_queue'][sub_id] = (ctx.author.id,ctx.channel.id)
-    print(db['solve_queue'])
-    update(db)
-    await log_command('solve',db,update,ctx)
+    queue[sub_id] = (ctx.author.id,ctx.channel.id)
+    update(queue)
+    await log_command('solve',ctx.user.id)
     
