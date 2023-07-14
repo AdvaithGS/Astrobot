@@ -35,6 +35,6 @@ class Solve(commands.Cog):
     await ctx.response.send_message(embed = embed)
     sub_id = get_sub_id(image.url)
     queue[sub_id] = (ctx.author.id,ctx.channel.id)
-    update(queue)
+    update(queue,'astrometry')
     await log_command('solve',ctx.user.id)
     
