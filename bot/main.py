@@ -4,14 +4,13 @@ from datetime import datetime
 import disnake
 from disnake.ext import commands
 from os import listdir,environ
-from assets.loops.presence import call_set_activity
+from assets.loops.presence import call_set_activity,set_activity
 from assets.loops.top import update_guilds
 from assets.loops.stats import call_stats
 from assets.database.database import update,retrieve
 from assets.tools.apod import apod
 with open('log.txt','w') as f:
   f.write(retrieve('logs'))
-stats = retrieve('stats')
 from time import mktime, strftime
 from requests import get
 if __name__ == '__main__':
@@ -36,8 +35,9 @@ async def on_ready():
   s = len(client.guilds)
   await update_guilds(client)
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
-  call_set_activity(client,'Startup',update)
-  call_stats(client,stats,update)
+  await set_activity(client,"Startup")
+  call_set_activity(client)
+  call_stats(client)
 
 
 #This is triggered whenever a new message/interaction is sent.
