@@ -7,10 +7,10 @@ from assets.database.database import retrieve
 from time import strftime, mktime
 from random import randrange
 def apod(date:str = None):
-    db= retrieve()
+    db_daily= retrieve('daily')
     if date == None:
-        if db['daily']['date'] == strftime('%Y %B %d'):
-            return db['apod']
+        if db_daily['date'] == strftime('%Y %B %d'):
+            return db_daily
         l = 'https://apod.nasa.gov/apod/astropix.html'
     
     elif date.lower() == 'random':
