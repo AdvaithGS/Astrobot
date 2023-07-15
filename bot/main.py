@@ -11,7 +11,6 @@ from assets.database.database import update,retrieve
 from assets.tools.apod import apod
 with open('log.txt','w') as f:
   f.write(retrieve('logs'))
-
 stats = retrieve('stats')
 from time import mktime, strftime
 from requests import get
@@ -90,7 +89,7 @@ async def check_apod():
           if guild == 808201667543433238 and db_guilds[guild][1] != 'Sent message':
             owner = await client.getch_user(client.get_guild(guild).owner_id)
             embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
-            await owner.send(embed = embed)
+            await owner.send(embed = embed)  
             db_guilds[guild][1] = 'Sent message'
     update(db_guilds,'guilds')
       
@@ -120,8 +119,10 @@ async def suggestion(chan):
 async def check_job_status():
   queue = retrieve('astrometry')
   tries = retrieve('tries')
-  if mktime(datetime.now().timetuple()) - tries['astro_try'] <= 60:
+  if mktime(datetime.now().timetuple()) - tries['astro_try'] <= 60 or tries['astro_occ']:
     return
+  tries['astro_occ'] = 1
+  update(tries,'tries')
   
   for i in list(queue.keys()):
     #schema of queue dict
