@@ -167,6 +167,7 @@ async def check_job_status():
     await chan.send(embed = embed)
   update(queue,'astrometry')
   tries['astro_try'] = mktime(datetime.now().timetuple())
+  tries['astro_occ'] = 0
   update(tries,'tries')
 
 @client.event
