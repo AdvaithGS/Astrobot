@@ -4,9 +4,8 @@ from time import strftime
 github = Github(environ['API_KEY6'])
 repository = github.get_user().get_repo('db')
 
-def contents(filename = 'db'):
+def contents(filename):
   return repository.get_contents(filename)
-  pass
 
 def update(db,filename,remarks = f"update file on {strftime('%H:%M %d/%m/%Y')}"):
   sha = contents(filename).sha
@@ -14,7 +13,7 @@ def update(db,filename,remarks = f"update file on {strftime('%H:%M %d/%m/%Y')}")
     content = str(db)
     f = repository.update_file(filename, remarks, content,sha)
   except:
-    content = str(retrieve())
+    content = str(retrieve(filename))
     f = repository.update_file(filename,remarks,content, sha)
   
 def retrieve(filename:str) -> dict:
