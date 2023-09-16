@@ -23,7 +23,7 @@ class daily(commands.Cog):
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def daily(
     ctx :disnake.ApplicationCommandInteraction,
-    date : str = ''):
+    date : str = None):
     '''
       Returns the Astronomy Picture Of The Day depending on the arguments given.
   
