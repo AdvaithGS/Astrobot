@@ -1,4 +1,4 @@
-efrom assets.tools.apod import apod
+from assets.tools.apod import apod
 
 from assets.tools.cooldown import custom_cooldown
 import disnake
