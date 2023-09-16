@@ -1,5 +1,6 @@
 from os import environ
 from github import Github
+from github import Auth 
 auth = Auth.Token(environ['API_KEY6'])
 github = Github(auth = auth)
 from time import strftime
