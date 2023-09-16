@@ -1,4 +1,4 @@
-from assets.tools.apod import apod
+efrom assets.tools.apod import apod
 
 from assets.tools.cooldown import custom_cooldown
 import disnake
@@ -23,7 +23,7 @@ class daily(commands.Cog):
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def daily(
     ctx :disnake.ApplicationCommandInteraction,
-    date : str = ''):
+    date : str = None):
     '''
       Returns the Astronomy Picture Of The Day depending on the arguments given.
   
