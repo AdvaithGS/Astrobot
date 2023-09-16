@@ -36,7 +36,7 @@ class daily(commands.Cog):
       daily = apod(date)
       if not daily:
         daily.append('this is meant to break')
-      desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['explanation']}\n\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
+      desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['desc']}\n\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
   
       #creating an embed 
       embed = disnake.Embed(title=daily['title'], url=daily['link'], description=desc, color=disnake.Color.orange())
