@@ -1,7 +1,8 @@
 from os import environ
 from github import Github
+auth = Auth.Token(environ['API_KEY6'])
+github = Github(auth = auth)
 from time import strftime
-github = Github(environ['API_KEY6'])
 repository = github.get_user().get_repo('db')
 
 def contents(filename):
