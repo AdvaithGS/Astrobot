@@ -56,6 +56,7 @@ class daily(commands.Cog):
           await ctx.response.send_message(content = daily['video'])
       
     except Exception as e:
+      print(e)
       if type(ctx) == disnake.channel.TextChannel:
         await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
       else:
