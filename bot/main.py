@@ -91,6 +91,8 @@ async def check_apod():
             embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
             await owner.send(embed = embed)  
             db_guilds[guild][1] = 'Sent message'
+          else:
+            print(e)
     update(db_guilds,'guilds')
       
 
