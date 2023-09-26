@@ -77,7 +77,9 @@ async def check_apod():
     embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {db_daily['tomorrow']}")
     if not db_daily['video']:
       embed.set_image(url=db_daily['link'])
+
     apod_suc,apod_fail= 0,0
+
     for guild in db_guilds.keys():
       if db_guilds[guild][1] != db_daily['date']: #check if they all have latest apod
         try:
@@ -95,7 +97,8 @@ async def check_apod():
             db_guilds[guild][1] = 'Sent message'
             apod_fail += 1
     if apod_suc == 0:
-      await client.getch_user(756496844867108937).send(f'''
+      user = await client.getch_user(756496844867108937)
+      await user.send(f'''
     {db_daily["date"]}
     Successful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)})
     Total: {apod_fail + apod_suc})''')
