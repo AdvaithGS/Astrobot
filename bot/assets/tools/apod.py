@@ -6,7 +6,7 @@ from assets.database.database import retrieve
 
 from time import strftime, mktime
 from random import randrange
-def apod(date:str):
+def apod(date:str = ''):
     db_daily= retrieve('daily')
     if date == '':
         if db_daily['date'] == strftime('%Y %B %d'):
