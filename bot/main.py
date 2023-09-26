@@ -51,25 +51,25 @@ async def check_apod():
     global client
     db_tries = retrieve('tries')
 
-    if mktime(datetime.now().timetuple()) - db_tries['apod_try'] <= 1200:
+    if mktime(datetime.now().timetuple()) - db_tries['apod_try'] <= 1800:
       return
     
     db_tries['apod_try'] = mktime(datetime.now().timetuple())
     update(db_tries,'tries')
 
     db_daily:dict = retrieve('daily') 
-    if db_daily['date'] == strftime('%Y %B %d'):
+    db_guilds:dict = retrieve('guilds')
+
+
+    #These are all the checks required - to check if all guilds have the latest apod and then if not, whether the apod it has is the latest 
+    if all([ db_guilds[i][1]== strftime('%Y %B %d') for i in db_guilds]):
       return
-    else:
+    elif db_daily['date'] != strftime('%Y %B %d'):
       x = apod()
-      if x == db_daily:
-        return
-      update(x,'daily')
+      if x != db_daily:
+        update(x,'daily')
+        db_daily = x
     
-    db_guilds = retrieve('guilds')
-    db_daily = retrieve('daily')
-    if all([ db_guilds[i][1]== db_daily['date'] for i in db_guilds]):
-      return
     
     title = db_daily['title']
     desc = f'''{db_daily['date']}\nDiscover the cosmos!\n\n{db_daily['desc']}\n\n{('Credits: '+ db_daily['credits']) if 'credits' in db_daily else ''}'''
@@ -94,7 +94,8 @@ async def check_apod():
             await owner.send(embed = embed)  
             db_guilds[guild][1] = 'Sent message'
             apod_fail += 1
-    await client.getch_user(756496844867108937).send(f'''
+    if apod_suc == 0:
+      await client.getch_user(756496844867108937).send(f'''
     {db_daily["date"]}
     Successful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)})
     Total: {apod_fail + apod_suc})''')
