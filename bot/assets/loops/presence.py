@@ -15,7 +15,7 @@ async def set_activity(client,caller):
 
   x = retrieve('logs')
   x += '\n{strftime("%d/%m/%Y-%H:%M")} {caller}: {activity[0]}-{activity[1]}'
-  update(f.read(),'logs')
+  update(x,'logs')
   await client.change_presence(status = disnake.Status.idle,activity = disnake.Activity(name = activity[1],type = activity[0]))
 
 def call_set_activity(client,caller = "Automatic"):
