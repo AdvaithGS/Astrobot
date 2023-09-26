@@ -7,16 +7,12 @@ from time import strftime
 repository = github.get_user().get_repo('db')
 
 def contents(filename):
-  return repository.get_contents(filename)
+  return repository.get_contents(filename, ref = filename)
 
 def update(db,filename,remarks = f"update file on {strftime('%H:%M %d/%m/%Y')}"):
-  sha = contents(filename).sha
-  try:
-    content = str(db)
-    f = repository.update_file(filename, remarks, content,sha)
-  except:
-    content = str(retrieve(filename))
-    f = repository.update_file(filename,remarks,content, sha)
+  contents = contents(filename, ref = filename)
+  content = str(db)
+  f = repository.update_file(filename, remarks, content, contents.sha , branch = 'master')
   
 def retrieve(filename:str) -> dict:
   """Returns the dictionary contained in the mentioned filename."""
