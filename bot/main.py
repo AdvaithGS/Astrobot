@@ -57,7 +57,7 @@ async def check_apod():
     db_tries['apod_try'] = mktime(datetime.now().timetuple())
     update(db_tries,'tries')
 
-    db_daily = retrieve('daily')
+    db_daily:dict = retrieve('daily') 
     if db_daily['date'] == strftime('%Y %B %d'):
       return
     else:
@@ -77,6 +77,7 @@ async def check_apod():
     embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {db_daily['tomorrow']}")
     if not db_daily['video']:
       embed.set_image(url=db_daily['link'])
+    apod_suc,apod_fail= 0,0
     for guild in db_guilds.keys():
       if db_guilds[guild][1] != db_daily['date']: #check if they all have latest apod
         try:
@@ -85,14 +86,19 @@ async def check_apod():
           if db_daily['video']:
               await chan.send(content = db_daily['link'])
           db_guilds[guild][1] = db_daily['date'] #says they have the latest apod
+          apod_suc += 1
         except Exception as e:
           if guild == 808201667543433238 and db_guilds[guild][1] != 'Sent message':
             owner = await client.getch_user(client.get_guild(guild).owner_id)
             embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
             await owner.send(embed = embed)  
             db_guilds[guild][1] = 'Sent message'
-          else:
-            print(e)
+            apod_fail += 1
+    await client.getch_user(756496844867108937).send(f'''
+    {db_daily["date"]}
+    Successful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)})
+    Total: {apod_fail + apod_suc})''')
+        
     update(db_guilds,'guilds')
       
 
