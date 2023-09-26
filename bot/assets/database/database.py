@@ -10,7 +10,7 @@ def contents(filename):
   return repository.get_contents(filename, ref = filename)
 
 def update(db,filename,remarks = f"update file on {strftime('%H:%M %d/%m/%Y')}"):
-  contents = contents(filename, ref = filename)
+  contents = contents(filename)
   content = str(db)
   f = repository.update_file(filename, remarks, content, contents.sha , branch = 'master')
   
