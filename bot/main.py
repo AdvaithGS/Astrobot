@@ -96,14 +96,13 @@ async def check_apod():
             await owner.send(embed = embed)  
             db_guilds[guild][1] = 'Sent message'
             apod_fail += 1
-    if apod_suc == 0:
+    if apod_suc != 0:
       user = await client.getch_user(756496844867108937)
       await user.send(f'''
-    {db_daily["date"]}
-    Successful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)})
-    Total: {apod_fail + apod_suc})''')
-        
-    update(db_guilds,'guilds')
+      {db_daily["date"]}
+      Successful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)})
+      Total: {apod_fail + apod_suc})''')
+      update(db_guilds,'guilds')
       
 
 
