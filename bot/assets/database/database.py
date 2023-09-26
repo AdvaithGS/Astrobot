@@ -7,7 +7,7 @@ from time import strftime
 repository = github.get_user().get_repo('db')
 
 def contents(filename):
-  return repository.get_contents(filename, ref = filename)
+  return repository.get_contents(filename)
 
 def update(db,filename,remarks = f"update file on {strftime('%H:%M %d/%m/%Y')}"):
   contents = contents(filename)
