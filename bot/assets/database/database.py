@@ -10,9 +10,9 @@ def contents(filename):
   return repository.get_contents(filename)
 
 def update(db,filename,remarks = f"update file on {strftime('%H:%M %d/%m/%Y')}"):
-  contents = contents(filename)
+  current = contents(filename)
   content = str(db)
-  f = repository.update_file(filename, remarks, content, contents.sha)
+  f = repository.update_file(filename, remarks, content, current.sha)
   
 def retrieve(filename:str) -> dict:
   """Returns the dictionary contained in the mentioned filename."""
