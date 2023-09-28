@@ -65,5 +65,5 @@ class Help(commands.Cog):
       await ctx.send(embed=embed, view=view)
     else:
       await ctx.response.send_message(embed=embed, view=view)
-    await log_command('help',ctx.uesr.id)
+    await log_command('help',ctx.user.id)
 
