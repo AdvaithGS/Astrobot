@@ -6,6 +6,7 @@ astro_key = environ['API_ASTRO']
 
 def get_sub_id(url):
   x = post('http://nova.astrometry.net/api/login', data = {'request-json' : dumps({'apikey':astro_key})}).json()
+  print('x =',x)
   req = ''
   try:
     req = post('http://nova.astrometry.net/api/url_upload',
