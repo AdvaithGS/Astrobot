@@ -1,5 +1,5 @@
 from requests import post
-from json import dumps
+from json import dumps, loads
 from os import environ
 
 astro_key = environ['API_ASTRO']
@@ -13,8 +13,9 @@ def get_sub_id(url):
       'request-json': 
        dumps(
        { "session": x['session'], "url": url , "scale_units": "degwidth", "scale_lower": 0.1, "scale_upper": 180.0,"downsample_factor" : 2}
-       )}).json()
+       )}).text
   print(req)
+  req = json.loads(req)
   return req['subid']
 
 
