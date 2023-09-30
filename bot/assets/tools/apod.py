@@ -50,7 +50,6 @@ def apod(date:str = ''):
 
     d['desc'] = soup.find_all('p')[2].text.replace('\n',' ').strip().strip('Explanation : ')
 
-    d['tomorrow'] = str(soup.find_all('center')[2].get_text)[47:]
-    d ['tomorrow'] = (d['tomorrow'][d['tomorrow'].find('>',5)+1:d['tomorrow'].find('<',25)]).strip()
+    d['tomorrow'] = soup.find_all('center')[2].text.split('\n')[5].split(':')[-1].strip().title()
 
     return d
