@@ -29,7 +29,16 @@ class Inspace(commands.Cog):
     location: class `str` 
       Search for people in a specific station.
     '''
-    req = loads(get('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json').text)
+    try:
+      req = loads(get('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json').text)
+    except:
+      embed - disnake.Embed(title = "We're Sorry",description = "There appears to be a problem with the [source](https://github.com/corquaid/international-space-station-APIs), try again at another time.",color = disnake.color.Orange(),timestamp = datetime.now())
+      if type(ctx) == disnake.channel.TextChannel:
+        await ctx.send(embed=embed)
+      else:
+        await ctx.response.send_message(embed = embed)
+      return
+  
     check = (location == 'ISS')
     l = ['\n']
     total = 0
