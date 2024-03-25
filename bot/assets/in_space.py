@@ -32,7 +32,7 @@ class Inspace(commands.Cog):
     try:
       req = loads(get('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json').text)
     except:
-      embed = disnake.Embed(title = "We're Sorry",description = "There appears to be a problem with the [source](https://github.com/corquaid/international-space-station-APIs), try again at another time.",color = disnake.color.Orange(),timestamp = datetime.now())
+      embed = disnake.Embed(title = "We're Sorry",description = "There appears to be a problem with the [source](https://github.com/corquaid/international-space-station-APIs), try again at another time.",color = disnake.Color.orange(),timestamp = datetime.now())
       if type(ctx) == disnake.channel.TextChannel:
         await ctx.send(embed=embed)
       else:
