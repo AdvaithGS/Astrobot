@@ -30,8 +30,8 @@ class Info(commands.Cog):
     query: class `str` 
       It can be anything pertaining to astronomy you wish to know about. 
     '''
+    await ctx.send('Generating....this will take some time.')
     try:
-      await ctx.send('Generating....this will take some time.')
       #this get_wiki refernces get_wiki from wiki.py
       title,text,article_url,image_url = get_wiki(query)
       if text:  # create embed
