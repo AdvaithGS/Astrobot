@@ -23,10 +23,7 @@ class Webb(commands.Cog):
     Get the current status of the James Webb Space Telescope
     '''
 
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send('Generating....this will take some time.')
-    else:
-      await ctx.response.send_message('Generating....this will take some time.')
+    await ctx.send('Generating....this will take some time.')
 
     elapsedtime,image,deployment_step,temp = get_james_webb()
     embed = disnake.Embed(title = f'The James Webb Space Telescope - {deployment_step}', description = image[0] ,color =  disnake.Color.orange(),timestamp = datetime.now())

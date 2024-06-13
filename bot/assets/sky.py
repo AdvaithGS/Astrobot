@@ -38,13 +38,8 @@ class Sky(commands.Cog):
     '''
     #Using AstronomyAPI to get .sky 
 
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send('Generating....this will take some time.')
-    else:
-      await ctx.response.send_message('Generating....this will take some time.')
-
+    await ctx.send('Generating....this will take some time.')
     try:
-      location = location[:]
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
       if int(coords[0]) > 0:

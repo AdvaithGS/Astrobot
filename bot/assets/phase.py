@@ -38,15 +38,8 @@ class Phase(commands.Cog):
       The place of which you want to know the phase of the moon.
     '''
     #preemptively send a message to the user
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send('Generating....this will take some time.')
-    else:
-      await ctx.response.send_message('Generating....this will take some time.')
-
-
+    await ctx.send('Generating....this will take some time.')
     try:
-      location = location[:]
-
       #get coordinates of location given by user
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
