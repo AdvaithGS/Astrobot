@@ -31,7 +31,7 @@ class News(commands.Cog):
     desc = ''
     s = get(f'https://api.spaceflightnewsapi.net/v4/articles/?limit={limit}').json()
     index = 0
-    for i in s:
+    for i in s['results']:
       index += 1
       desc += f'''\n**{index}•** __[{i['title']}]({i['url']})__
       {i['summary']}
