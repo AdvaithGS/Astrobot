@@ -1,4 +1,3 @@
-from json import loads
 import random
 from datetime import datetime
 import disnake
@@ -30,7 +29,7 @@ class News(commands.Cog):
       The number of news articles to be fetched. Default value is 5
     '''
     desc = ''
-    s = loads(get(f'https://api.spaceflightnewsapi.net/v3/articles?_limit={limit}').text)
+    s = get(f'https://api.spaceflightnewsapi.net/v3/articles?_limit={limit}').json()
     index = 0
     for i in s:
       index += 1

@@ -1,4 +1,3 @@
-from json import loads
 from requests import get
 from os import environ
 from datetime import datetime
@@ -31,7 +30,7 @@ class ISS(commands.Cog):
       await ctx.response.send_message(content = 'Preparing...')
 
     #queries wheretheissat api
-    req = loads(get('https://api.wheretheiss.at/v1/satellites/25544').text)
+    req = get('https://api.wheretheiss.at/v1/satellites/25544').json()
     location = reverse_geocode(req['latitude'],req['longitude'])
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'

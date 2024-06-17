@@ -1,4 +1,3 @@
-from json import loads
 from requests import get
 from bs4 import BeautifulSoup
 from datetime import datetime

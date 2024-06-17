@@ -1,6 +1,5 @@
 import requests
 from os import environ
-import json
 #get page id from search/page and for each page, check if valid
 #if valid, get the page using https://en.wikipedia.org/w/api.php?format=json&origin=*&action=query&prop=extracts&explaintext=false&exintro&pageids={pageid}
 def get_wiki(query):
@@ -15,7 +14,7 @@ def get_wiki(query):
       'q': query, 'limit': 1
     }
     response = requests.get(url, headers=headers, params=parameters)
-    response = json.loads(response.text)
+    response = response.json()
     #print(response)
     for i in response['pages']:
       #check page validity
@@ -29,7 +28,7 @@ def get_wiki(query):
           'exintro'     : '',
           'pageids'     : str(i['id']) 
         }
-        req = json.loads(requests.get('https://en.wikipedia.org/w/api.php',params = params).text)['query']['pages'][str(i['id'])]['extract'].splitlines()[0]
+        req = requests.get('https://en.wikipedia.org/w/api.php',params = params).json()['query']['pages'][str(i['id'])]['extract'].splitlines()[0]
         title = i['title']
         article_url = 'https://' + 'en' + '.wikipedia.org/wiki/' + i['key']
         image_url = ('https:' + i['thumbnail']['url']).replace('/thumb','')

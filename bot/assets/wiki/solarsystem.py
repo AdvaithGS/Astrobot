@@ -1,10 +1,9 @@
 
 from requests import get
-from json import loads
 
 def get_body(embed,q):
         try:
-          req = loads(get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').text)
+          req = get(f'https://api.le-systeme-solaire.net/rest/bodies/{q}').json()
   
           if req['mass']:
             a = str(req['mass']['massValue'])

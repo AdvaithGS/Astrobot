@@ -1,4 +1,3 @@
-from json import loads
 import disnake
 from disnake.ext import commands
 from assets.tools.cooldown import custom_cooldown
@@ -30,7 +29,7 @@ class Inspace(commands.Cog):
       Search for people in a specific station.
     '''
     try:
-      req = loads(get('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json').text)
+      req = get('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json').json()
     except:
       embed = disnake.Embed(title = "We're Sorry",description = "There appears to be a problem with the [source](https://github.com/corquaid/international-space-station-APIs), try again at another time.",color = disnake.Color.orange(),timestamp = datetime.now())
       if type(ctx) == disnake.channel.TextChannel:
