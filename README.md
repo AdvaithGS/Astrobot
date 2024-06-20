@@ -13,9 +13,9 @@ This is an Astronomy discord bot with various functionalities and uses; created 
 
 ## Invite
 
-Use the below link to invite AstroBot to your server:
+Use [this](https://discord.com/oauth2/authorize?client_id=792458754208956466) link to invite AstroBot to your server:
 
-https://discord.com/api/oauth2/authorize?client_id=792458754208956466&permissions=2147534848&scope=bot
+
 
 
 ## Commands
