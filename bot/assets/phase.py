@@ -39,7 +39,7 @@ class Phase(commands.Cog):
       The place of which you want to know the phase of the moon.
     '''
     #preemptively send a message to the user
-    await inter.response.send_message('Generating....this will take some time.')
+    await inter.response.defer('Generating....this will take some time.')
     try:
       #get coordinates of location given by user
       result = geolocator.geocode(location)
@@ -85,6 +85,6 @@ class Phase(commands.Cog):
       else:
         embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot phase <query>`. Fill a query and do not leave it blank. For example - `@Astrobot phase Kolkata` ,`@Astrobot phase Alsace`', color=disnake.Color.orange())
 
-    await inter.followup.send(embed = embed)
+    await inter.edit_original_message(embed = embed)
 
     await log_command('phase',inter.user.id)
