@@ -26,7 +26,8 @@ class Phase(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def phase(
-    ctx,
+    self,
+    inter : disnake.ApplicationCommandInteraction,
     location : str
   ):
     '''
@@ -38,7 +39,7 @@ class Phase(commands.Cog):
       The place of which you want to know the phase of the moon.
     '''
     #preemptively send a message to the user
-    await ctx.send('Generating....this will take some time.')
+    await inter.response.send_message('Generating....this will take some time.')
     try:
       #get coordinates of location given by user
       result = geolocator.geocode(location)
@@ -84,9 +85,6 @@ class Phase(commands.Cog):
       else:
         embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot phase <query>`. Fill a query and do not leave it blank. For example - `@Astrobot phase Kolkata` ,`@Astrobot phase Alsace`', color=disnake.Color.orange())
 
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send(embed = embed)
-    else:
-      await ctx.edit_original_message(embed = embed)
+    inter.followup.send(embed = embed)
 
-    await log_command('phase',ctx.user.id)
+    await log_command('phase',inter.user.id)
