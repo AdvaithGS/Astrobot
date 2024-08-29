@@ -39,7 +39,7 @@ class Phase(commands.Cog):
       The place of which you want to know the phase of the moon.
     '''
     #preemptively send a message to the user
-    await inter.response.defer('Generating....this will take some time.')
+    await inter.response.defer(with_message = True, ephemeral=True)
     try:
       #get coordinates of location given by user
       result = geolocator.geocode(location)
