@@ -85,6 +85,6 @@ class Phase(commands.Cog):
       else:
         embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot phase <query>`. Fill a query and do not leave it blank. For example - `@Astrobot phase Kolkata` ,`@Astrobot phase Alsace`', color=disnake.Color.orange())
 
-    await inter.edit_original_message(embed = embed)
+    await inter.followup.send(embed = embed)
 
     await log_command('phase',inter.user.id)
