@@ -1,6 +1,6 @@
 from requests import get
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timezone
 from assets.database.database import retrieve
 
 from time import strftime, mktime
@@ -14,7 +14,7 @@ def apod(date:str = ''):
     
     elif date.lower() == 'random':
         delta = mktime(datetime.now().timetuple()) - mktime(datetime(1995,6,16).timetuple())
-        random_date = datetime.utcfromtimestamp(mktime(datetime(1995,6,16).timetuple()) + randrange(int(delta))).strftime('%y%m%d')
+        random_date = datetime.fromtimestamp(mktime(datetime(1995,6,16).timetuple()) + randrange(int(delta)),tz = timezone.utc).strftime('%y%m%d')
         l = f'https://apod.nasa.gov/apod/ap{random_date}.html'
     else:
         date = date.split('-')

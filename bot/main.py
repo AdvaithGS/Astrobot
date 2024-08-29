@@ -111,7 +111,7 @@ async def on_guild_join(guild):
             await chan.send(embed=embed)
         break
 
-async def suggestion(chan):
+async def suggestion(chan : disnake.Interaction.channel):
   if random.randint(1,20) == 4:
     suggestions = ['Astrobot has a facts database! Try `/facts`','Astrobot has a new `inspace` feature, type /inspace to get the people currently in space!',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Join", url="https://discord.gg/ZtPU67wVa5")],'Liking the bot? Leave a review on [Top.gg](https://top.gg/bot/792458754208956466/vote) and and [dbl](https://discordbotlist.com/bots/astrobot-2515/upvote)','Astrobot has a /news feature! Try it to see the latest news in astronomy ']
 
@@ -119,7 +119,7 @@ async def suggestion(chan):
     if type(choice[1]) == disnake.ui.Button:
       view = disnake.ui.View()
       view.add_item(choice[1])
-      await chan.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0],color= disnake.Color.orange()), view = view,timestamp=datetime.now())
+      await chan.send(embed = disnake.Embed(title = 'Quick Tip',description = choice[0],color= disnake.Color.orange(),timestamp = datetime.now()), view = view)
     else:
       await chan.send(embed = disnake.Embed(title = 'Quick Tip', description = choice,color = disnake.Color.orange(),timestamp=datetime.now()))
 
@@ -179,7 +179,7 @@ async def check_job_status():
   update(tries,'tries')
 
 @client.event
-async def on_interaction(inter):
+async def on_interaction(inter : disnake.Interaction):
   await check_apod()
   await suggestion(inter.channel)
 
