@@ -61,9 +61,6 @@ class Help(commands.Cog):
     view.add_item(item=topgg)
     dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
     view.add_item(item=dbl)
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send(embed=embed, view=view)
-    else:
-      await ctx.response.send_message(embed=embed, view=view)
+    await ctx.response.send_message(embed=embed, view=view)
     await log_command('help',ctx.user.id)
 
