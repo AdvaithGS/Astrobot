@@ -19,7 +19,9 @@ class Subs(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   @commands.has_permissions(manage_channels = True, manage_messages = True)
-  async def channel(ctx:disnake.ApplicationCommandInteraction):
+  async def channel(
+    ctx:disnake.ApplicationCommandInteraction
+  ):
     '''
     Register for the automatic APOD subscription 
     '''

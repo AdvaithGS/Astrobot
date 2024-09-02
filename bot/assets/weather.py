@@ -24,7 +24,10 @@ class Weather(commands.Cog):
   @commands.slash_command()  
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   
-  async def weather(ctx:disnake.ApplicationCommandInteraction,location):
+  async def weather(
+    ctx:disnake.ApplicationCommandInteraction,
+    location
+  ):
     '''
     Get the live weather for any specified location
   
@@ -34,7 +37,7 @@ class Weather(commands.Cog):
       The place of which you want to know the weather conditions. 
     '''
     # preemptively send a message to user
-    await ctx.response.send_message(content = 'Preparing...')
+    await ctx.response.defer(with_message=True)
     try:
       location = location[:]
       #query the openweathermap api for weather data
@@ -84,9 +87,6 @@ class Weather(commands.Cog):
       else:
         embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot weather <query>`. Fill a query and do not leave it blank. For example - `@Astrobot weather Madrid` ,`@Astrobot weather Raipur`', color=disnake.Color.orange())
     
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send(embed = embed)
-    else:
-      await ctx.edit_original_message(embed = embed)
+    await ctx.followup.send(embed = embed)
     
     await log_command('weather',ctx.user.id)

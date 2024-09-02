@@ -19,7 +19,8 @@ class Solve(commands.Cog):
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def solve(
     ctx : disnake.ApplicationCommandInteraction,
-    image : disnake.Attachment):
+    image : disnake.Attachment
+  ):
     '''
     Get astronmetry.com to solve your image
 

@@ -25,9 +25,9 @@ class Sky(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def sky(
-    ctx,
+    ctx : disnake.ApplicationCommandInteraction,
     location : str
-    ):
+  ):
     '''
     Get the sky map for any specified location
 
@@ -38,7 +38,7 @@ class Sky(commands.Cog):
     '''
     #Using AstronomyAPI to get .sky 
 
-    await ctx.send('Generating....this will take some time.')
+    await ctx.response.defer(with_message= True)
     try:
       result = geolocator.geocode(location)
       coords,location = result[1],result[0]
@@ -81,9 +81,6 @@ class Sky(commands.Cog):
       else:
         embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot sky <query>`. Fill a query and do not leave it blank. For example - `@Astrobot sky Laos` ,`@Astrobot sky Quito`', color=disnake.Color.orange())
 
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send(embed = embed)
-    else:
-      await ctx.edit_original_message(embed = embed)
+    await ctx.followup.send(embed = embed)
 
     await log_command('sky',ctx.user.id)

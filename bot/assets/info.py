@@ -30,7 +30,7 @@ class Info(commands.Cog):
     query: class `str` 
       It can be anything pertaining to astronomy you wish to know about. 
     '''
-    await ctx.send('Generating....this will take some time.')
+    await ctx.response.defer(with_message = True)
     try:
       #this get_wiki refernces get_wiki from wiki.py
       title,text,article_url,image_url = get_wiki(query)
@@ -47,5 +47,5 @@ class Info(commands.Cog):
       embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange(),timestamp=datetime.now())
 
 
-    await ctx.edit_original_message(embed = embed)
+    await ctx.followup.send(embed = embed)
     await log_command('info',ctx.user.id)

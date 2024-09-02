@@ -44,21 +44,15 @@ class daily(commands.Cog):
       if not daily['video']:
         embed.set_image(url = daily['link'])
       #the message can be activated either via slash command or via message, this takes care of both instances.
-      if type(ctx) == disnake.channel.TextChannel:
-        await ctx.send(embed=embed)
-      else:
-        await ctx.response.send_message(embed=embed)
+      
+      await ctx.response.send_message(embed=embed)
   
       if daily['video']:
-        if type(ctx) == disnake.channel.TextChannel:
-          await ctx.send(daily['video'])
-        else:
-          await ctx.response.send_message(content = daily['video'])
+        await ctx.response.send_message(content = daily['video'])
       
     except Exception as e:
       print(e)
-      if type(ctx) == disnake.channel.TextChannel:
-        await ctx.send('Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
-      else:
-        await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+      
+      await ctx.response.send_message(content ='Either your date is invalid or you\'ve chosen a date too far back. Try another one, remember, it has to be  in YYYY-MM-DD format and it also must be after 1995-06-16, the first day an APOD picture was posted')
+    
     await log_command('daily_apod',ctx.user.id)

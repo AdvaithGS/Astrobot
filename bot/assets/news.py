@@ -19,7 +19,8 @@ class News(commands.Cog):
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def news(
       ctx :disnake.ApplicationCommandInteraction,
-      limit: int = 5):
+      limit: int = 5
+):
     '''
     Get the latest space news.
     
@@ -40,8 +41,7 @@ class News(commands.Cog):
     x = random.choice(s)
     embed.set_image(url = x['imageUrl'])
     embed.set_footer(text = x['title'] + '.\nGenerated using SpaceFlightNews API')
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send(embed=embed)
-    else:
-      await ctx.response.send_message(embed = embed)
+    
+    await ctx.response.send_message(embed = embed)
+
     await log_command('news',ctx.user.id)

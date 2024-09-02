@@ -21,13 +21,12 @@ class ISS(commands.Cog):
 
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
-  async def iss(ctx:disnake.ApplicationCommandInteraction):
+  async def iss(
+    ctx:disnake.ApplicationCommandInteraction
+  ):
     '''Gets the current location of the International Space Station'''
     # sends a preemptive message to users
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send('Preparing...')
-    else:
-      await ctx.response.send_message(content = 'Preparing...')
+    await ctx.response.defer(with_message=True)
 
     #queries wheretheissat api
     req = get('https://api.wheretheiss.at/v1/satellites/25544').json()
@@ -48,9 +47,6 @@ class ISS(commands.Cog):
     embed.add_field(name ='Visibility',value = req['visibility'].title())
     embed.set_footer(text='This request was built using the python reverse_geocoder library, WhereTheIssAt API and the MapQuest Api.')
     
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send(embed=embed,file = file)
-    else:
-      await ctx.edit_original_message(embed = embed,file = file)
+    await ctx.followup.send(embed = embed,file = file)
 
     await log_command('iss',ctx.user.id)

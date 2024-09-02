@@ -22,7 +22,7 @@ class Help(commands.Cog):
     '''
     Ask for help regarding the bot's functionalities.
     '''
-    await ctx.response.defer(with_message=True, ephemeral=True)
+    await ctx.response.defer(with_message=True)
     embed = disnake.Embed(title='Help has arrived.', 
     description=
     '''

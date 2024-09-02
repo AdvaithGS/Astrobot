@@ -29,9 +29,6 @@ class Fact(commands.Cog):
     except:
       pass
      
-    if type(ctx) == disnake.channel.TextChannel:
-      await ctx.send(embed=embed)
-    else:
-      await ctx.response.send_message(embed = embed)
+    await ctx.response.send_message(embed = embed)
 
     await log_command('fact',ctx.user.id)
