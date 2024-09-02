@@ -22,6 +22,7 @@ class Help(commands.Cog):
     '''
     Ask for help regarding the bot's functionalities.
     '''
+    await ctx.response.defer(with_message=True, ephemeral=True)
     embed = disnake.Embed(title='Help has arrived.', 
     description=
     '''
@@ -61,6 +62,6 @@ class Help(commands.Cog):
     view.add_item(item=topgg)
     dbl = disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Dbl", url="https://discordbotlist.com/bots/astrobot-2515/upvote")
     view.add_item(item=dbl)
-    await ctx.response.send_message(embed=embed, view=view)
+    await ctx.followup.send(embed=embed, view=view)
     await log_command('help',ctx.user.id)
 
