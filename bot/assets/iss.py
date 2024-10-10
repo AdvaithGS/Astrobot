@@ -7,7 +7,7 @@ from disnake.ext import commands
 from assets.database.log import log_command
 from assets.countries.reverse import reverse_geocode
 
-API_KEY2 = environ['API_KEY2']
+ISS_KEY = environ['ISS_KEY']
 
 def setup(bot : commands.Bot):
   bot.add_cog(ISS(bot))
@@ -34,7 +34,7 @@ class ISS(commands.Cog):
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'
     #gets map image
-    url = get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={API_KEY2}')
+    url = get(f'https://www.mapquestapi.com/staticmap/v5/map?size=700,400@2x&zoom=2&defaultMarker=marker-FF0000-FFFFFF&center={place}&type=hyb&locations={place}&key={ISS_KEY}')
     with open('iss.jpg', 'wb') as f:
       f.write(url.content) #saves image as file
     file = disnake.File('iss.jpg') #creates file object for attaching to embed

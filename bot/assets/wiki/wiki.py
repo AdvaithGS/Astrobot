@@ -6,7 +6,7 @@ def get_wiki(query):
   l = ['atom','moon','star','space','astro','cluster','galaxy','sky','planet','solar','science','physics','scientist','cosmos']
   try:
     headers = {
-      'Authorization': environ['API_KEY5'],
+      'Authorization': environ['WIKI_KEY'],
       'User-Agent': 'Advaith'
     }
     url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page'
