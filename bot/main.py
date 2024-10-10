@@ -22,11 +22,11 @@ else:
 from geopy import Nominatim
 geolocator = Nominatim(user_agent = 'AstroBot')
 import random
-API_KEY = environ['API_KEY']  #required for check_apod
-API_KEY2 = environ['API_KEY2']
-API_KEY3 = environ['API_KEY3']
-secret = environ['API_KEY4']
-appid = environ['APP_ID']
+APOD_KEY = environ['APOD_KEY']  #required for check_apod
+ISS_KEY = environ['ISS_KEY']
+WEA_KEY = environ['WEA_KEY']
+secret = environ['ASTRON_API_KEY']
+appid = environ['ASTRON_APP_ID']
 
 
 
@@ -201,4 +201,4 @@ async def on_message(message):
     await check_apod()
     await check_job_status()
   
-client.run(environ['TOKEN'])
+client.run(environ['DSC_KEY'])

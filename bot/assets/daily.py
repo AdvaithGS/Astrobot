@@ -5,7 +5,7 @@ import disnake
 from disnake.ext import commands
 from assets.database.log import log_command
 from os import environ
-API_KEY = environ['API_KEY']
+APOD_KEY = environ['APOD_KEY']
 
   
 def setup(bot : commands.Bot):

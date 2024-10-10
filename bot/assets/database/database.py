@@ -1,7 +1,7 @@
 from os import environ
 from github import Github
 from github import Auth 
-auth = Auth.Token(environ['API_KEY6'])
+auth = Auth.Token(environ['GH_KEY'])
 github = Github(auth = auth)
 from time import strftime
 repository = github.get_user().get_repo('db')

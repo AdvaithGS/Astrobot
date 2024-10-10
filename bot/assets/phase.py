@@ -5,8 +5,8 @@ geolocator = Nominatim(user_agent = 'AstroBot')
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
 from os import environ
-appid = environ['APP_ID']
-secret = environ['API_KEY4']
+appid = environ['ASTRON_APP_ID']
+secret = environ['ASTRON_API_KEY']
 
 import disnake
 from disnake.ext import commands
