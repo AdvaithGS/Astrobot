@@ -112,7 +112,7 @@ async def on_guild_join(guild):
         break
 
 async def suggestion(chan : disnake.Interaction.channel):
-  if random.randint(1,20) == 4:
+  if random.randint(1,4) == 4:
     suggestions = ['Astrobot has a facts database! Try `/facts`','Astrobot has a new `inspace` feature, type /inspace to get the people currently in space!',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Join", url="https://discord.gg/ZtPU67wVa5")],'Liking the bot? Leave a review on [Top.gg](https://top.gg/bot/792458754208956466/vote) and and [dbl](https://discordbotlist.com/bots/astrobot-2515/upvote)','Astrobot has a /news feature! Try it to see the latest news in astronomy ']
 
     choice = random.choice(suggestions)
