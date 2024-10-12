@@ -3,7 +3,7 @@ from datetime import datetime
 import disnake
 from disnake.ext import commands
 from assets.tools.cooldown import custom_cooldown
-from requests import get
+from assets.tools.webpage import get
 from assets.database.log import log_command
 
 def setup(bot : commands.Bot):
@@ -30,7 +30,7 @@ class News(commands.Cog):
       The number of news articles to be fetched. Default value is 5
     '''
     desc = ''
-    s = get(f'https://api.spaceflightnewsapi.net/v4/articles/?limit={limit}').json()
+    s = get(f'https://api.spaceflightnewsapi.net/v4/articles/?limit={limit}',"json")
     index = 0
     for i in s['results']:
       index += 1
