@@ -12,5 +12,5 @@ async def main(page, type : str, params : dict = {}):
              return await resp.read()
 
 def get(page : str,type : str,params : dict = {}):
-  loop = asyncio.get_event_loop()
-  return loop.run_until_complete(main(page,type,params))
+  return asyncio.run(main(page,type,params))
+  # return loop.run_until_complete(main(page,type,params))
