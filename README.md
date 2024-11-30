@@ -7,6 +7,7 @@ This is an Astronomy discord bot with various functionalities and uses; created 
 * [Vote](#Vote)
 * [Support](#Support)
 * [Targets](#Targets)
+* [Contribute](#Contribute)
 * [Creator](#Creator)
 
 
@@ -126,6 +127,11 @@ https://discord.gg/ZtPU67wVa5
 6. [ ] Use NASA's PDS Search API
 
 7. [ ] Beef up /news to add other news sources
+
+## Contribute
+### Help Astrobot become better!
+Always welcome more inputs, through issues and PRs. Open one if youve any ideas or constructive improvements to the bot.
+Also, if you dont want to contribute to the code, you can also add to the [facts.txt](https://github.com/AdvaithGS/Astrobot/blob/master/bot/assets/facts/facts.txt) database :)
 
 ## Creator
 
