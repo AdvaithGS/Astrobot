@@ -29,8 +29,14 @@ class ISS(commands.Cog):
     await ctx.response.defer(with_message=True)
 
     #queries wheretheissat api
-    req = get('https://api.wheretheiss.at/v1/satellites/25544').json()
-    location = reverse_geocode(req['latitude'],req['longitude'])
+    req = get('https://api.wheretheiss.at/v1/satellites/25544')
+    try:
+      req = req.json()
+      location = reverse_geocode(req['latitude'],req['longitude'])
+    except:
+      print(req)
+      location = "Unnamed Location"
+    
     lat,long = round(req['latitude'],3),round(req['longitude'],3)
     place = f'{lat},{long}'
     #gets map image
