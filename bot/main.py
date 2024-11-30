@@ -12,7 +12,7 @@ from assets.tools.apod import apod
 with open('log.txt','w') as f:
   f.write(retrieve('logs'))
 from time import mktime, strftime
-from requests import get
+from assets.tools.webpage import get
 if __name__ == '__main__':
   command_sync_flags = commands.CommandSyncFlags.default()
   command_sync_flags.sync_commands_debug = True
@@ -112,7 +112,7 @@ async def on_guild_join(guild):
         break
 
 async def suggestion(chan : disnake.Interaction.channel):
-  if random.randint(1,4) == 4:
+  if random.randint(1,6) == 4:
     suggestions = ['Astrobot has a facts database! Try `/facts`','Astrobot has a new `inspace` feature, type /inspace to get the people currently in space!',['Astrobot has a support server! Join for any queries, problems, or suggestions', disnake.ui.Button(style=disnake.ButtonStyle.blurple, label="Join", url="https://discord.gg/ZtPU67wVa5")],'Liking the bot? Leave a review on [Top.gg](https://top.gg/bot/792458754208956466/vote) and and [dbl](https://discordbotlist.com/bots/astrobot-2515/upvote)','Astrobot has a /news feature! Try it to see the latest news in astronomy ']
 
     choice = random.choice(suggestions)
@@ -135,14 +135,14 @@ async def check_job_status():
   for i in list(queue.keys()):
     #schema of queue dict
     #sub_id: (user_id,channel_id)
-    req2 = get(f'http://nova.astrometry.net/api/submissions/{i}').json()
+    req2 = get(f'http://nova.astrometry.net/api/submissions/{i}',"json")
     
     if req2['processing_finished'] == 'None':
       continue
   
     if req2['job_calibrations']:
       job_id = req2['jobs'][0]
-    elif req2["jobs"][0] != None and get(f'https://nova.astrometry.net/api/jobs/{req2["jobs"][0]}').json()['status'] == 'failure':
+    elif req2["jobs"][0] != None and get(f'https://nova.astrometry.net/api/jobs/{req2["jobs"][0]}',"json")['status'] == 'failure':
       job_id = 'Failure'
     else:
       continue
@@ -156,14 +156,14 @@ async def check_job_status():
     else:
       desc = 'This is the result of your submission.\n## Objects\n'
       
-      for j in get(f'https://nova.astrometry.net/api/jobs/{job_id}/annotations/').json()['annotations']:
+      for j in get(f'https://nova.astrometry.net/api/jobs/{job_id}/annotations/',"json")['annotations']:
         desc += f"* {j['names'][-1]}: \n\t`{round(j['pixelx'],2)},{round(j['pixely'],2)}`\n"
       
       embed = disnake.Embed(title="Platesolving successful",description = desc,color=disnake.Color.orange(),timestamp=datetime.now())
       embed.add_field(name = 'Job ID', value = f'`{req2["jobs"][0]}`')
       
       #ra,dec,radius
-      data = get(f'http://nova.astrometry.net/api/jobs/{job_id}/calibration/').json()
+      data = get(f'http://nova.astrometry.net/api/jobs/{job_id}/calibration/',"json")
       embed.add_field(name = 'Right Ascension',value = f'`{round(data["ra"],3)}`' )
       embed.add_field(name = 'Declination', value = f'`{round(data["dec"],3)}`' )
       embed.add_field(name = 'Radius', value = f'`{round(data["radius"],3)}`' )
