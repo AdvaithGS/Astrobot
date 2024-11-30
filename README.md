@@ -7,7 +7,7 @@ This is an Astronomy discord bot with various functionalities and uses; created 
 * [Vote](#Vote)
 * [Support](#Support)
 * [Targets](#Targets)
-* [Contribute](#Contribute)
+* [Contribute](#Contribute) !!!
 * [Creator](#Creator)
 
 
