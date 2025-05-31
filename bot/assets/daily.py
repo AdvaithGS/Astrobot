@@ -22,6 +22,7 @@ class daily(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def daily(
+    self,
     ctx :disnake.ApplicationCommandInteraction,
     date : str = ''):
     '''
@@ -37,7 +38,7 @@ class daily(commands.Cog):
       if not daily:
         daily.append('this is meant to break')
       desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['desc']}\n\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
-  
+
       #creating an embed 
       embed = disnake.Embed(title=daily['title'], url=daily['link'], description=desc, color=disnake.Color.orange())
       embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrow']}")
