@@ -45,7 +45,7 @@ class daily(commands.Cog):
       if not daily['video']:
         embed.set_image(url = daily['link'])
       #the message can be activated either via slash command or via message, this takes care of both instances.
-      await print("DAILY CALLED");
+      print("DAILY CALLED");
       await ctx.response.send_message(embed=embed)
   
       if daily['video']:
