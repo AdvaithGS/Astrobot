@@ -18,6 +18,7 @@ class Inspace(commands.Cog):
   @commands.slash_command()  
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def in_space(
+    self,
     ctx: disnake.ApplicationCommandInteraction,
     location:str= commands.Param(choices=['ISS','Other'])):
     '''

@@ -19,6 +19,7 @@ class Info(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def info(
+    self,
     ctx : disnake.ApplicationCommandInteraction,
     query : str 
   ):

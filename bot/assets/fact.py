@@ -17,7 +17,10 @@ class Fact(commands.Cog):
 
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
-  async def fact(ctx:disnake.ApplicationCommandInteraction):
+  async def fact(
+    self,
+    ctx:disnake.ApplicationCommandInteraction
+    ):
     '''Ask for a fact from the awesome fact repository'''
     #calls random fact function from facts.py
     line = random_fact()

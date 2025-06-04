@@ -17,6 +17,7 @@ class Help(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def help(
+    self,
     ctx : disnake.ApplicationCommandInteraction
   ):
     '''
