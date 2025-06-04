@@ -20,6 +20,7 @@ class Subs(commands.Cog):
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   @commands.has_permissions(manage_channels = True, manage_messages = True)
   async def channel(
+    self,
     ctx:disnake.ApplicationCommandInteraction
   ):
     '''

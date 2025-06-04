@@ -18,6 +18,7 @@ class Solve(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def solve(
+    self,
     ctx : disnake.ApplicationCommandInteraction,
     image : disnake.Attachment
   ):

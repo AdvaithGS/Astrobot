@@ -25,6 +25,7 @@ class Weather(commands.Cog):
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   
   async def weather(
+    self,
     ctx:disnake.ApplicationCommandInteraction,
     location
   ):
