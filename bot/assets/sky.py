@@ -25,6 +25,7 @@ class Sky(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def sky(
+    self,
     ctx : disnake.ApplicationCommandInteraction,
     location : str
   ):

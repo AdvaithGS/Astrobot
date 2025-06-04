@@ -18,6 +18,7 @@ class News(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def news(
+      self,
       ctx :disnake.ApplicationCommandInteraction,
       limit: int = 5
 ):

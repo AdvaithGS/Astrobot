@@ -22,6 +22,7 @@ class ISS(commands.Cog):
   @commands.slash_command()
   @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   async def iss(
+    self,
     ctx:disnake.ApplicationCommandInteraction
   ):
     '''Gets the current location of the International Space Station'''
