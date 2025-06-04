@@ -40,7 +40,10 @@ class Subs(commands.Cog):
   @commands.slash_command()
   @commands.cooldown(1, 10, type=commands.BucketType.user)
   @commands.has_permissions(manage_channels = True, manage_messages = True)
-  async def remove(ctx):
+  async def remove(
+    self,
+    ctx:disnake.ApplicationCommandInteraction
+    ):
     '''
     Remove the channel from the APOD subscription
     '''
