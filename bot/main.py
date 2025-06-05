@@ -183,6 +183,7 @@ async def on_interaction(inter : disnake.Interaction):
   await check_apod()
   await suggestion(inter.channel)
 
+#LOAD COGS
 for i in listdir('./bot/assets'):
   if i.endswith('.py'):
     client.load_extension(f'assets.{i[:-3]}')
