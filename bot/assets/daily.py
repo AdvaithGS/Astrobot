@@ -43,9 +43,10 @@ class daily(commands.Cog):
       embed = disnake.Embed(title=daily['title'], url=daily['link'], description=desc, color=disnake.Color.orange())
       embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrow']}")
       if not daily['video']:
+        print("image")
         embed.set_image(url = daily['link'])
       #the message can be activated either via slash command or via message, this takes care of both instances.
-      print("DAILY CALLED");
+      print("DAILY CALLED",daily['link']);
       await ctx.response.send_message(embed=embed)
   
       if daily['video']:
