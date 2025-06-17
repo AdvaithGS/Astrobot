@@ -3,7 +3,7 @@
 from datetime import datetime
 import disnake
 from disnake.ext import commands
-from os import listdir,environ
+from os import listdir,environ, getcwd
 from assets.loops.presence import call_set_activity,set_activity
 from assets.loops.top import update_guilds
 from assets.loops.stats import call_stats
@@ -35,6 +35,7 @@ async def on_ready():
   s = len(client.guilds)
   await update_guilds(client)
   print('We have logged in as {0.user}, id {0.user.id} in {1} guilds'.format(client,s))
+  print(getcwd())
   await set_activity(client,"Startup")
   call_set_activity(client)
   call_stats(client)
@@ -51,7 +52,7 @@ async def check_apod():
     global client
     db_tries = retrieve('tries')
 
-    if mktime(datetime.now().timetuple()) - db_tries['apod_try'] <= 1800:
+    if mktime(datetime.now().timetuple()) - db_tries['apod_try'] <= 2700:
       return
     
     db_tries['apod_try'] = mktime(datetime.now().timetuple())
@@ -76,7 +77,11 @@ async def check_apod():
     embed = disnake.Embed(title=title, url=db_daily['link'], description=desc, color=disnake.Color.orange(),timestamp=datetime.now())
     embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {db_daily['tomorrow']}")
     if not db_daily['video']:
-      embed.set_image(url=db_daily['link'])
+      with open("today.jpg",'wb') as f:
+        f.write(get(db_daily['link'],"content"))
+      
+      file = disnake.File("./today.jpg", filename="today.jpg")
+      embed.set_image(file=file)
 
     apod_suc,apod_fail= 0,0
 
