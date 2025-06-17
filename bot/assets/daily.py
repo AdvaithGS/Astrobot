@@ -51,7 +51,7 @@ class daily(commands.Cog):
   
   #handling errors, if the query is wrong or not related to space
     except:
-      embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange(),timestamp=datetime.now())
+      embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange(),timestamp=datetime.datetime.now())
 
 
     await ctx.followup.send(embed = embed)
