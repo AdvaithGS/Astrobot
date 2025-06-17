@@ -46,6 +46,7 @@ class daily(commands.Cog):
         embed = disnake.Embed(title = title ,url = article_url, description = text, color=disnake.Color.orange(),timestamp=datetime.datetime.now())
         get_body(embed, query)
         embed.set_footer(text = f'Obtained from Solar System OpenData API and the Wikipedia API')
+        print(dail['link'])
         embed.set_image(url = dail['link'])
       else:
         embed = disnake.Embed(title = title , description = 'Try again with a refined search parameter', color=disnake.Color.orange(),timestamp=datetime.datetime.now())
