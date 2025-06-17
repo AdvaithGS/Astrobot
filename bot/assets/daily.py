@@ -42,20 +42,18 @@ class daily(commands.Cog):
       #this get_wiki refernces get_wiki from wiki.py
       title,text,article_url,image_url = get_wiki(query)
       if text:  # create embed
-        embed = disnake.Embed(title = title ,url = article_url, description = text, color=disnake.Color.orange(),timestamp=datetime.now())
+        embed = disnake.Embed(title = title ,url = article_url, description = text, color=disnake.Color.orange(),timestamp=datetime.datetime.now())
         get_body(embed, query)
         embed.set_footer(text = f'Obtained from Solar System OpenData API and the Wikipedia API')
         embed.set_image(url = image_url)
       else:
-        embed = disnake.Embed(title = title , description = 'Try again with a refined search parameter', color=disnake.Color.orange(),timestamp=datetime.now())
+        embed = disnake.Embed(title = title , description = 'Try again with a refined search parameter', color=disnake.Color.orange(),timestamp=datetime.datetime.now())
   
-  #handling errors, if the query is wrong or not related to space
+    #handling errors, if the query is wrong or not related to space
     except:
       embed = disnake.Embed(title = 'Invalid query' , description = 'The command is `@Astrobot info <query>`. Fill a query and do not leave it blank. For example - `@Astrobot info Uranus` ,`@Astrobot info Apollo 11`', color=disnake.Color.orange(),timestamp=datetime.datetime.now())
 
-
     await ctx.followup.send(embed = embed)
-    await log_command('info',ctx.user.id)
     # try:
     #   daily = apod(date)
     #   if not daily:
