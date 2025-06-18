@@ -5,10 +5,8 @@ from assets.tools.cooldown import custom_cooldown
 import disnake
 from os import listdir, getcwd
 from disnake.ext import commands
-from assets.tools.webpage import get
+from requests import get
 from assets.database.log import log_command
-from assets.wiki.solarsystem import get_body
-from assets.wiki.wiki import get_wiki
 from os import environ
 APOD_KEY = environ['APOD_KEY']
 
@@ -38,7 +36,7 @@ class daily(commands.Cog):
       date: class `str` 
         It can be "random" or any date that you choose, in YYYY-MM-DD format.
     '''
-    await ctx.response.defer(with_message = True)
+    # await ctx.response.defer(with_message = True)
     try:
       daily = apod(date)
       if not daily:
@@ -51,8 +49,7 @@ class daily(commands.Cog):
       if not daily['video']:
         if(date == ''):
           with open("apod.jpg",'wb') as f:
-            content = await get(daily['link'],"content") 
-            f.write(content)
+            f.write(get(daily['link']).content)
             file = disnake.File("./apod.jpg", filename="apod.jpg")
         else:
           if("today.jpg" in listdir()):
@@ -60,8 +57,7 @@ class daily(commands.Cog):
           else:
             print(getcwd())
             with open("apod.jpg",'wb') as f:
-              content = await get(daily['link'],"content") 
-              f.write(content)
+              f.write(get(daily['link']).content)
               file = disnake.File("./apod.jpg", filename="apod.jpg")
           
         embed.set_image(file=file)
