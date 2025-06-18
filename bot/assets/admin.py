@@ -1,9 +1,7 @@
 import disnake
 from disnake.ext import commands
-from assets.tools.cooldown import custom_cooldown
-from assets.database.log import log_command
-from assets.wiki.solarsystem import get_body
-from assets.wiki.wiki import get_wiki
+from assets.database.database import retrieve
+from time import strftime
 from datetime import datetime
 
 def setup(bot : commands.Bot):
@@ -20,9 +18,62 @@ class Admin(commands.Cog):
 
   @commands.slash_command()
   @commands.check(check_if_it_is_me)
-  async def hello(ctx):
+  async def hello(
+    self,
+    ctx : disnake.ApplicationCommandInteraction):
     await ctx.send('Hello Advaith, I know you!')
+  
+  # @commands.slash_command()
+  # @commands.check(check_if_it_is_me)
+  # async def execute_order_66():
+  #   db_daily:dict = retrieve('daily') 
+  #   db_guilds:dict = retrieve('guilds')
 
+
+
+  #   #These are all the checks required - to check if all guilds have the latest apod and then if not, whether the apod it has is the latest 
+  #   if all([ db_guilds[i][1]== strftime('%Y %B %d') for i in db_guilds]):
+  #     return
+  #   elif db_daily['date'] != strftime('%Y %B %d'):
+  #     x = apod()
+  #     if x != db_daily:
+  #       update(x,'daily')
+  #       db_daily = x
+    
+    
+  #   title = db_daily['title']
+  #   desc = f'''{db_daily['date']}\nDiscover the cosmos!\n\n{db_daily['desc']}\n\n{('Credits: '+ db_daily['credits']) if 'credits' in db_daily else ''}'''
+  #   embed = disnake.Embed(title=title, url=db_daily['link'], description=desc, color=disnake.Color.orange(),timestamp=datetime.now())
+  #   embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {db_daily['tomorrow']}")
+  #   if not db_daily['video']:
+  #     with open("today.jpg",'wb') as f:
+  #       f.write(get(db_daily['link'],"content"))
+      
+  #     file = disnake.File("./today.jpg", filename="today.jpg")
+  #     embed.set_image(file=file)
+
+  #   apod_suc,apod_fail= 0,0
+
+  #   for guild in db_guilds.keys():
+  #     if db_guilds[guild][1] != db_daily['date']: #check if they all have latest apod
+  #       try:
+  #         chan = client.get_channel(db_guilds[guild][0])
+  #         await chan.send(embed=embed)
+  #         if db_daily['video']:
+  #             await chan.send(content = db_daily['link'])
+  #         db_guilds[guild][1] = db_daily['date'] #says they have the latest apod
+  #         apod_suc += 1
+  #       except Exception as e:
+  #         if guild == 808201667543433238 and db_guilds[guild][1] != 'Sent message':
+  #           owner = await client.getch_user(client.get_guild(guild).owner_id)
+  #           embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
+  #           await owner.send(embed = embed)  
+  #           db_guilds[guild][1] = 'Sent message'
+  #           apod_fail += 1
+  #   if apod_suc != 0:
+  #     user = await client.getch_user(756496844867108937)
+  #     await user.send(f'''{db_daily["date"]}\nSuccessful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)})\nTotal: {apod_fail + apod_suc}\nGuilds: {len(client.guilds)}''')
+  #     update(db_guilds,'guilds')
   # @commands.slash_command()
   # @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   # async def hello(
