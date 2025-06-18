@@ -12,7 +12,8 @@ from assets.tools.apod import apod
 with open('log.txt','w') as f:
   f.write(retrieve('logs'))
 from time import mktime, strftime
-from assets.tools.webpage import get
+from assets.tools.webpage import get as gets
+from requests import get
 if __name__ == '__main__':
   command_sync_flags = commands.CommandSyncFlags.default()
   command_sync_flags.sync_commands_debug = True
@@ -78,7 +79,7 @@ async def check_apod():
     embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {db_daily['tomorrow']}")
     if not db_daily['video']:
       with open("today.jpg",'wb') as f:
-        f.write(get(db_daily['link'],"content"))
+        f.write(get(db_daily['link']).content)
       
       file = disnake.File("./today.jpg", filename="today.jpg")
       embed.set_image(file=file)
@@ -140,14 +141,14 @@ async def check_job_status():
   for i in list(queue.keys()):
     #schema of queue dict
     #sub_id: (user_id,channel_id)
-    req2 = get(f'http://nova.astrometry.net/api/submissions/{i}',"json")
+    req2 = gets(f'http://nova.astrometry.net/api/submissions/{i}',"json")
     
     if req2['processing_finished'] == 'None':
       continue
   
     if req2['job_calibrations']:
       job_id = req2['jobs'][0]
-    elif req2["jobs"][0] != None and get(f'https://nova.astrometry.net/api/jobs/{req2["jobs"][0]}',"json")['status'] == 'failure':
+    elif req2["jobs"][0] != None and gets(f'https://nova.astrometry.net/api/jobs/{req2["jobs"][0]}',"json")['status'] == 'failure':
       job_id = 'Failure'
     else:
       continue
@@ -161,14 +162,14 @@ async def check_job_status():
     else:
       desc = 'This is the result of your submission.\n## Objects\n'
       
-      for j in get(f'https://nova.astrometry.net/api/jobs/{job_id}/annotations/',"json")['annotations']:
+      for j in gets(f'https://nova.astrometry.net/api/jobs/{job_id}/annotations/',"json")['annotations']:
         desc += f"* {j['names'][-1]}: \n\t`{round(j['pixelx'],2)},{round(j['pixely'],2)}`\n"
       
       embed = disnake.Embed(title="Platesolving successful",description = desc,color=disnake.Color.orange(),timestamp=datetime.now())
       embed.add_field(name = 'Job ID', value = f'`{req2["jobs"][0]}`')
       
       #ra,dec,radius
-      data = get(f'http://nova.astrometry.net/api/jobs/{job_id}/calibration/',"json")
+      data = gets(f'http://nova.astrometry.net/api/jobs/{job_id}/calibration/',"json")
       embed.add_field(name = 'Right Ascension',value = f'`{round(data["ra"],3)}`' )
       embed.add_field(name = 'Declination', value = f'`{round(data["dec"],3)}`' )
       embed.add_field(name = 'Radius', value = f'`{round(data["radius"],3)}`' )
