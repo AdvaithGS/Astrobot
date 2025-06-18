@@ -65,9 +65,8 @@ class daily(commands.Cog):
       #the message can be activated either via slash command or via message, this takes care of both instances.
       print("DAILY CALLED",daily['link']);
       
-      embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow\'s image: {daily['tomorrow']}")
+      embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\n{"Tomorrow\'s image:" if daily['tomorrow'] != ''  else ''} {daily['tomorrow']}")
       
-      print(daily)
       await ctx.response.send_message(embed=embed)
 
       if daily['video']:
