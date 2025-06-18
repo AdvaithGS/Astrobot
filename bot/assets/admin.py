@@ -25,7 +25,7 @@ class Admin(commands.Cog):
     ctx : disnake.ApplicationCommandInteraction):
     await ctx.response.send_message('Hello Advaith, I know you!')
   
-  @commands.slash_command()
+  @commands.slash_command(guild_ids = [808201667543433238])
   @commands.check(check_if_it_is_me)
   async def execute_order_66(
     self,
