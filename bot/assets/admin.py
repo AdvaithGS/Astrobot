@@ -33,6 +33,8 @@ class Admin(commands.Cog):
     ):
     db_daily:dict = retrieve('daily') 
     db_guilds:dict = retrieve('guilds')
+    
+    await ctx.response.defer(with_message = True)
 
     #These are all the checks required - to check if all guilds have the latest apod and then if not, whether the apod it has is the latest 
     if all([ db_guilds[i][1]== strftime('%Y %B %d') for i in db_guilds]):
