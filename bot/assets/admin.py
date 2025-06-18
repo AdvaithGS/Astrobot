@@ -58,8 +58,9 @@ class Admin(commands.Cog):
       embed.set_image(file=file)
 
     apod_suc,apod_fail= 0,0
-
+    tracker = {}
     for guild in db_guilds.keys():
+      await ctx.followup.send(f"{len(db_guilds)} guilds in total..")
       if db_guilds[guild][1] != db_daily['date']: #check if they all have latest apod
         try:
           chan = self.bot.get_channel(db_guilds[guild][0])
@@ -75,10 +76,15 @@ class Admin(commands.Cog):
             await owner.send(embed = embed)  
             db_guilds[guild][1] = 'Sent message'
             apod_fail += 1
-    if apod_suc != 0:
-      # user = await self.bot.getch_user(756496844867108937)
-      await ctx.response.send_message(f'''{db_daily["date"]}\nSuccessful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)})\nTotal: {apod_fail + apod_suc}\nGuilds: {len(self.bot.guilds)}''')
-      update(db_guilds,'guilds')
+    
+    tracker[guild] = db_guilds[guild][1]
+    embed = disnake.Embed(title = "APOD Check", description = f"Total of {len(db_guilds)} guids", color=disnake.Color.orange(),timestamp=datetime.now())
+    
+    for x in tracker:
+      embed.add_field(name = x,value=tracker[x])
+    await ctx.response.send_message(embed=embed)
+
+    update(db_guilds,'guilds')
   # @commands.slash_command()
   # @commands.dynamic_cooldown(custom_cooldown,commands.BucketType.user)
   # async def hello(
