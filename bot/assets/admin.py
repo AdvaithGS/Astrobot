@@ -16,7 +16,7 @@ class Admin(commands.Cog):
     self.bot = bot
 
   def check_if_it_is_me(ctx):
-    return ctx.message.author.id == 756496844867108937
+    return ctx.author.id == 756496844867108937
 
   @commands.slash_command(guild_ids = [808201667543433238])
   @commands.check(check_if_it_is_me)
