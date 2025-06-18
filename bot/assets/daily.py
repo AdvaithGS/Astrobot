@@ -51,7 +51,8 @@ class daily(commands.Cog):
       if not daily['video']:
         if(date == ''):
           with open("apod.jpg",'wb') as f:
-            f.write(get(daily['link'],"content"))
+            content = await get(daily['link'],"content") 
+            f.write(content)
             file = disnake.File("./apod.jpg", filename="apod.jpg")
         else:
           if("today.jpg" in listdir()):
@@ -59,7 +60,8 @@ class daily(commands.Cog):
           else:
             print(getcwd())
             with open("apod.jpg",'wb') as f:
-              f.write(get(daily['link'],"content"))
+              content = await get(daily['link'],"content") 
+              f.write(content)
               file = disnake.File("./apod.jpg", filename="apod.jpg")
           
         embed.set_image(file=file)
