@@ -69,14 +69,13 @@ async def check_apod():
     #   return
 
     #check today's date and cached APOD,if it doesnt match, check if new one has come out
-    if db_daily['date'] != strftime('%Y %B %d'):
-      x = apod()
+    x = apod()
+    if db_daily['date'] != strftime('%Y %B %d') and x != db_daily:
       #check if new one has come out
-      if x != db_daily:
-        update(x,'daily')
-        db_daily = x
+      update(x,'daily')
+      db_daily = x
     
-    db_daily = get_embed(x)
+    db_daily = get_embed(apod())
     embed = db_daily['embed']
 
     if not db_daily['video']:
