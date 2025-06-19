@@ -107,7 +107,8 @@ async def check_apod():
           apod_fail += 1
     if apod_suc != 0:
       user = await client.fetch_user(756496844867108937)
-      await user.send(f'''{db_daily["date"]}\nSuccessful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)})\nTotal: {apod_fail + apod_suc}\nGuilds: {len(client.guilds)} \n{"\n".join([str(i) for i in l])}''')
+      new = '\n'
+      await user.send(f'''{db_daily["date"]}{new}Successful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)}){new}Total: {apod_fail + apod_suc}\nGuilds: {len(client.guilds)} {new}{new.join([str(i) for i in l])}''')
     update(db_guilds,'guilds')
       
 
