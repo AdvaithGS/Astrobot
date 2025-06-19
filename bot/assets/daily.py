@@ -1,4 +1,4 @@
-from assets.tools.apod import apod
+from assets.tools.apod import apod, get_embed
 
 import datetime
 from assets.tools.cooldown import custom_cooldown
@@ -36,18 +36,13 @@ class daily(commands.Cog):
       date: class `str` 
         It can be "random" or any date that you choose, in YYYY-MM-DD format.
     '''
-    # await ctx.response.defer(with_message = True)
+    await ctx.response.defer(with_message = True)
     try:
-      daily = apod(date)
-      if not daily:
-        daily.append('this is meant to break')
-      desc = f'''{daily['date']}\nDiscover the cosmos!\n\n{daily['desc']}\n\n{('Credits: '+ daily['credits']) if 'credits' in daily else ''}'''
+      daily = get_embed(apod(date))
+      embed = daily['embed']
 
-      #creating an embed 
-      embed = disnake.Embed(title=daily['title'], url=daily['link'], description=desc, color=disnake.Color.orange(),timestamp = datetime.datetime.now())
-    
       if not daily['video']:
-        if(date == ''):
+        if(date != ''):
           with open("apod.jpg",'wb') as f:
             f.write(get(daily['link']).content)
             file = disnake.File("./apod.jpg", filename="apod.jpg")
@@ -56,16 +51,14 @@ class daily(commands.Cog):
             file = disnake.File("./today.jpg", filename = "today.jpg")
           else:
             print(getcwd())
-            with open("apod.jpg",'wb') as f:
+            with open("today.jpg",'wb') as f:
               f.write(get(daily['link']).content)
-              file = disnake.File("./apod.jpg", filename="apod.jpg")
+              file = disnake.File("./today.jpg", filename="today.jpg")
           
         embed.set_image(file=file)
 
       #the message can be activated either via slash command or via message, this takes care of both instances.
       print("DAILY CALLED",daily['link']);
-      
-      embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow's image: {daily['tomorrow']}")
       
       await ctx.response.send_message(embed=embed)
 
