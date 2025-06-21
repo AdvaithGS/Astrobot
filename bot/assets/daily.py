@@ -51,6 +51,7 @@ class daily(commands.Cog):
           if("today.jpg" in listdir()):
             file = disnake.File("./today.jpg", filename = "today.jpg")
           else:
+            
             f = open("today.jpg",'wb')
             f.write(get(daily['link']).content)
             file = disnake.File("./today.jpg", filename="today.jpg")

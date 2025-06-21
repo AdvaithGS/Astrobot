@@ -70,15 +70,17 @@ async def check_apod():
 
     #check today's date and cached APOD,if it doesnt match, check if new one has come out
     x = apod()
+    same = True
     if db_daily['date'] != strftime('%Y %B %d') and x != db_daily:
       #check if new one has come out
+      same = False
       update(x,'daily')
       db_daily = x
     
     db_daily = get_embed(apod())
     embed = db_daily['embed']
 
-    if not db_daily['video']:
+    if (not same) and not db_daily['video']:
       with open("today.jpg",'wb') as f:
         f.write(get(db_daily['link']).content)
       
@@ -97,7 +99,7 @@ async def check_apod():
           db_guilds[guild][1] = db_daily['date'] #says they have the latest apod
           apod_suc += 1
         except Exception as e:
-          l.append((guild,e))
+          l.append((chan,guild,e))
           # if guild == 808201667543433238:# and db_guilds[guild][1] != 'Sent message':
           #   owner = await client.fetch_user(client.get_guild(guild).owner.id)
           #   embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
