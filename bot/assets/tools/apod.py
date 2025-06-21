@@ -55,7 +55,7 @@ def apod(date:str = '') -> dict:
 
 def get_embed(d : dict) -> dict:
     d['desc'] = f'''{d['date']}\nDiscover the cosmos!\n\n{d['desc']}\n\n{('Credits: '+ d['credits']) if 'credits' in d else ''}'''
-    embed = Embed(title=d['title'], url=d['link'], description=d['desc'], color= Color.orange(),timestamp = datetime.datetime.now());
+    embed = Embed(title=d['title'], url=d['link'], description=d['desc'], color= Color.orange(),timestamp = datetime.now());
 
     embed.set_footer(text=f"Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.\nTomorrow's image: {d['tomorrow']}")
       
