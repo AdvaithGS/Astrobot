@@ -36,7 +36,7 @@ class daily(commands.Cog):
       date: class `str` 
         It can be "random" or any date that you choose, in YYYY-MM-DD format.
     '''
-    await ctx.response.defer(with_message = True)
+    # await ctx.response.defer(with_message = True)
     try:
       daily = get_embed(apod(date))
       embed = daily['embed']

@@ -97,7 +97,7 @@ async def check_apod():
           db_guilds[guild][1] = db_daily['date'] #says they have the latest apod
           apod_suc += 1
         except Exception as e:
-          l.append(guild)
+          l.append((guild,e))
           # if guild == 808201667543433238:# and db_guilds[guild][1] != 'Sent message':
           #   owner = await client.fetch_user(client.get_guild(guild).owner.id)
           #   embed = disnake.Embed(title= 'Daily Astronomy Picture of The Day Error',description= f'''Hello there! It seems that there has been an issue with your server "_{client.get_guild(guild).name}_". The Astronomy Picture of the Day system is not correctly functioning, making the bot unable to send pictures everyday. You are requested to type the command `/channel` again and make sure Astrobot has the proper permissions (embeds,messages, etc.).\nThank you!''' , color=disnake.Color.orange(),timestamp=datetime.now())
@@ -109,7 +109,7 @@ async def check_apod():
       new = '\n'
       await user.send(f'''{db_daily["date"]}{new}Successful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)}){new}Total: {apod_fail + apod_suc}\nGuilds: {len(client.guilds)}''')
       for i in l:
-        await user.send(str(i)); 
+        await user.send(str(i[0]) + str(i[1])); 
       # {new.join([str(i) for i in l])}
     update(db_guilds,'guilds')
       
