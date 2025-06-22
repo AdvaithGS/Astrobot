@@ -92,8 +92,10 @@ async def check_apod():
     for guild in db_guilds.keys():
       if db_guilds[guild][1] != db_daily['date']: #check if they all have latest apod
         try:
+          file = disnake.File("today.jpg", filename="today.jpg")
+          embed.set_image(file=file)
           chan = await client.fetch_channel(db_guilds[guild][0])
-          print((await chan.send(embed=embed)).system_content[:20],chan)
+          print((await chan.send(embed=embed)).system_content[:100],chan)
           # print(chan,guild)
           if db_daily['video']:
               await chan.send(content = db_daily['link'])
@@ -112,7 +114,7 @@ async def check_apod():
       new = '\n'
       await user.send(f'''{db_daily["date"]}{new}Successful:{apod_suc} ({apod_suc/(apod_fail + apod_suc)}), Failed: {apod_fail} ({apod_fail/(apod_fail + apod_suc)}){new}Total: {apod_fail + apod_suc}\nGuilds: {len(client.guilds)}''')
       for i in l:
-        await user.send(str(i[0]) + str(i[1])); 
+        await user.send(str(i[0]) + str(i[1]) + str(i[2])); 
       # {new.join([str(i) for i in l])}
     update(db_guilds,'guilds')
       
