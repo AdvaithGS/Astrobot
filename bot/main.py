@@ -84,7 +84,7 @@ async def check_apod():
       with open("today.jpg",'wb') as f:
         f.write(get(db_daily['link']).content)
       
-    file = disnake.File("./today.jpg", filename="today.jpg")
+    file = disnake.File("today.jpg", filename="today.jpg")
     embed.set_image(file=file)
 
     apod_suc,apod_fail= 0,0
