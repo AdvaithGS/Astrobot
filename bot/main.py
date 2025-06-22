@@ -80,7 +80,7 @@ async def check_apod():
     db_daily = get_embed(apod())
     embed = db_daily['embed']
 
-    if (not same) and not db_daily['video']:
+    if (not ('today.jpg' in listdir())) or ((not same) and not db_daily['video']):
       with open("today.jpg",'wb') as f:
         f.write(get(db_daily['link']).content)
       
