@@ -93,8 +93,8 @@ async def check_apod():
       if db_guilds[guild][1] != db_daily['date']: #check if they all have latest apod
         try:
           chan = await client.fetch_channel(db_guilds[guild][0])
-          print(chan,guild)
-          await chan.send(embed=embed)
+          print((await chan.send(embed=embed)).system_content[:20],chan)
+          # print(chan,guild)
           if db_daily['video']:
               await chan.send(content = db_daily['link'])
           db_guilds[guild][1] = db_daily['date'] #says they have the latest apod
